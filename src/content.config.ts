@@ -17,6 +17,10 @@ const post = defineCollection({
 		series: z.string().optional(),
 		lang: z.string().default('zh-Hant'),
 		draft: z.boolean().default(false),
+		/** provenance for imported content (e.g. 'facebook') */
+		source: z.string().optional(),
+		sourceType: z.string().optional(),
+		sourceTimestamp: z.number().optional(),
 	}),
 });
 

@@ -1,0 +1,69 @@
+# blog.g36maid.dev — build & deploy to Cloudflare Workers (static assets)
+#
+# PR:      install → build → validate (dry-run, no credentials needed)
+# main:    → deploy via `cf deploy --prebuilt`
+#
+# Required repo secrets (G36maid account):
+#   CLOUDFLARE_API_TOKEN   — token with Workers Scripts:Edit + Account Settings:Read
+#   CLOUDFLARE_ACCOUNT_ID  — a3ce3a0ebee662a88c793e3971dc282c
+#
+# NOTE: cf autoconfig cannot build Astro 7 yet ("Astro 6+ does not build with
+# cf during the beta"), so we run our own build (astro + pagefind), assemble
+# the Build Output Spec ourselves (scripts/make-build-output.mjs), and deploy
+# with `--prebuilt` which skips framework detection entirely.
+
+name: Deploy blog
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CF_SEND_TELEMETRY: "false"
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install mmdr (pure-Rust mermaid renderer, no browser)
+        run: |
+          curl -sL \
+            https://github.com/1jehuang/mermaid-rs-renderer/releases/download/v0.3.1/mmdr-x86_64-unknown-linux-gnu.tar.gz \
+            -o /tmp/mmdr.tar.gz
+          tar -xzf /tmp/mmdr.tar.gz -C /tmp
+          sudo install /tmp/mmdr /usr/local/bin/mmdr
+          mmdr --version
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build (astro build + pagefind + build output spec)
+        run: |
+          pnpm build
+          node scripts/make-build-output.mjs
+
+      - name: Validate Build Output (dry run)
+        run: npx -y cf@1.0.0-beta.12 deploy --prebuilt --dry-run
+
+      - name: Deploy to Cloudflare Workers
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx -y cf@1.0.0-beta.12 deploy --prebuilt
