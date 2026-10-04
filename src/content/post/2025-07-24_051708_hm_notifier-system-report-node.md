@@ -2,11 +2,12 @@
 title: "Notifier System Report: Node Online/Offline Behavior"
 description: "This report details how the Headscale notifier system handles the online and offline status of machines (nodes) and propagates these chan…"
 pubDate: 2025-07-24 05:17:08 +0800
-tags: []
+tags: ["headscale", "memory", "database", "tailscale"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1753305428
+category: self-hosting
 ---
 
 This report details how the Headscale notifier system handles the online and offline status of machines (nodes) and propagates these changes across the network.

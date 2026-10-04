@@ -2,11 +2,12 @@
 title: "computer arch HW2"
 description: "在 RISC-V 64 位元架構 (RV64) 中，有 32 個通用暫存器，每個暫存器都是 64 位元長度，另外還有一些特殊用途的暫存器。以下是所有可用的通用暫存器及其對應名稱和用途："
 pubDate: 2024-10-23 12:52:38 +0800
-tags: []
+tags: ["指標", "arch", "執行緒", "程式", "thread"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1729659158
+category: programming
 ---
 
 在 RISC-V 64 位元架構 (RV64) 中，有 32 個通用暫存器，每個暫存器都是 64 位元長度，另外還有一些特殊用途的暫存器。以下是所有可用的通用暫存器及其對應名稱和用途：

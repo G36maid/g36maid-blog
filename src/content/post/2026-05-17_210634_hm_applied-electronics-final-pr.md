@@ -2,11 +2,12 @@
 title: "Applied Electronics Final Project: Size Classification"
 description: "The system is designed to automatically classify objects by size as they roll down a slope under gravity and route them to the appropriat…"
 pubDate: 2026-05-17 21:06:34 +0800
-tags: []
+tags: ["final"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1779023194
+category: programming
 ---
 
 ## 1. System Overview

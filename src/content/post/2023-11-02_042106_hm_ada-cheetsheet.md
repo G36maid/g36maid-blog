@@ -2,11 +2,12 @@
 title: "ADA  cheetsheet"
 description: "$O(g(n))$={$f(n)$: $\exists$ c,$n0$=0 , 0<= $f(n)$ <= $cg(n)$ for all $n$ = $n0$ }"
 pubDate: 2023-11-02 04:21:06 +0800
-tags: []
+tags: ["algorithm", "python"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1698870066
+category: programming
 ---
 
 # ADA cheetsheet

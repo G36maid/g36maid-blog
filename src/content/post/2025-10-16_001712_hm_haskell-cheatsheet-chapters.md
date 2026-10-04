@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1760545032
+category: essay
 ---
 
 This cheatsheet summarizes the core functions, syntax, and concepts from chapters 1-3 in a table format for quick reference.

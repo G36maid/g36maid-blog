@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1742161856
+category: essay
 ---
 
 - G36maid

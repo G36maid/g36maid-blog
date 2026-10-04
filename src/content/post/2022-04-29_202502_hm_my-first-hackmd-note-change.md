@@ -2,11 +2,12 @@
 title: "My first HackMD note (change me!)"
 description: "This note is yours, feel free to play around. :videogame:"
 pubDate: 2022-04-29 20:25:02 +0800
-tags: ["Tag(change me!)"]
+tags: ["Tag(change me!)", "github", "javascript", "game"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1651235102
+category: programming
 ---
 
 ###### tags: `Tag(change me!)`

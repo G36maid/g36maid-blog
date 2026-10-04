@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1695750126
+category: shitpost
 ---
 
 ## hw01

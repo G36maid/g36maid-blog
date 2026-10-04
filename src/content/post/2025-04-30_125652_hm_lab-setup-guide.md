@@ -2,11 +2,12 @@
 title: "Lab Setup Guide"
 description: "我這台VM是 opnsense 背後的子網設備，我覺得這是最方便的方式了"
 pubDate: 2025-04-30 12:56:52 +0800
-tags: []
+tags: ["tailscale", "bash", "sudo", "終端機", "opnsense", "權限"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1745989012
+category: linux
 ---
 
 我這台VM是 opnsense 背後的子網設備，我覺得這是最方便的方式了

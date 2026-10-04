@@ -2,11 +2,12 @@
 title: "Framework 13 with Arch Linux"
 description: "https://wiki.archlinux.org/title/Installationguide(%E6%AD%A3%E9%AB%94%E4%B8%AD%E6%96%87)"
 pubDate: 2024-10-18 10:59:14 +0800
-tags: []
+tags: ["linux", "btrfs", "git", "arch", "zsh", "hyprland", "amd", "wayland", "grub", "vim"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1729220354
+category: linux
 ---
 
 ## hardware

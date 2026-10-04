@@ -2,11 +2,12 @@
 title: "Report on 'Computer Security and Privacy for Refugees in the United States"
 description: "針對《Computer Security and Privacy for Refugees in the United States》"
 pubDate: 2024-10-20 14:14:42 +0800
-tags: ["Templates", " Talk"]
+tags: ["Templates", " Talk", "security", "資安", "電腦"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1729404882
+category: security
 ---
 
 # week 2心得報告

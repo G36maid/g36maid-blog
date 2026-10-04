@@ -2,11 +2,12 @@
 title: "Quicklink Docker-Compose Services Overview"
 description: "@Quicklink Docker Compose Services Overview(zed:///agent/thread/df99c060-d945-4c27-a20e-319f5d5893b2?name=Quicklink+Docker+Compose+Servic…"
 pubDate: 2026-04-28 03:51:12 +0800
-tags: []
+tags: ["docker", "quicklink", "api", "terminal", "database", "compose", "traefik", "nginx", "json", "sql"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1777319472
+category: self-hosting
 ---
 
 ## User

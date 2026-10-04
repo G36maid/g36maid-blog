@@ -2,11 +2,12 @@
 title: "QuickLink VPN Cloud - System Architecture Diagrams"
 description: "This document provides comprehensive Mermaid diagrams visualizing the architecture of the QuickLink VPN Cloud system based on the Docker …"
 pubDate: 2025-11-20 09:44:02 +0800
-tags: []
+tags: ["traefik", "derp", "headscale", "vpn", "nginx", "docker", "api", "tailscale", "compose", "dns"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1763603042
+category: self-hosting
 ---
 
 This document provides comprehensive Mermaid diagrams visualizing the architecture of the QuickLink VPN Cloud system based on the Docker Compose configurations.

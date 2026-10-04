@@ -2,11 +2,12 @@
 title: "Stateful MQTT Server"
 description: "This is a stateful MQTT server implemented using the Paho MQTT client library. The server can handle various requests from clients and ma…"
 pubDate: 2024-08-12 15:47:02 +0800
-tags: []
+tags: ["python", "json"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1723448822
+category: programming
 ---
 
 This is a stateful MQTT server implemented using the Paho MQTT client library. The server can handle various requests from clients and maintains a "magic list".

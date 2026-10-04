@@ -2,11 +2,12 @@
 title: "Information Security HW03"
 description: "Shellcode Development Lab"
 pubDate: 2025-04-20 03:58:44 +0800
-tags: []
+tags: ["security", "cpu", "bios"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1745092724
+category: security
 ---
 
 ## 3.1 SEED Lab (20 pts)

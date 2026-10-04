@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1781557380
+category: essay
 ---
 
 - 鍾詠傑

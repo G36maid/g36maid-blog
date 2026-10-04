@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1771572880
+category: essay
 ---
 
 # ASUS laptop dual-boot 筆記

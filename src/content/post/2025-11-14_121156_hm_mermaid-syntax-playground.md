@@ -2,11 +2,12 @@
 title: "mermaid syntax playground"
 description: "graph TD"
 pubDate: 2025-11-14 12:11:56 +0800
-tags: []
+tags: ["api", "json", "database", "memory", "cpu"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1763093516
+category: programming
 ---
 
 # graph

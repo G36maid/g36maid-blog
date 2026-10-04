@@ -2,11 +2,12 @@
 title: "QuickLink VPN Cloud - System Architecture Diagrams"
 description: "Report Period: Integration Test Development & DERP TLS Investigation"
 pubDate: 2025-11-20 09:09:10 +0800
-tags: []
+tags: ["derp", "certificate", "traefik", "docker", "tailscale", "compose", "headscale", "bash", "json", "mount"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1763600950
+category: self-hosting
 ---
 
 # Weekly Report: DERP Manager Integration Testing

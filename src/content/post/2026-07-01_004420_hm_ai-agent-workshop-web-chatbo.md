@@ -2,11 +2,12 @@
 title: "AI Agent Workshop — 從 web chatbot 到 agentic workflow"
 description: "這整張講稿是我當天開著念、也給台下看的同一份。"
 pubDate: 2026-07-01 00:44:20 +0800
-tags: []
+tags: ["agent", "模型", "ai", "opencode", "llm", "claude", "github", "gemini", "prompt", "glm"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1782837860
+category: ai
 ---
 
 ---

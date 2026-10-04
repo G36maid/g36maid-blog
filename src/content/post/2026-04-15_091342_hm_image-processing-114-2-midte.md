@@ -2,11 +2,12 @@
 title: "Image Processing - 114-2 Midterm Report"
 description: "g36maid"
 pubDate: 2026-04-15 09:13:42 +0800
-tags: []
+tags: ["python", "midterm", "final"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1776215622
+category: programming
 ---
 
 - g36maid

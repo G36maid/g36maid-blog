@@ -2,11 +2,12 @@
 title: "Computer architecture HW03"
 description: "The reason print(0.1 + 0.2 == 0.3) returns False in Python (and many other programming languages) is due to how floating-point numbers ar…"
 pubDate: 2024-11-15 02:17:50 +0800
-tags: []
+tags: ["python", "final", "algorithm", "memory"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1731608270
+category: programming
 ---
 
 ## Q1

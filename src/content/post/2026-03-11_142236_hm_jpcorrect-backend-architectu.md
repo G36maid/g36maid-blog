@@ -2,11 +2,12 @@
 title: "jpcorrect-backend Architecture"
 description: "jpcorrect-backend is a Go-based REST API for a Japanese language correction platform. This architecture combines GORM-based persistence (…"
 pubDate: 2026-03-11 14:22:36 +0800
-tags: []
+tags: ["api", "database", "ai", "json", "sql", "auth", "docker", "refactor", "compose", "debug"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1773210156
+category: programming
 ---
 
 ## Overview

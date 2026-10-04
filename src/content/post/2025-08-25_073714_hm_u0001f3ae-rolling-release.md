@@ -2,11 +2,12 @@
 title: "\U0001F3AE 遊戲概念：《Rolling Release》"
 description: "靈感來自 Arch Linux 的「滾動更新」（Rolling Release）發行哲學。"
 pubDate: 2025-08-25 07:37:14 +0800
-tags: []
+tags: ["遊戲", "pacman", "arch", "kernel", "linux", "grub", "gentoo", "ubuntu", "aur", "檔案系統"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1756078634
+category: linux
 ---
 
 # 🎮 遊戲概念發想：《Rolling Release》

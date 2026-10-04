@@ -2,11 +2,12 @@
 title: "System Software"
 description: "Macro Instructions: A macro is a single identifier representing a sequence of instructions or code fragments. During macro expansion, the…"
 pubDate: 2024-12-16 06:33:02 +0800
-tags: []
+tags: ["debug", "memory", "kernel", "final"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1734301982
+category: programming
 ---
 
 ## 2022 Final Exam

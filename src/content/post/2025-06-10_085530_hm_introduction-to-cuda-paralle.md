@@ -2,11 +2,12 @@
 title: "Introduction to CUDA Parallel Programming Homework Assignments 2025"
 description: "This document summarizes the CUDA homework assignments for the 2025 Introduction to CUDA Parallel Programming course. It is intended to p…"
 pubDate: 2025-06-10 08:55:30 +0800
-tags: []
+tags: ["gpu", "cpu", "c++", "memory", "algorithm", "nvidia"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1749516930
+category: hardware
 ---
 
 This document summarizes the CUDA homework assignments for the 2025 Introduction to CUDA Parallel Programming course. It is intended to provide a clear overview of each assignment and how to run them on the TWCP1 cluster.

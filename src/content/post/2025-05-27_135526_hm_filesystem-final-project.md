@@ -2,11 +2,12 @@
 title: "filesystem final project:"
 description: "SSDI Experiments Note"
 pubDate: 2025-05-27 13:55:26 +0800
-tags: []
+tags: ["btrfs", "zfs", "linux", "bash", "kernel", "bcachefs", "final", "mount", "git", "ext4"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1748325326
+category: linux
 ---
 
 SSDI Experiments Note

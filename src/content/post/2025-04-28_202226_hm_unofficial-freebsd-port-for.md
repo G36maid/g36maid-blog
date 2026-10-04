@@ -2,11 +2,12 @@
 title: "Unofficial FreeBSD port for Zed Editor"
 description: "This is an unofficial FreeBSD port for Zed Editor(https://github.com/zed-industries/zed)."
 pubDate: 2025-04-28 20:22:26 +0800
-tags: []
+tags: ["freebsd", "github", "debug", "rust", "linux", "arch", "amd", "aur", "thread", "git"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1745842946
+category: linux
 ---
 
 This is an unofficial FreeBSD port for [Zed Editor](https://github.com/zed-industries/zed).

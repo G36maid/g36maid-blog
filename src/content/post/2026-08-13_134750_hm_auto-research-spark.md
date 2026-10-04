@@ -2,11 +2,12 @@
 title: "Auto-Research — 全自動研究系統 (Spark 討論)"
 description: "North Star: 打造一個全自動研究平台。整合知識來源 → 選題 → 搜尋 → 調查 → 實驗 → 報告的完整 pipeline，每個階段皆可 loop 直到完善。"
 pubDate: 2026-08-13 13:47:50 +0800
-tags: []
+tags: ["agent", "llm", "github", "auth", "cron", "模型", "claude", "gemini", "opencode", "bash"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1786600070
+category: ai
 ---
 
 > **North Star**: 打造一個全自動研究平台。整合知識來源 → 選題 → 搜尋 → 調查 → 實驗 → 報告的完整 pipeline，每個階段皆可 loop 直到完善。

@@ -2,11 +2,12 @@
 title: "應用電子學期中考重點筆記 (Applied Electronics Midterm Cheat-Sheet)"
 description: "範圍：Chapters 2 - 6"
 pubDate: 2026-04-13 00:29:44 +0800
-tags: []
+tags: ["模型", "midterm", "final"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1776011384
+category: ai
 ---
 
 **範圍：Chapters 2 - 6**

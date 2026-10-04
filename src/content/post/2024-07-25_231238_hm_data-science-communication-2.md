@@ -2,11 +2,12 @@
 title: "Data Science & Communication 2024"
 description: "AI is revolutionizing the smart economy by fostering entrepreneurship, innovation, and efficiency across various sectors. AI-powered plat…"
 pubDate: 2024-07-25 23:12:38 +0800
-tags: []
+tags: ["ai", "security"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1721920358
+category: ai
 ---
 
 ## Assignment 1

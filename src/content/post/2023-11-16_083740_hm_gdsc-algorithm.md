@@ -2,11 +2,12 @@
 title: "GDSC algorithm 題單"
 description: "uva題單若打不開請到這裡搜尋題號"
 pubDate: 2023-11-16 08:37:40 +0800
-tags: []
+tags: ["github", "algorithm", "leetcode", "演算法", "資料結構"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1700095060
+category: programming
 ---
 
 # GDSC algorithm I 題單

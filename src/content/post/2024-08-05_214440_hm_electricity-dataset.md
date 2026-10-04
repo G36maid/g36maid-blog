@@ -2,11 +2,12 @@
 title: "Electricity  Dataset"
 description: "URL: Taiwan Power Company Open Data - Power Generation(https://data.gov.tw/en/datasets/8931)"
 pubDate: 2024-08-05 21:44:40 +0800
-tags: []
+tags: ["dataset"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1722865480
+category: ai
 ---
 
 ### 1. Taiwan Power Company: Real-time Information on Power Generation of Each Unit (Including Purchased Power)

@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1714678218
+category: essay
 ---
 
 ## 1 homophone 諧音梗

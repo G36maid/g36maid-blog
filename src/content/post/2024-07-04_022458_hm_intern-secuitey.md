@@ -2,11 +2,12 @@
 title: "intern secuitey"
 description: "intern secuitey"
 pubDate: 2024-07-04 02:24:58 +0800
-tags: []
+tags: ["cve", "exploit"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1720031098
+category: security
 ---
 
 ## 名詞定義

@@ -2,11 +2,12 @@
 title: "SIC/XE Assembler"
 description: "A fully-featured SIC/XE assembler implementation."
 pubDate: 2024-12-24 01:41:06 +0800
-tags: []
+tags: ["bash", "github", "rust"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1734975666
+category: programming
 ---
 
 A fully-featured SIC/XE assembler implementation.

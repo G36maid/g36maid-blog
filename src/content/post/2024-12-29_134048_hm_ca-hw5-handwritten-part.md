@@ -2,11 +2,12 @@
 title: "CA HW5 Handwritten part"
 description: "Block size (B) can affect both miss rate & miss latency. Assuming a machine base CPI = 1,"
 pubDate: 2024-12-29 13:40:48 +0800
-tags: []
+tags: ["gpu", "memory", "cpu", "neural"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1735450848
+category: hardware
 ---
 
 ## Problem 1

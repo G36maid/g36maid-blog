@@ -2,11 +2,12 @@
 title: "CA HW4 Handwritten Part"
 description: "Block sizes: $B = 8, 16, 32, 64, 128$"
 pubDate: 2024-12-16 21:46:58 +0800
-tags: []
+tags: ["記憶體", "memory", "gpu", "cpu", "neural"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1734356818
+category: programming
 ---
 
 ## g36maid

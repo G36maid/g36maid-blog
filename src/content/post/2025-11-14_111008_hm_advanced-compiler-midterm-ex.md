@@ -2,11 +2,12 @@
 title: "Advanced Compiler Midterm Exam Report"
 description: "This document provides a comprehensive review of the SSA/Compiler optimization section of the midterm exam, including questions, multiple…"
 pubDate: 2025-11-14 11:10:08 +0800
-tags: []
+tags: ["compiler", "final", "midterm", "memory", "algorithm", "cpu"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1763089808
+category: programming
 ---
 
 ## SSA and Compiler Optimization Questions (Questions 1-15)

@@ -2,11 +2,12 @@
 title: "\U0001F4DD Event Note: Spotlight on Internships at Google Taiwan"
 description: "時間：14:00 - 15:30"
 pubDate: 2025-12-03 06:46:36 +0800
-tags: []
+tags: ["ai", "linux", "kernel", "伺服器", "模型"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1764715596
+category: ai
 ---
 
 # 📝 Event Note: Spotlight on Internships at Google Taiwan

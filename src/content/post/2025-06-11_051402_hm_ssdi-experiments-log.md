@@ -2,11 +2,12 @@
 title: "SSDI Experiments Log"
 description: "% fastfetch"
 pubDate: 2025-06-11 05:14:02 +0800
-tags: []
+tags: ["btrfs", "sudo", "ssd", "cpu", "mount", "linux", "pacman", "bash", "zfs", "ext4"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1749590042
+category: linux
 ---
 
 [TOC]

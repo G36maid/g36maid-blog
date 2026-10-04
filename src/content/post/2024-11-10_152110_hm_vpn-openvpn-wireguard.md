@@ -2,11 +2,12 @@
 title: "VPN 教育訓練文件: OpenVPN 與 WireGuard"
 description: "/TODO: /"
 pubDate: 2024-11-10 15:21:10 +0800
-tags: []
+tags: ["wireguard", "vpn", "加密", "sudo", "防火牆", "bash", "opnsense", "pfsense", "伺服器", "效能"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1731223270
+category: self-hosting
 ---
 
 ## 1. 緩解的威脅類型

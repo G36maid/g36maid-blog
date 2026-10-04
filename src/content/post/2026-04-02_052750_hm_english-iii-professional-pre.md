@@ -2,11 +2,12 @@
 title: "English (III): Professional Presentation in English"
 description: "Semester: Spring 2026"
 pubDate: 2026-04-02 05:27:50 +0800
-tags: []
+tags: ["midterm", "final", "linux"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1775078870
+category: programming
 ---
 
 **Semester:** Spring 2026

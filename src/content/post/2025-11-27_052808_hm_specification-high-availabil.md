@@ -2,11 +2,12 @@
 title: "SPECIFICATION: High-Availability Headscale with Custom DERP"
 description: "The goal of this Proof of Concept (PoC) is to demonstrate a high-availability (HA) architecture for Headscale using a custom DERP server …"
 pubDate: 2025-11-27 05:28:08 +0800
-tags: []
+tags: ["api", "derp", "headscale", "database", "tailscale", "json", "docker", "compose", "mount", "sql"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1764192488
+category: self-hosting
 ---
 
 ## 1. Objective

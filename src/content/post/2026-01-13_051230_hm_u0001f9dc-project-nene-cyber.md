@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1768252350
+category: essay
 ---
 
 # 🧜‍♀️ Project Nene: Cyberpunk Mermaid

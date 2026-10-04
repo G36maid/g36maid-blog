@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1733817492
+category: essay
 ---
 
 ## Problem 1

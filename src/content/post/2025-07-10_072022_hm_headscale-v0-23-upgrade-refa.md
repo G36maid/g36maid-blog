@@ -2,11 +2,12 @@
 title: "Headscale v0.23 Upgrade & Refactor Report"
 description: "Headscale v0.23 was originally intended as a refactoring release focused on maintainability. However, it evolved into a major upgrade wit…"
 pubDate: 2025-07-10 07:20:22 +0800
-tags: []
+tags: ["headscale", "api", "database", "derp", "dns", "refactor", "auth", "bash", "debug", "vpn"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1752103222
+category: programming
 ---
 
 ## Summary

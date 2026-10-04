@@ -2,11 +2,12 @@
 title: "Cybersecurity Harness Design Based on OpenCode"
 description: "隨著人工智慧在軟體工程與網路安全領域的應用產生典範轉移，代理架構（Agentic Architecture）的設計逐漸取代了傳統的單一模型對話模式。"
 pubDate: 2026-04-21 05:43:28 +0800
-tags: []
+tags: ["模型", "opencode", "程式", "agent", "claude", "github", "ai", "漏洞", "ctf", "llm"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1776721408
+category: ai
 ---
 
 [TOC]

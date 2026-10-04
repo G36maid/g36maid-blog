@@ -2,11 +2,12 @@
 title: "barrelfish OS paper report"
 description: "The paper introduces the multikernel model. The key idea is treating the OS as a distributed system, where each core runs its own indepen…"
 pubDate: 2025-02-15 02:05:40 +0800
-tags: []
+tags: ["memory", "linux", "kernel", "rust"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1739556340
+category: programming
 ---
 
 ## paper summary

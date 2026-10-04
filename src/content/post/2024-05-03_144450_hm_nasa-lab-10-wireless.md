@@ -2,11 +2,12 @@
 title: "NASA Lab 10: Wireless"
 description: "g36maid"
 pubDate: 2024-05-03 14:44:50 +0800
-tags: []
+tags: ["穿透", "linux", "電腦"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1714718690
+category: self-hosting
 ---
 
 - g36maid

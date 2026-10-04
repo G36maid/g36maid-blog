@@ -2,11 +2,12 @@
 title: "RISC-V Assembly Report: Partition Function"
 description: "The partition function is part of the quicksort algorithm, which rearranges elements in an array such that all elements less than a selec…"
 pubDate: 2024-10-20 15:56:14 +0800
-tags: []
+tags: ["algorithm", "final", "memory"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1729410974
+category: programming
 ---
 
 ## Purpose

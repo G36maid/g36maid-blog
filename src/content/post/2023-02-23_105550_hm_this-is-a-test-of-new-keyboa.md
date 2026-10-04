@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1677120950
+category: shitpost
 ---
 
 中文測試 鍾詠傑

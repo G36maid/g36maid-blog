@@ -2,11 +2,12 @@
 title: "Programming in C"
 description: "Learn how to program in C."
 pubDate: 2024-07-21 13:04:40 +0800
-tags: []
+tags: ["linux", "ubuntu", "compiler", "sudo", "distro"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1721538280
+category: linux
 ---
 
 # C Programming TA

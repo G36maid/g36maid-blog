@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1758594934
+category: essay
 ---
 
 Ten Best Home Pages Report

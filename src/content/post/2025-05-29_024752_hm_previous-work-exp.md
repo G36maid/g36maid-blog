@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1748458072
+category: essay
 ---
 
 previous work exp 

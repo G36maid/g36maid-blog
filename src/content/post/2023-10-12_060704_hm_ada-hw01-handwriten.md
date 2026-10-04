@@ -2,11 +2,12 @@
 title: "ada hw01 handwriten"
 description: "Problem 5 : all by my self"
 pubDate: 2023-10-12 06:07:04 +0800
-tags: []
+tags: ["algorithm", "chatgpt"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1697062024
+category: programming
 ---
 
 ## P0 

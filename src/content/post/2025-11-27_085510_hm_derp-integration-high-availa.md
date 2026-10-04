@@ -2,11 +2,12 @@
 title: "DERP Integration & High Availability (HA) POC Report"
 description: "Date: November 27, 2025"
 pubDate: 2025-11-27 08:55:10 +0800
-tags: []
+tags: ["derp", "tailscale", "database", "headscale", "quicklink", "vpn", "gemini", "security", "cpu"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1764204910
+category: self-hosting
 ---
 
 **Date:** November 27, 2025

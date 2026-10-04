@@ -2,11 +2,12 @@
 title: "my persional prompt"
 description: "你必須在回答前先進行「事實檢查思考」；只用已驗證的資料：僅接受使用者提供的內容、模型內明確知識或已查證的來源；不足就說不知道：若資料不夠，回覆「我無法確定」或「沒有足夠資料，不得猜測或補完；標示依據與推論：引用來源或推論時說明依據；若是推論要標註「這是推論」；不新增未授權內…"
 pubDate: 2025-12-01 20:29:18 +0800
-tags: []
+tags: ["linux", "arch", "rust", "github", "docker", "zfs", "shell", "hyprland", "proxmox", "prompt"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1764592158
+category: linux
 ---
 
 [TOC]

@@ -2,11 +2,12 @@
 title: "ada hw02 handwriten"
 description: "NO. : G36maid (ntnu)"
 pubDate: 2023-12-05 00:46:10 +0800
-tags: []
+tags: ["algorithm", "ai", "chatgpt"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1701708370
+category: programming
 ---
 
 ## info

@@ -2,11 +2,12 @@
 title: "高等編譯器作業：Affine Partitioning 平行化"
 description: "學號：g36maid"
 pubDate: 2025-09-26 12:34:14 +0800
-tags: []
+tags: ["編譯", "作業", "程式"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1758861254
+category: programming
 ---
 
 姓名：鍾詠傑

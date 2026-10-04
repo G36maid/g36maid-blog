@@ -2,11 +2,12 @@
 title: "DERP Client Verification Implementation"
 description: "This document details the implementation of the DERP client verification system, which enforces access control for the DERP relay by vali…"
 pubDate: 2025-12-04 07:52:12 +0800
-tags: []
+tags: ["derp", "database", "tailscale", "headscale", "json", "memory"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1764805932
+category: self-hosting
 ---
 
 This document details the implementation of the DERP client verification system, which enforces access control for the DERP relay by validating client nodes against the Headscale database.

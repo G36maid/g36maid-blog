@@ -2,11 +2,12 @@
 title: "DERP Verification System Report"
 description: "Date: 2025-12-04"
 pubDate: 2025-12-04 09:49:10 +0800
-tags: []
+tags: ["derp", "tailscale", "database", "headscale", "json", "memory", "docker", "vpn", "compose", "sql"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1764812950
+category: self-hosting
 ---
 
 **Date:** 2025-12-04

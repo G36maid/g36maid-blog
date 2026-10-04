@@ -2,11 +2,12 @@
 title: "BSD-based NAS Project"
 description: "This project aims to enhance the security features of a NAS by virtualizing a firewall within the NAS to filter unauthorized access reque…"
 pubDate: 2024-08-30 03:13:36 +0800
-tags: []
+tags: ["opnsense", "freebsd", "tailscale", "nas", "pfsense", "security", "intel", "zfs", "arch", "debian"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1724958816
+category: self-hosting
 ---
 
 ## About

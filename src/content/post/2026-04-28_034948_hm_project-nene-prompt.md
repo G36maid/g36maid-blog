@@ -7,6 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1777319388
+category: essay
 ---
 
 ## 🧪 組合範例 (Tail Recipes)

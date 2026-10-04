@@ -2,11 +2,12 @@
 title: "Gemini persional pormpt"
 description: "原始 gemini systemprompt"
 pubDate: 2026-04-21 13:24:58 +0800
-tags: []
+tags: ["rust", "遊戲", "github", "linux", "zfs", "hyprland", "終端機", "proxmox", "docker", "程式"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1776749098
+category: programming
 ---
 
 [TOC]

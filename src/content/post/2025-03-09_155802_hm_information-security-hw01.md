@@ -2,11 +2,12 @@
 title: "Information Security HW01"
 description: "G36maid"
 pubDate: 2025-03-09 15:58:02 +0800
-tags: []
+tags: ["shell", "sudo", "bash", "tmux", "程式", "exploit", "權限", "security", "linux", "ubuntu"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1741507082
+category: linux
 ---
 
 * G36maid

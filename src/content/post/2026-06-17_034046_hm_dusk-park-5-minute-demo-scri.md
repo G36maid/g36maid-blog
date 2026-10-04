@@ -2,11 +2,12 @@
 title: "Dusk Park — 5-Minute Demo Script"
 description: "Spec compliance: Personal intro → concept → gameplay (all four games) → proudest design choice → closing. No technical jargon. Pure English."
 pubDate: 2026-06-17 03:40:46 +0800
-tags: []
+tags: ["game", "prompt", "final"]
 draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1781638846
+category: acg
 ---
 
 **Spec compliance:** Personal intro → concept → gameplay (all four games) → proudest design choice → closing. No technical jargon. Pure English.
