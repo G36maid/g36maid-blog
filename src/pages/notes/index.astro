@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { getSortedNotes } from '../../lib/content';
+
+const notes = await getSortedNotes();
+---
+
+<Base title="NOTES — 隨手筆記" description="短篇技術筆記與快速紀錄（TIL）。">
+	<div class="section-head">
+		<h1 class="section-title">Notes</h1>
+		<span class="section-code">MEMOS // {String(notes.length).padStart(3, '0')}</span>
+	</div>
+
+	{
+		notes.map((note) => (
+			<article class="note-row">
+				<a class="note-title" href={`/notes/${note.id}/`}>
+					{note.data.title}
+				</a>
+				<div class="note-meta">
+					<FormattedDate date={note.data.pubDate} />
+					<span>{note.data.tags.map((t) => `#${t}`).join(' ')}</span>
+				</div>
+			</article>
+		))
+	}
+</Base>

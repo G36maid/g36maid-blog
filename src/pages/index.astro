@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import { getSortedNotes } from '../lib/content';
+import { getSortedPosts } from '../lib/content';
+import PostCard from '../components/PostCard.astro';
+import { LAIN_SLOGAN, LATEST_POSTS_COUNT, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = await getSortedPosts();
+const notes = await getSortedNotes();
+const latest = posts.slice(0, LATEST_POSTS_COUNT);
+const hex = Math.floor(Math.random() * 0xffff)
+	.toString(16)
+	.toUpperCase()
+	.padStart(4, '0');
+---
+
+<Base title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<section class="hero" aria-label="站點簡介">
+		<h1 class="hero-title glitch">G36<span class="accent">MAID</span></h1>
+		<p class="hero-sub">
+			serial tech notes <span class="lain">// {LAIN_SLOGAN}</span>
+		</p>
+		<div class="hero-panel">
+			<div class="hero-telemetry">
+				<div>NODE....... blog.g36maid.dev</div>
+				<div>OPERATOR... <span class="gold">G36 // MAID</span></div>
+				<div>LOGS....... {String(posts.length).padStart(3, '0')} FILES INDEXED</div>
+				<div>NOTES...... {String(notes.length).padStart(3, '0')} MEMOS</div>
+				<div>MEM_LOC.... 0x00{hex}4A</div>
+				<div>LINK....... <span class="ok">■ ESTABLISHED</span></div>
+			</div>
+			<div class="hero-ctas">
+				<a class="btn btn-primary" href="/blog/">READ LOGS</a>
+				<a class="btn btn-ghost" href="/about/">BRIEFING</a>
+			</div>
+		</div>
+	</section>
+
+	<section aria-label="最新文章">
+		<div class="section-head">
+			<h2 class="section-title">Latest Logs</h2>
+			<span class="section-code">Layer:01-{String(latest.length).padStart(2, '0')}</span>
+		</div>
+		<div class="card-grid">
+			{latest.map((post) => <PostCard post={post} />)}
+		</div>
+	</section>
+</Base>

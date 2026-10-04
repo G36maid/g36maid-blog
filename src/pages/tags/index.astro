@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getTagCounts } from '../../lib/content';
+
+const tagCounts = await getTagCounts();
+const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<Base title="TAGS — 標籤索引" description="所有標籤索引。">
+	<div class="section-head">
+		<h1 class="section-title">Tags</h1>
+		<span class="section-code">{String(tags.length).padStart(3, '0')} NODES</span>
+	</div>
+	<div class="tag-cloud">
+		{
+			tags.map(([tag, count]) => (
+				<a class="tag-pill corner-brackets" href={`/tags/${tag}/`}>
+					#{tag} <span class="count">×{count}</span>
+				</a>
+			))
+		}
+	</div>
+</Base>

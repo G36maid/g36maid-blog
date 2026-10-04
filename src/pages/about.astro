@@ -1,0 +1,37 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const about = (await getCollection('post', (entry) => entry.id === 'about'))[0];
+let Content;
+let description = '關於 g36maid 與這個 Wired 檔案室。';
+if (about) {
+	({ Content } = await render(about));
+	description = about.data.description;
+}
+---
+
+<Base title="ABOUT — 作戰簡報" description={description}>
+	<div class="section-head">
+		<h1 class="section-title">About</h1>
+		<span class="section-code">BRIEFING // FILE 01</span>
+	</div>
+	<article class="prose">
+		{
+			Content ? (
+				<Content />
+			) : (
+				<>
+					<p>
+						<code>src/content/post/about.md</code> 尚未建立 — 建立該檔案即可自訂此頁內容。
+					</p>
+					<p>
+						這裡是 <strong>g36maid</strong> 的技術檔案室,部署於 Cloudflare Pages。
+						設計語言融合了 serial experiments lain 的 CRT 終端感、虹彩六號的戰術 UI、以及少女前線 G36
+						的黑金女僕美學。
+					</p>
+				</>
+			)
+		}
+	</article>
+</Base>

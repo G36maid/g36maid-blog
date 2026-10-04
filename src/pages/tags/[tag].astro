@@ -1,0 +1,28 @@
+---
+import { getPostsByTag, getSortedPosts } from '../../lib/content';
+import PostCard from '../../components/PostCard.astro';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+	const posts = await getSortedPosts();
+	const tags = new Set(posts.flatMap((post) => post.data.tags));
+	return [...tags].map((tag) => ({ params: { tag }, props: { tag } }));
+}
+
+const { tag } = Astro.props;
+const posts = await getPostsByTag(tag);
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Base title={`#${tag} — 標籤`} description={`標籤 #${tag} 下的所有文章。`}>
+	<div class="section-head">
+		<h1 class="section-title">#{tag}</h1>
+		<span class="section-code">{String(posts.length).padStart(3, '0')} FILES</span>
+	</div>
+	<div class="card-grid">
+		{posts.map((post) => <PostCard post={post} />)}
+	</div>
+	<p style="margin-top:2.5rem">
+		<a href="/tags/" class="telemetry">← BACK TO TAG INDEX</a>
+	</p>
+</Base>

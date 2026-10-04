@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+export async function getStaticPaths() {
+	const notes = await getCollection('note', (entry) =>
+		import.meta.env.DEV ? true : !entry.data.draft,
+	);
+	return notes.map((note) => ({ params: { slug: note.id }, props: { note } }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+---
+
+<Base title={note.data.title} description={`筆記：${note.data.title}`}>
+	<article>
+		<header class="post-head">
+			<div class="layer-code">
+				MEMO <span class="dim">//</span>
+				{note.data.tags.map((t) => `#${t}`).join(' ')}
+			</div>
+			<h1 class="post-title">{note.data.title}</h1>
+			<div class="post-meta">
+				<FormattedDate date={note.data.pubDate} />
+			</div>
+		</header>
+		<div class="prose">
+			<Content />
+		</div>
+	</article>
+</Base>

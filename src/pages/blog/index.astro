@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { categoryCode, getSortedPosts, layerCode } from '../../lib/content';
+
+const posts = await getSortedPosts();
+
+/** group by year, newest first */
+const byYear = new Map<number, typeof posts>();
+for (const post of posts) {
+	const y = post.data.pubDate.getFullYear();
+	if (!byYear.has(y)) byYear.set(y, []);
+	byYear.get(y)!.push(post);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+---
+
+<Base title="LOGS — 全部文章" description="g36maid 的全部技術文章存檔，按年份排列。">
+	<div class="section-head">
+		<h1 class="section-title">All Logs</h1>
+		<span class="section-code">{String(posts.length).padStart(3, '0')} FILES</span>
+	</div>
+
+	{
+		years.map((year) => (
+			<section>
+				<h2 class="year-marker">{year}</h2>
+				<ul class="log-list">
+					{byYear.get(year)!.map((post) => (
+						<li class="log-row">
+							<FormattedDate date={post.data.pubDate} />
+							<a class="log-title" href={`/blog/${post.id}/`}>
+								{post.data.title}
+							</a>
+							<span class="log-cat">{categoryCode(post.data.category)}</span>
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+</Base>
