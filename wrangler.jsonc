@@ -1,0 +1,18 @@
+{
+	// Static assets deployment for blog.g36maid.dev
+	// cf migrate converts this to cloudflare.config.ts + wrangler.config.ts
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "blog",
+	"compatibility_date": "2026-10-04",
+	"assets": {
+		"directory": "./dist",
+		"html_handling": "auto-trailing-slash",
+		"not_found_handling": "404-page"
+	},
+	"routes": [
+		{
+			"pattern": "blog.g36maid.dev",
+			"custom_domain": true
+		}
+	]
+}
