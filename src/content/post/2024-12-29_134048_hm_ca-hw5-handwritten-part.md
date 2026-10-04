@@ -75,7 +75,7 @@ If miss latency is constant, **smaller miss rates** are better.
 In this exercise we look at memory locality properties of matrix computation. The following
 code is written in C, where elements within the same row are stored contiguously. Assume
 each word is a 64-bit integer.
-```clike=
+```clike
 for (I=0; I<8; I++)
     for (J=0; J<8000; J++)
         A[I][J]=B[I][0]+A[J][I];
