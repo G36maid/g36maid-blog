@@ -30,3 +30,4 @@ pnpm-debug.log*
 
 # cf build output
 .cloudflare/
+__pycache__/
