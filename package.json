@@ -9,7 +9,7 @@
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
-    "deploy": "pnpm build && wrangler deploy",
+    "deploy": "pnpm build && node scripts/make-build-output.mjs && cf deploy --prebuilt",
     "astro": "astro"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "esbuild": true
   },
   "devDependencies": {
+    "cf": "1.0.0-beta.12",
     "pagefind": "^1.5.2",
     "wrangler": "^4.147.0"
   }
