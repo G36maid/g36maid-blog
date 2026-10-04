@@ -1,0 +1,80 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Base from './Base.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import TOC from '../components/TOC.astro';
+import { SITE_TITLE } from '../consts';
+import { categoryCode, getSeriesNeighbors, getSortedPosts, layerCode, type Post } from '../lib/content';
+
+interface Props {
+	post: CollectionEntry<'post'>;
+	headings?: { depth: number; slug: string; text: string }[];
+}
+
+const { post, headings = [] } = Astro.props;
+const { title, description, pubDate, updated, category, tags, series } = post.data;
+
+const allPosts = await getSortedPosts();
+const layer = layerCode(allPosts, post);
+const { prev, next } = series ? getSeriesNeighbors(series, post, allPosts) : {};
+---
+
+<Base title={`${title} — ${SITE_TITLE}`} description={description}>
+	<article class="post-layout" itemscope itemtype="https://schema.org/BlogPosting">
+		<div>
+			<header class="post-head">
+				<div class="layer-code">
+					{layer} <span class="dim">//</span>
+					<span class="chip">{categoryCode(category)}</span>
+				</div>
+				<h1 class="post-title" itemprop="headline">{title}</h1>
+				<div class="post-meta">
+					<FormattedDate date={pubDate} />
+					{
+						updated && (
+							<span>
+								UPDATED <FormattedDate date={updated} />
+							</span>
+						)
+					}
+					<span>{tags.map((t) => `#${t}`).join(' ')}</span>
+					{
+						series && (
+							<span style="color: var(--accent-gold)">
+								SERIES // {series}
+							</span>
+						)
+					}
+				</div>
+				<p class="post-desc" itemprop="description">{description}</p>
+			</header>
+
+			<div class="prose" itemprop="articleBody">
+				<slot />
+			</div>
+
+			{
+				(prev || next) && (
+					<nav class="post-footer-nav" aria-label="系列文章">
+						{prev ? (
+							<a href={`/blog/${prev.id}/`}>
+								<span class="dir">← PREV / {series?.toUpperCase()}</span>
+								<span class="t">{prev.data.title}</span>
+							</a>
+						) : (
+							<span />
+						)}
+						{next && (
+							<a class="next" href={`/blog/${next.id}/`}>
+								<span class="dir">NEXT / {series?.toUpperCase()} →</span>
+								<span class="t">{next.data.title}</span>
+							</a>
+						)}
+					</nav>
+				)
+			}
+		</div>
+
+		<TOC headings={headings} />
+	</article>
+</Base>
