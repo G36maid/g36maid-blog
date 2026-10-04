@@ -1,6 +1,6 @@
 ---
 import type { Post } from '../lib/content';
-import { categoryCode } from '../lib/content';
+import { categoryLabel } from '../lib/content';
 import FormattedDate from './FormattedDate.astro';
 
 interface Props {
@@ -11,7 +11,7 @@ const { post } = Astro.props;
 
 <article class="post-card corner-brackets">
 	<div class="post-card-top">
-		<span class="chip">{categoryCode(post.data.category)}</span>
+		<span class="chip">{categoryLabel(post.data.category)}</span>
 		<FormattedDate date={post.data.pubDate} />
 	</div>
 	<h3 class="post-card-title">
