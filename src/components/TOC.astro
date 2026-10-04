@@ -1,0 +1,58 @@
+---
+/**
+ * TOC sidebar — built from render()'s headings (h2/h3), with IntersectionObserver
+ * scrollspy. Astro's rehypeHeadingIds guarantees slug/anchor consistency.
+ */
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+	headings?: MarkdownHeading[];
+}
+
+const { headings = [] } = Astro.props;
+const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{
+	toc.length > 0 && (
+		<aside class="toc-aside" aria-label="目錄">
+			<p class="toc-title">[ MISSION INDEX ]</p>
+			<ul class="toc-list">
+				{toc.map((h) => (
+					<li class={`toc-${h.depth === 2 ? 'h2' : 'h3'}`}>
+						<a href={`#${h.slug}`} data-toc-link>{h.text}</a>
+					</li>
+				))}
+			</ul>
+		</aside>
+	)
+}
+
+<script>
+	// scrollspy: highlight the heading currently in view
+	const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+	if (links.length > 0) {
+		const map = new Map<string, HTMLAnchorElement>();
+		for (const link of links) {
+			const id = decodeURIComponent(link.hash.slice(1));
+			map.set(id, link);
+		}
+		const observed = new Set(map.keys());
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						links.forEach((l) => l.classList.remove('toc-active'));
+						const active = map.get(entry.target.id);
+						active?.classList.add('toc-active');
+					}
+				}
+			},
+			{ rootMargin: '-15% 0px -70% 0px' },
+		);
+		for (const id of observed) {
+			const target = document.getElementById(id);
+			if (target) observer.observe(target);
+		}
+	}
+</script>

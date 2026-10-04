@@ -1,0 +1,101 @@
+---
+/**
+ * Pagefind search modal — ⌘K / Ctrl+K to open, Esc to close.
+ * pagefind indexes are generated post-build (`pagefind --site dist`);
+ * in dev the modal shows a hint instead.
+ */
+const isDev = import.meta.env.DEV;
+---
+
+<div class="search-overlay" id="search-overlay" role="dialog" aria-modal="true" aria-label="搜尋">
+	<div class="search-box chamfer">
+		<input
+			type="search"
+			class="search-input"
+			id="search-input"
+			placeholder="search the wired…"
+			autocomplete="off"
+		/>
+		<div class="search-results" id="search-results"></div>
+		<div class="search-hint">
+			{
+				isDev ? (
+					<span>DEV MODE // pagefind index available after `pnpm build`</span>
+				) : (
+					<span>ESC CLOSE · ↑↓ SELECT · ENTER OPEN</span>
+				)
+			}
+		</div>
+	</div>
+</div>
+
+<script>
+	const overlay = document.getElementById('search-overlay')!;
+	const input = document.getElementById('search-input') as HTMLInputElement;
+	const results = document.getElementById('search-results')!;
+	let pagefind: any = null;
+	const PAGEFIND_URL = '/pagefind/pagefind.js';
+
+	async function loadPagefind() {
+		if (pagefind) return pagefind;
+		try {
+			pagefind = await import(/* @vite-ignore */ PAGEFIND_URL);
+			await pagefind.options!({ excerptLength: 18 });
+		} catch {
+			results.innerHTML =
+				'<p class="search-hint">PAGEFIND INDEX NOT FOUND — run `pnpm build` first.</p>';
+		}
+		return pagefind;
+	}
+
+	function open() {
+		overlay.classList.add('open');
+		document.body.style.overflow = 'hidden';
+		input.focus();
+		loadPagefind();
+	}
+	function close() {
+		overlay.classList.remove('open');
+		document.body.style.overflow = '';
+	}
+	function toggle() {
+		overlay.classList.contains('open') ? close() : open();
+	}
+
+	document.querySelectorAll('[data-search-open]').forEach((btn) => btn.addEventListener('click', open));
+	overlay.addEventListener('click', (e) => {
+		if (e.target === overlay) close();
+	});
+	window.addEventListener('keydown', (e) => {
+		if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+			e.preventDefault();
+			toggle();
+		}
+		if (e.key === 'Escape') close();
+	});
+
+	let debounce: ReturnType<typeof setTimeout>;
+	input.addEventListener('input', () => {
+		clearTimeout(debounce);
+		debounce = setTimeout(async () => {
+			const pf = await loadPagefind();
+			if (!pf?.search) return;
+			const query = input.value.trim();
+			if (!query) {
+				results.innerHTML = '';
+				return;
+			}
+			const search = await pf.search(query);
+			const items = await Promise.all(search.results.slice(0, 8).map((r: any) => r.data()));
+			results.innerHTML = items
+				.map(
+					(item: any) => `
+					<a class="log-row" style="grid-template-columns:1fr" href="${item.url}">
+						<span class="log-title">${item.meta?.title ?? item.url}</span>
+						${item.excerpt ? `<span style="font-size:.85rem;color:var(--text-dim)">${item.excerpt}</span>` : ''}
+					</a>`,
+				)
+				.join('');
+		}, 120);
+	});
+</script>

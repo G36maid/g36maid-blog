@@ -1,0 +1,24 @@
+---
+import type { Post } from '../lib/content';
+import { categoryCode } from '../lib/content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	post: Post;
+}
+const { post } = Astro.props;
+---
+
+<article class="post-card corner-brackets">
+	<div class="post-card-top">
+		<span class="chip">{categoryCode(post.data.category)}</span>
+		<FormattedDate date={post.data.pubDate} />
+	</div>
+	<h3 class="post-card-title">
+		<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+	</h3>
+	<p class="post-card-desc">{post.data.description}</p>
+	<div class="post-card-meta">
+		<span>{post.data.tags.map((t) => `#${t}`).join(' ')}</span>
+	</div>
+</article>

@@ -1,0 +1,22 @@
+---
+import { LAIN_SLOGAN } from '../consts';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="shell">
+		<div>
+			<div class="footer-slogan">Close the world, Open the <span class="n">n</span>Ext.</div>
+			<!-- 原樣致敬: lain slogan — 大小寫刻意不對稱 -->
+			<div class="telemetry" style="margin-top:.4rem">
+				<span class="status-dot" aria-hidden="true"></span>CONNECTED // WIRED — LAYER:{year}
+			</div>
+		</div>
+		<div class="footer-meta">
+			<div>© {year} G36MAID · <a href="/rss.xml">RSS</a> · <a href="/sitemap-index.xml">SITEMAP</a></div>
+			<div>NAVIGATORS: ASTRO 7 × MMDR × PAGEFIND</div>
+			<div class="barcode" style="margin-top:.4rem; width:9rem" aria-hidden="true"></div>
+		</div>
+	</div>
+</footer>
