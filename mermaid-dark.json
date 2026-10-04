@@ -1,0 +1,21 @@
+{
+  "themeVariables": {
+    "darkMode": true,
+    "background": "#0d1017",
+    "fontFamily": "Barlow, 'Noto Sans TC', sans-serif",
+    "fontSize": 15,
+    "primaryColor": "#151a24",
+    "primaryTextColor": "#e8eef5",
+    "primaryBorderColor": "#d4af37",
+    "lineColor": "#6b7686",
+    "secondaryColor": "#1a2233",
+    "secondaryTextColor": "#cfd6df",
+    "secondaryBorderColor": "#4ae07a",
+    "tertiaryColor": "#11151f",
+    "tertiaryTextColor": "#6b7686",
+    "tertiaryBorderColor": "#232b38",
+    "edgeLabelBackground": "#151a24",
+    "clusterBkg": "#11151f",
+    "clusterBorder": "#232b38"
+  }
+}
