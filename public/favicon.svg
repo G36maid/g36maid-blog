@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- G36MAID favicon: tactical hexagon + gold 36 -->
+  <rect width="64" height="64" fill="#07090d"/>
+  <path d="M32 6 L54 18 V46 L32 58 L10 46 V18 Z" fill="none" stroke="#d4af37" stroke-width="3"/>
+  <path d="M32 13 L48 22 V42 L32 51 L16 42 V22 Z" fill="none" stroke="#232b38" stroke-width="1.5"/>
+  <text x="32" y="40" font-family="Arial Narrow, sans-serif" font-size="22" font-weight="bold" fill="#e8c547" text-anchor="middle">36</text>
+  <circle cx="32" cy="12" r="2" fill="#4ae07a"/>
+</svg>
