@@ -1,48 +1,595 @@
 ---
+/**
+ * Homepage — Rainbow Six Siege (Y4/Y5 era) main-menu layout study.
+ * Original CSS/SVG recreation of the menu structure; no game assets —
+ * the "operator art" is replaced by pure-CSS light / smoke atmosphere.
+ * The blog itself plays the squad: playlists = site sections.
+ */
 import Base from '../layouts/Base.astro';
-import { getSortedNotes } from '../lib/content';
-import { getSortedPosts } from '../lib/content';
-import PostCard from '../components/PostCard.astro';
-import { LAIN_SLOGAN, LATEST_POSTS_COUNT, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getSortedPosts, getSortedNotes } from '../lib/content';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 const posts = await getSortedPosts();
 const notes = await getSortedNotes();
-const latest = posts.slice(0, LATEST_POSTS_COUNT);
-const hex = Math.floor(Math.random() * 0xffff)
-	.toString(16)
-	.toUpperCase()
-	.padStart(4, '0');
+const latest = posts[0];
+const df = (d: Date) => d.toISOString().slice(0, 10);
+
+const tabs = [
+	{ href: '/', label: 'HOME', active: true },
+	{ href: '/blog/', label: 'LOGS', active: false },
+	{ href: '/notes/', label: 'NOTES', active: false },
+	{ href: '/tags/', label: 'TAGS', active: false },
+	{ href: '/about/', label: 'ABOUT', active: false },
+];
+
+const IC: Record<string, string> = {
+	bars: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="5" width="16" height="2.6"/><rect x="7" y="10.5" width="13" height="2.6"/><rect x="10" y="16" width="10" height="2.6"/></svg>',
+	doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2.5h8.5L19 7v14.5H6V2.5z"/><path d="M14 2.5V7h5M9 12h6.5M9 16h6.5"/></svg>',
+	bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M13 2L5 13.5h5L9.5 22 19 9.5h-5.5L13 2z"/></svg>',
+	feed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4.5 11a8.5 8.5 0 0 1 8 8M4.5 5a14.5 14.5 0 0 1 14.5 14.5"/><circle cx="6" cy="18" r="1.6" fill="currentColor" stroke="none"/></svg>',
+	shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke-linecap="round"/></svg>',
+	bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 17v-6a6 6 0 0 1 12 0v6l1.8 2.5H4.2L6 17z" stroke-linejoin="round"/><path d="M10 21.5a2 2 0 0 0 4 0"/></svg>',
+	rss: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 11.5a7.5 7.5 0 0 1 7.5 7.5M5 6a13 13 0 0 1 13 13"/><circle cx="6.2" cy="17.8" r="1.5" fill="currentColor" stroke="none"/></svg>',
+	person: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5c1-4 4-6 7.5-6s6.5 2 7.5 6"/></svg>',
+	gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></svg>',
+	party: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="2.6"/><path d="M4 19c.6-3 2.6-4.5 5-4.5s4.4 1.5 5 4.5M17 8h4M19 6v4"/></svg>',
+};
 ---
 
-<Base title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<section class="hero" aria-label="站點簡介">
-		<h1 class="hero-title glitch">G36<span class="accent">MAID</span></h1>
-		<p class="hero-sub">
-			serial tech notes <span class="lain">// {LAIN_SLOGAN}</span>
-		</p>
-		<div class="hero-panel">
-			<div class="hero-telemetry">
-				<div>NODE....... blog.g36maid.dev</div>
-				<div>OPERATOR... <span class="gold">G36 // MAID</span></div>
-				<div>LOGS....... {String(posts.length).padStart(3, '0')} FILES INDEXED</div>
-				<div>NOTES...... {String(notes.length).padStart(3, '0')} MEMOS</div>
-				<div>MEM_LOC.... 0x00{hex}4A</div>
-				<div>LINK....... <span class="ok">■ ESTABLISHED</span></div>
-			</div>
-			<div class="hero-ctas">
-				<a class="btn btn-primary" href="/blog/">READ LOGS</a>
-				<a class="btn btn-ghost" href="/about/">BRIEFING</a>
-			</div>
-		</div>
-	</section>
+<Base title={SITE_TITLE} description={SITE_DESCRIPTION} chrome={false}>
+	<div class="r6">
+		<h1 class="sr-only">{SITE_TITLE}</h1>
 
-	<section aria-label="最新文章">
-		<div class="section-head">
-			<h2 class="section-title">Latest Logs</h2>
-			<span class="section-code">Layer:01-{String(latest.length).padStart(2, '0')}</span>
+		<!-- atmosphere: light shafts + slanted panels (pure CSS, no artwork) -->
+		<div class="scene" aria-hidden="true">
+			<i class="shard s1"></i>
+			<i class="shard s2"></i>
+			<i class="shard s3"></i>
+			<i class="shaft f1"></i>
+			<i class="shaft f2"></i>
 		</div>
-		<div class="card-grid">
-			{latest.map((post) => <PostCard post={post} />)}
-		</div>
-	</section>
+
+		<!-- ═ top bar ═ -->
+		<header class="topbar">
+			<nav class="tabs" aria-label="主導覽">
+				{
+					tabs.map((t) => (
+						<a class:list={['tab', { active: t.active }]} href={t.href} aria-current={t.active ? 'page' : undefined}>
+							{t.label}
+							{t.active && <i class="dot" />}
+						</a>
+					))
+				}
+			</nav>
+			<div class="ctrl">
+				<div class="duo">
+					<a href="/rss.xml" aria-label="RSS" title="RSS"><span class="ic" set:html={IC.rss} /></a>
+					<a href="/about/" aria-label="About" title="About"><span class="ic" set:html={IC.person} /></a>
+				</div>
+				<button type="button" class="gear" data-search-open aria-label="搜尋" title="Search">
+					<span class="ic" set:html={IC.gear} />
+				</button>
+			</div>
+		</header>
+
+		<!-- status strip -->
+		<a class="strip" href={`/blog/${latest.id}/`}>
+			<span class="strip-tag">LATEST OPERATION</span>
+			{latest.data.title} <time>— {df(latest.data.pubDate)}</time>
+		</a>
+
+		<!-- ═ left column ═ -->
+		<main class="col">
+			<a class="play" href="/blog/">
+				<span class="ic" set:html={IC.bars} />
+				READ
+			</a>
+
+			<div class="grid">
+				<a class="tile" href="/notes/">
+					<span class="tic" set:html={IC.doc} />
+					<span class="party" set:html={IC.party} />
+				</a>
+				<a class="tile selected" href="/tags/">
+					<span class="tic" set:html={IC.bolt} />
+					<span class="party" set:html={IC.party} />
+				</a>
+				<a class="tile" href="/rss.xml">
+					<span class="tic" set:html={IC.feed} />
+					<span class="party" set:html={IC.party} />
+				</a>
+				<a class="tile secure" href="/about/">
+					<span class="sic" set:html={IC.shield} />
+					<span class="stxt"><b>BRIEFING</b><i>WHO IS G36</i></span>
+				</a>
+			</div>
+
+			<a class="wide" href={`/blog/${latest.id}/`} aria-label={`最新文章：${latest.data.title}`}>
+				<span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="on"></i></span>
+				<span class="plus-box" aria-hidden="true">+</span>
+				<span class="viewmore" role="presentation">View More</span>
+			</a>
+
+			<a class="queue" href="/blog/">
+				<span class="bell">
+					<span class="ic" set:html={IC.bell} />
+					{notes.length > 0 && <b class="badge">{notes.length}</b>}
+				</span>
+				LATEST LOGS
+			</a>
+		</main>
+
+		<span class="mini" aria-hidden="true">UI LAYOUT STUDY // ORIGINAL CODE — NO GAME ASSETS · G36MAID</span>
+	</div>
 </Base>
+
+<style>
+	/* ── stage ─────────────────────────────────────────────────────────── */
+	.r6 {
+		position: relative;
+		min-height: 100vh;
+		overflow: hidden;
+		background: #0a0c0f;
+		color: #dfe3e8;
+		font-family: var(--font-narrow);
+	}
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+	}
+	.r6 :global(.ic),
+	.r6 :global(.tic),
+	.r6 :global(.sic) {
+		display: inline-grid;
+		place-items: center;
+	}
+	.r6 :global(.ic svg),
+	.r6 :global(.tic svg),
+	.r6 :global(.sic svg) {
+		width: 100%;
+		height: 100%;
+	}
+
+	/* ── atmosphere ────────────────────────────────────────────────────── */
+	.scene {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background:
+			/* orange glow, top-right */
+			radial-gradient(85% 120% at 88% -4%, rgba(217, 116, 30, 0.5), rgba(217, 116, 30, 0.12) 42%, transparent 66%),
+			/* blue smoke, bottom-left */
+			radial-gradient(58% 68% at 6% 104%, rgba(33, 112, 210, 0.5), transparent 62%),
+			radial-gradient(46% 56% at 30% 112%, rgba(70, 145, 232, 0.3), transparent 60%),
+			#0a0c0f;
+	}
+	.shard {
+		position: absolute;
+		top: -10%;
+		height: 130%;
+		transform: skewX(-7deg);
+		background: linear-gradient(180deg, rgba(24, 29, 34, 0.72), rgba(12, 15, 18, 0.9));
+		border-inline: 1px solid rgba(255, 255, 255, 0.04);
+	}
+	.s1 {
+		left: 52%;
+		width: 11%;
+	}
+	.s2 {
+		left: 66%;
+		width: 13%;
+	}
+	.s3 {
+		left: 82%;
+		width: 15%;
+	}
+	.shaft {
+		position: absolute;
+		top: -25%;
+		height: 160%;
+		transform: rotate(13deg);
+		background: linear-gradient(90deg, transparent, rgba(255, 196, 130, 0.07) 45%, rgba(255, 196, 130, 0.13) 55%, transparent);
+	}
+	.f1 {
+		left: 46%;
+		width: 13vw;
+	}
+	.f2 {
+		left: 70%;
+		width: 7vw;
+		opacity: 0.7;
+	}
+
+	/* ── top bar ───────────────────────────────────────────────────────── */
+	.topbar {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		padding: clamp(24px, 4.6vh, 50px) clamp(16px, 1.6vw, 32px) 0 8.6%;
+		background: linear-gradient(180deg, rgba(6, 8, 10, 0.6), transparent);
+	}
+	.tabs {
+		display: flex;
+		gap: clamp(18px, 2.3vw, 44px);
+	}
+	.tab {
+		position: relative;
+		font-weight: 700;
+		font-size: clamp(19px, 1.55vw, 30px);
+		letter-spacing: 0.05em;
+		color: #6b7076;
+		text-decoration: none;
+		padding-bottom: 16px;
+		transition: color 0.15s ease;
+	}
+	.tab:hover {
+		color: #a9b1b8;
+	}
+	.tab.active {
+		color: #fff;
+	}
+	.tab.active::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 6px;
+		height: 2px;
+		background: #fff;
+	}
+	.tab .dot {
+		position: absolute;
+		left: 2px;
+		bottom: -8px;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: #f5c518;
+		box-shadow: 0 0 6px rgba(245, 197, 24, 0.8);
+	}
+	.ctrl {
+		display: flex;
+		gap: 10px;
+	}
+	.duo {
+		display: flex;
+	}
+	.duo a,
+	.gear {
+		width: clamp(84px, 7.9vw, 152px);
+		height: clamp(40px, 5.2vh, 56px);
+		display: grid;
+		place-items: center;
+		background: rgba(28, 36, 43, 0.85);
+		border: 1px solid #414c55;
+		color: #dfe3e8;
+		cursor: pointer;
+		transition: background 0.15s ease;
+	}
+	.duo a + a {
+		border-left: 0;
+	}
+	.gear {
+		width: clamp(40px, 5.2vh, 56px);
+	}
+	.duo a:hover,
+	.gear:hover {
+		background: rgba(48, 60, 70, 0.9);
+		color: #fff;
+	}
+	.ctrl :global(.ic) {
+		width: clamp(18px, 1.35vw, 26px);
+		height: clamp(18px, 1.35vw, 26px);
+	}
+
+	/* ── status strip ──────────────────────────────────────────────────── */
+	.strip {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 0.6em;
+		height: clamp(32px, 3.9vh, 42px);
+		padding: 0 12px 0 8.6%;
+		background: rgba(11, 13, 16, 0.82);
+		border-block: 1px solid rgba(255, 255, 255, 0.05);
+		color: #d8dde1;
+		font-family: var(--font-body);
+		font-size: clamp(12px, 0.8vw, 15px);
+		text-decoration: none;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.strip:hover {
+		color: #fff;
+	}
+	.strip-tag {
+		flex: none;
+		font-family: var(--font-narrow);
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		font-size: 0.82em;
+		color: #f5c518;
+	}
+	.strip time {
+		color: #8b949c;
+	}
+
+	/* ── left column ───────────────────────────────────────────────────── */
+	.col {
+		position: absolute;
+		left: 8.6%;
+		top: 34.5%;
+		width: 28.5%;
+		display: flex;
+		flex-direction: column;
+		gap: clamp(10px, 1.3vh, 14px);
+		z-index: 5;
+	}
+	.play {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 14px;
+		height: clamp(72px, 9.8vh, 106px);
+		background: #45b6e0;
+		color: #fff;
+		font-weight: 700;
+		font-size: clamp(24px, 1.8vw, 34px);
+		letter-spacing: 0.06em;
+		text-decoration: none;
+		transition: background 0.15s ease;
+	}
+	.play:hover {
+		background: #63c6ec;
+	}
+	.play :global(.ic) {
+		width: clamp(22px, 1.7vw, 32px);
+		height: clamp(22px, 1.7vw, 32px);
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: clamp(10px, 1.3vh, 14px);
+	}
+	.tile {
+		position: relative;
+		height: clamp(72px, 9.8vh, 106px);
+		display: grid;
+		place-items: center;
+		background: rgba(31, 39, 47, 0.88);
+		border: 1px solid #39434c;
+		color: #c3ccd3;
+		text-decoration: none;
+		transition: border-color 0.15s ease, background 0.15s ease;
+	}
+	.tile:hover {
+		border-color: #8f9ba4;
+		background: rgba(40, 50, 60, 0.92);
+	}
+	.tile.selected {
+		border: 2px solid #fff;
+		color: #fff;
+	}
+	.tic {
+		width: clamp(28px, 2.1vw, 40px);
+		height: clamp(28px, 2.1vw, 40px);
+	}
+	.party {
+		position: absolute;
+		top: 7px;
+		right: 8px;
+		width: clamp(12px, 0.85vw, 16px);
+		height: clamp(12px, 0.85vw, 16px);
+		color: #7f8992;
+	}
+	.tile.secure {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 12px;
+		padding: 0 14px;
+		place-items: unset;
+		background: rgba(38, 52, 63, 0.9);
+	}
+	.sic {
+		width: clamp(26px, 2vw, 38px);
+		height: clamp(26px, 2vw, 38px);
+		color: #fff;
+	}
+	.stxt {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.25;
+	}
+	.stxt b {
+		font-weight: 700;
+		font-size: clamp(14px, 1.05vw, 20px);
+		letter-spacing: 0.04em;
+		color: #fff;
+	}
+	.stxt i {
+		font-style: normal;
+		font-weight: 700;
+		font-size: clamp(11px, 0.85vw, 16px);
+		letter-spacing: 0.05em;
+		color: #f5c518;
+	}
+	.tile.secure::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		border: 9px solid transparent;
+		border-top-color: #45525c;
+		border-right-color: #45525c;
+	}
+
+	/* featured pack tile */
+	.wide {
+		position: relative;
+		display: block;
+		height: clamp(116px, 15.4vh, 166px);
+		background:
+			repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 62px, transparent 62px 70px),
+			repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 24px, transparent 24px 32px),
+			#0b0d10;
+		border: 1px solid #222a31;
+		text-decoration: none;
+		overflow: hidden;
+	}
+	.wide:hover {
+		border-color: #39434c;
+	}
+	.dots {
+		position: absolute;
+		top: 10px;
+		right: 12px;
+		display: flex;
+		gap: 6px;
+	}
+	.dots i {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: #4a545c;
+	}
+	.dots i.on {
+		background: #fff;
+	}
+	.plus-box {
+		position: absolute;
+		left: 50%;
+		top: 46%;
+		transform: translate(-50%, -50%);
+		width: clamp(64px, 5vw, 96px);
+		aspect-ratio: 1;
+		border: 2px solid #fff;
+		display: grid;
+		place-items: center;
+		font-family: var(--font-body);
+		font-weight: 300;
+		font-size: clamp(28px, 2.2vw, 42px);
+		color: #fff;
+		transition: background 0.15s ease;
+	}
+	.wide:hover .plus-box {
+		background: rgba(255, 255, 255, 0.14);
+	}
+	.viewmore {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: clamp(24px, 3vh, 32px);
+		display: flex;
+		align-items: center;
+		padding-left: 14px;
+		background: rgba(0, 0, 0, 0.82);
+		color: #cfd5da;
+		font-family: var(--font-body);
+		font-size: clamp(11px, 0.8vw, 15px);
+	}
+
+	/* blue queue bar */
+	.queue {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		height: clamp(42px, 5.1vh, 55px);
+		padding: 0 12px;
+		border-radius: 3px;
+		background: linear-gradient(180deg, #2f74ad, #1c4a75);
+		color: #fff;
+		font-weight: 700;
+		font-size: clamp(14px, 1.05vw, 20px);
+		letter-spacing: 0.05em;
+		text-decoration: none;
+		transition: filter 0.15s ease;
+	}
+	.queue:hover {
+		filter: brightness(1.15);
+	}
+	.bell {
+		position: relative;
+		width: clamp(26px, 1.9vw, 34px);
+		aspect-ratio: 1;
+		display: grid;
+		place-items: center;
+		background: rgba(255, 255, 255, 0.14);
+		border-radius: 4px;
+	}
+	.bell :global(.ic) {
+		width: 68%;
+		height: 68%;
+	}
+	.badge {
+		position: absolute;
+		top: -7px;
+		right: -9px;
+		min-width: 18px;
+		height: 18px;
+		padding: 0 4px;
+		display: grid;
+		place-items: center;
+		border-radius: 50%;
+		background: #fff;
+		color: #14202b;
+		font-family: var(--font-body);
+		font-size: 11px;
+		font-weight: 700;
+	}
+
+	/* misc */
+	.mini {
+		position: absolute;
+		right: 18px;
+		bottom: 14px;
+		font-family: var(--font-terminal);
+		font-size: 0.64rem;
+		letter-spacing: 0.1em;
+		color: rgba(255, 255, 255, 0.35);
+		z-index: 5;
+	}
+
+	/* ── small screens: stack in flow ──────────────────────────────────── */
+	@media (max-width: 960px) {
+		.r6 {
+			display: flex;
+			flex-direction: column;
+		}
+		.scene .shard,
+		.scene .shaft {
+			display: none;
+		}
+		.topbar {
+			flex-direction: column;
+			gap: 14px;
+			padding: 18px 16px 0;
+		}
+		.tabs {
+			flex-wrap: wrap;
+			gap: 14px;
+		}
+		.tab {
+			padding-bottom: 8px;
+		}
+		.col {
+			position: static;
+			width: auto;
+			margin: 18px 16px;
+		}
+		.grid {
+			grid-template-columns: 1fr 1fr;
+		}
+		.mini {
+			position: static;
+			margin: 0 16px 14px;
+		}
+	}
+</style>
