@@ -8,9 +8,15 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 interface Props {
 	title?: string;
 	description?: string;
+	/** set false for full-bleed pages that replace the site header/footer with their own UI */
+	chrome?: boolean;
 }
 
-const { title = `${SITE_TITLE}`, description = SITE_DESCRIPTION } = Astro.props;
+const {
+	title = `${SITE_TITLE}`,
+	description = SITE_DESCRIPTION,
+	chrome = true,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -19,11 +25,11 @@ const { title = `${SITE_TITLE}`, description = SITE_DESCRIPTION } = Astro.props;
 		<BaseHead title={title} description={description} />
 	</head>
 	<body>
-		<Header />
-		<main class="shell">
+		{chrome && <Header />}
+		<main class:list={['shell', { 'shell--bleed': !chrome }]}>
 			<slot />
 		</main>
-		<Footer />
+		{chrome && <Footer />}
 		<SearchModal />
 	</body>
 </html>

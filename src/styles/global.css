@@ -1180,3 +1180,13 @@ time {
 	.post-footer-nav { grid-template-columns: 1fr; }
 	.post-footer-nav .next { text-align: left; }
 }
+
+/* ── 12. full-bleed pages (game-menu homepages) ───────────────────────── */
+/* pages rendered with <Base chrome={false}> own the whole viewport:
+   no site header, no width cap, no vertical padding */
+main.shell--bleed {
+	max-width: none;
+	padding: 0;
+	margin: 0;
+	min-height: 100vh;
+}
