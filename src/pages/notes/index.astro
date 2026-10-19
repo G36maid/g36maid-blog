@@ -7,22 +7,26 @@ const notes = await getSortedNotes();
 ---
 
 <Base title="NOTES — 隨手筆記" description="短篇技術筆記與快速紀錄（TIL）。">
-	<div class="section-head">
-		<h1 class="section-title">Notes</h1>
-		<span class="section-code">MEMOS // {String(notes.length).padStart(3, '0')}</span>
-	</div>
+	<header class="page-head">
+		<div class="row">
+			<h1 class="page-title">Field <span class="accent">Notes</span></h1>
+			<span class="page-code">{String(notes.length).padStart(3, '0')} MEMOS</span>
+		</div>
+		<p class="page-sub">短篇技術筆記與快速紀錄——偵察回報，隨手歸檔。</p>
+	</header>
 
-	{
-		notes.map((note) => (
-			<article class="note-row">
-				<a class="note-title" href={`/notes/${note.id}/`}>
-					{note.data.title}
+	<div class="notes-grid">
+		{
+			notes.map((note) => (
+				<a class="note-bar" href={`/notes/${note.id}/`}>
+					<span class="note-title">{note.data.title}</span>
+					<span class="note-meta">
+						<FormattedDate date={note.data.pubDate} />
+						<span>{note.data.tags.map((t) => `#${t}`).join(' ')}</span>
+					</span>
+					<span class="chev" aria-hidden="true">→</span>
 				</a>
-				<div class="note-meta">
-					<FormattedDate date={note.data.pubDate} />
-					<span>{note.data.tags.map((t) => `#${t}`).join(' ')}</span>
-				</div>
-			</article>
-		))
-	}
+			))
+		}
+	</div>
 </Base>

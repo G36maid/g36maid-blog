@@ -9,16 +9,17 @@ interface Props {
 const { post } = Astro.props;
 ---
 
-<article class="post-card corner-brackets">
-	<div class="post-card-top">
+<article class="op-card">
+	<div class="op-card-top">
 		<span class="chip">{categoryLabel(post.data.category)}</span>
-		<FormattedDate date={post.data.pubDate} />
+		<span class="op-card-date"><FormattedDate date={post.data.pubDate} /></span>
 	</div>
-	<h3 class="post-card-title">
+	<h3 class="op-card-title">
 		<a href={`/blog/${post.id}/`}>{post.data.title}</a>
 	</h3>
-	<p class="post-card-desc">{post.data.description}</p>
-	<div class="post-card-meta">
+	<p class="op-card-desc">{post.data.description}</p>
+	<div class="op-card-meta">
 		<span>{post.data.tags.map((t) => `#${t}`).join(' ')}</span>
+		<span class="go" aria-hidden="true">DEPLOY →</span>
 	</div>
 </article>

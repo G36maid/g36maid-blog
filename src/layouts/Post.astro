@@ -22,8 +22,8 @@ const { prev, next } = series ? getSeriesNeighbors(series, post, allPosts) : {};
 <Base title={`${title} — ${SITE_TITLE}`} description={description}>
 	<article class="post-layout" itemscope itemtype="https://schema.org/BlogPosting">
 		<div>
-			<header class="post-head">
-				<div class="layer-code">
+			<header class="briefing" itemprop="about">
+				<div class="b-top">
 					{layer} <span class="dim">//</span>
 					<span class="chip">{categoryLabel(category)}</span>
 				</div>
@@ -40,7 +40,7 @@ const { prev, next } = series ? getSeriesNeighbors(series, post, allPosts) : {};
 					<span>{tags.map((t) => `#${t}`).join(' ')}</span>
 					{
 						series && (
-							<span style="color: var(--accent)">
+							<span class="series">
 								SERIES // {series}
 							</span>
 						)
@@ -55,7 +55,7 @@ const { prev, next } = series ? getSeriesNeighbors(series, post, allPosts) : {};
 
 			{
 				(prev || next) && (
-					<nav class="post-footer-nav" aria-label="系列文章">
+					<nav class="series-nav" aria-label="系列文章">
 						{prev ? (
 							<a href={`/blog/${prev.id}/`}>
 								<span class="dir">← PREV / {series?.toUpperCase()}</span>

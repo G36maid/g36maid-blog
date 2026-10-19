@@ -1,22 +1,27 @@
 ---
-import { LAIN_SLOGAN } from '../consts';
-
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-	<div class="shell">
+	<div class="shell footer-row">
 		<div>
-			<div class="footer-slogan">Close the world, Open the <span class="n">n</span>Ext.</div>
-			<!-- 原樣致敬: lain slogan — 大小寫刻意不對稱 -->
-			<div class="telemetry" style="margin-top:.4rem">
-				<span class="status-dot" aria-hidden="true"></span>CONNECTED // WIRED — LAYER:{year}
+			<div class="f-brand">G36<b>MAID</b> // WIRED ARCHIVE</div>
+			<div class="f-slogan">Close the world, Open the nExt.</div>
+			<div class="telemetry" style="margin-top: 0.3rem">
+				<span class="status-dot" aria-hidden="true"></span>CONNECTED — LAYER:{year}
 			</div>
 		</div>
-		<div class="footer-meta">
+		<nav class="f-nav" aria-label="頁尾導覽">
+			<a href="/blog/">LOGS</a>
+			<a href="/notes/">NOTES</a>
+			<a href="/tags/">TAGS</a>
+			<a href="/about/">ABOUT</a>
+			<a href="/rss.xml">RSS</a>
+		</nav>
+		<div class="f-meta">
 			<div>© {year} G36MAID · <a href="/rss.xml">RSS</a> · <a href="/sitemap-index.xml">SITEMAP</a></div>
 			<div>NAVIGATORS: ASTRO 7 × MMDR × PAGEFIND</div>
-			<div class="barcode" style="margin-top:.4rem; width:9rem" aria-hidden="true"></div>
+			<div class="barcode" style="margin-top: 0.4rem; margin-left: auto; width: 9rem" aria-hidden="true"></div>
 		</div>
 	</div>
 </footer>

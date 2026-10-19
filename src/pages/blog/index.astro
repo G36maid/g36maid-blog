@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
-import { categoryLabel, getSortedPosts, layerCode } from '../../lib/content';
+import { categoryLabel, getSortedPosts } from '../../lib/content';
 
 const posts = await getSortedPosts();
 
@@ -16,19 +16,26 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
 ---
 
 <Base title="LOGS — 全部文章" description="g36maid 的全部技術文章存檔，按年份排列。">
-	<div class="section-head">
-		<h1 class="section-title">All Logs</h1>
-		<span class="section-code">{String(posts.length).padStart(3, '0')} FILES</span>
-	</div>
+	<header class="page-head">
+		<div class="row">
+			<h1 class="page-title">Operations <span class="accent">Archive</span></h1>
+			<span class="page-code">{String(posts.length).padStart(4, '0')} FILES ON RECORD</span>
+		</div>
+		<p class="page-sub">全部作戰紀錄，按年份歸檔。</p>
+	</header>
 
 	{
 		years.map((year) => (
 			<section>
-				<h2 class="year-marker">{year}</h2>
+				<div class="year-head">
+					<h2 class="year-title">{year}</h2>
+					<div class="line" aria-hidden="true"></div>
+					<span class="count">{String(byYear.get(year)!.length).padStart(3, '0')} OPS</span>
+				</div>
 				<ul class="log-list">
 					{byYear.get(year)!.map((post) => (
 						<li class="log-row">
-							<FormattedDate date={post.data.pubDate} />
+							<span class="log-date"><FormattedDate date={post.data.pubDate} /></span>
 							<a class="log-title" href={`/blog/${post.id}/`}>
 								{post.data.title}
 							</a>

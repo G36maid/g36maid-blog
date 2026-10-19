@@ -7,14 +7,17 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
 <Base title="TAGS — 標籤索引" description="所有標籤索引。">
-	<div class="section-head">
-		<h1 class="section-title">Tags</h1>
-		<span class="section-code">{String(tags.length).padStart(3, '0')} NODES</span>
-	</div>
+	<header class="page-head">
+		<div class="row">
+			<h1 class="page-title">Signal <span class="accent">Index</span></h1>
+			<span class="page-code">{String(tags.length).padStart(3, '0')} NODES</span>
+		</div>
+		<p class="page-sub">全部訊號節點——依文章數排序的標籤索引。</p>
+	</header>
 	<div class="tag-cloud">
 		{
 			tags.map(([tag, count]) => (
-				<a class="tag-pill corner-brackets" href={`/tags/${tag}/`}>
+				<a class="tag-chip" href={`/tags/${tag}/`}>
 					#{tag} <span class="count">×{count}</span>
 				</a>
 			))

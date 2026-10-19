@@ -16,14 +16,15 @@ const { Content } = await render(note);
 
 <Base title={note.data.title} description={`筆記：${note.data.title}`}>
 	<article>
-		<header class="post-head">
-			<div class="layer-code">
+		<header class="briefing">
+			<div class="b-top">
 				MEMO <span class="dim">//</span>
-				{note.data.tags.map((t) => `#${t}`).join(' ')}
+				<span class="chip">FIELD NOTE</span>
 			</div>
 			<h1 class="post-title">{note.data.title}</h1>
 			<div class="post-meta">
 				<FormattedDate date={note.data.pubDate} />
+				<span>{note.data.tags.map((t) => `#${t}`).join(' ')}</span>
 			</div>
 		</header>
 		<div class="prose">
