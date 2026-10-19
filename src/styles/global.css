@@ -34,11 +34,17 @@
 	--content-width: 72rem;
 	--reading-width: 46rem;
 	--header-h: 3.5rem;
-	/* menu scale unit — the header hangs at the same height as the menu topbar */
-	--s: min(calc(100vw / 1920), calc(100vh / 1080));
-	--header-top: calc(45 * var(--s));
+	/* identical formula to the menu topbar — header hangs at the same height */
+	--header-top: clamp(18px, 4.6vh, 44px);
 
 	color-scheme: dark;
+}
+
+/* match the menu's stacked topbar padding below its own breakpoint */
+@media (max-width: 960px), (max-aspect-ratio: 5/6) {
+	:root {
+		--header-top: 18px;
+	}
 }
 
 /* ── 2. base ───────────────────────────────────────────────────────────── */
@@ -277,14 +283,18 @@ main.shell {
 }
 .header-row {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: space-between;
 	height: var(--header-h);
 	gap: 1rem;
 }
 .tabs {
 	display: flex;
+	align-items: flex-start;
 	gap: clamp(0.9rem, 2.3vw, 2.75rem);
+}
+.tab {
+	margin-top: 0;
 }
 .tab {
 	position: relative;
@@ -319,7 +329,9 @@ main.shell {
 
 .header-tools {
 	display: flex;
+	align-items: flex-start;
 	gap: 0.6rem;
+	padding-top: 0.3rem;
 }
 .icon-btn {
 	display: grid;
