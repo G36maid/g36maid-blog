@@ -34,6 +34,9 @@
 	--content-width: 72rem;
 	--reading-width: 46rem;
 	--header-h: 3.5rem;
+	/* menu scale unit — the header hangs at the same height as the menu topbar */
+	--s: min(calc(100vw / 1920), calc(100vh / 1080));
+	--header-top: calc(45 * var(--s));
 
 	color-scheme: dark;
 }
@@ -47,7 +50,7 @@
 
 html {
 	scroll-behavior: smooth;
-	scroll-padding-top: calc(var(--header-h) + 2.5rem);
+	scroll-padding-top: calc(var(--header-top) + var(--header-h) + 1.5rem);
 }
 
 body {
@@ -256,7 +259,7 @@ main.shell,
 	padding-inline: 1.25rem;
 }
 main.shell {
-	padding-top: calc(var(--header-h) + 2.5rem);
+	padding-top: calc(var(--header-top) + var(--header-h) + 2.5rem);
 	padding-bottom: 4rem;
 	min-height: calc(100vh - var(--header-h) - 8rem);
 }
@@ -264,7 +267,8 @@ main.shell {
 /* ── 6. header — the menu top bar, site-wide ───────────────────────────── */
 .site-header {
 	position: fixed;
-	top: 0; left: 0; right: 0;
+	top: var(--header-top);
+	left: 0; right: 0;
 	z-index: 100;
 	height: var(--header-h);
 	background: linear-gradient(180deg, rgba(6, 8, 10, 0.72), rgba(6, 8, 10, 0.45));
@@ -699,7 +703,7 @@ a.section-code:hover { color: var(--blue-bright); }
 	.toc-aside {
 		display: block;
 		position: sticky;
-		top: calc(var(--header-h) + 2.5rem);
+		top: calc(var(--header-top) + var(--header-h) + 1.5rem);
 		align-self: start;
 		max-height: calc(100vh - var(--header-h) - 4rem);
 		overflow-y: auto;
