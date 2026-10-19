@@ -1,112 +1,670 @@
 ---
+/**
+ * Homepage — Rainbow Six Siege (Y4/Y5 era) main-menu layout study.
+ * Original CSS/SVG recreation of the menu structure; no game assets —
+ * the "operator art" is replaced by pure-CSS light / smoke atmosphere.
+ * The blog itself plays the squad: playlists = site sections.
+ */
 import Base from '../layouts/Base.astro';
-import PostCard from '../components/PostCard.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import { getSortedPosts, getSortedNotes, getTagCounts, categoryLabel } from '../lib/content';
-import { LATEST_POSTS_COUNT } from '../consts';
+import { getSortedPosts, getSortedNotes } from '../lib/content';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 const posts = await getSortedPosts();
 const notes = await getSortedNotes();
 const latest = posts[0];
-const latestPosts = posts.slice(0, LATEST_POSTS_COUNT + 2);
-const recentNotes = notes.slice(0, 4);
-const tagCounts = await getTagCounts();
-const topTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
+const df = (d: Date) => d.toISOString().slice(0, 10);
+
+const tabs = [
+	{ href: '/', label: 'HOME', active: true },
+	{ href: '/blog/', label: 'LOGS', active: false },
+	{ href: '/notes/', label: 'NOTES', active: false },
+	{ href: '/tags/', label: 'TAGS', active: false },
+	{ href: '/about/', label: 'ABOUT', active: false },
+];
+
+const IC: Record<string, string> = {
+	bars: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="5" width="16" height="2.6"/><rect x="7" y="10.5" width="13" height="2.6"/><rect x="10" y="16" width="10" height="2.6"/></svg>',
+	doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2.5h8.5L19 7v14.5H6V2.5z"/><path d="M14 2.5V7h5M9 12h6.5M9 16h6.5"/></svg>',
+	bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M13 2L5 13.5h5L9.5 22 19 9.5h-5.5L13 2z"/></svg>',
+	feed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4.5 11a8.5 8.5 0 0 1 8 8M4.5 5a14.5 14.5 0 0 1 14.5 14.5"/><circle cx="6" cy="18" r="1.6" fill="currentColor" stroke="none"/></svg>',
+	shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke-linecap="round"/></svg>',
+	bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 17v-6a6 6 0 0 1 12 0v6l1.8 2.5H4.2L6 17z" stroke-linejoin="round"/><path d="M10 21.5a2 2 0 0 0 4 0"/></svg>',
+	rss: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 11.5a7.5 7.5 0 0 1 7.5 7.5M5 6a13 13 0 0 1 13 13"/><circle cx="6.2" cy="17.8" r="1.5" fill="currentColor" stroke="none"/></svg>',
+	person: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5c1-4 4-6 7.5-6s6.5 2 7.5 6"/></svg>',
+	gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></svg>',
+	party: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="2.6"/><path d="M4 19c.6-3 2.6-4.5 5-4.5s4.4 1.5 5 4.5M17 8h4M19 6v4"/></svg>',
+};
 ---
 
-<Base>
-	<div class="banner-break">
-		<section
-			class="banner"
-			style={`padding-bottom: 0; padding-top: calc(var(--header-h) + 4rem)`}
-		>
-			<h1>G36<span style="color: var(--red)">MAID</span> — WIRED ARCHIVE</h1>
-			<div class="b-row">
-				<span class="page-code">{String(posts.length).padStart(4, '0')} FILES</span>
-				<span class="page-code">Linux · Open Source · Self-Hosting · Homelab</span>
+<Base title={SITE_TITLE} description={SITE_DESCRIPTION} chrome={false}>
+	<div class="r6">
+		<h1 class="sr-only">{SITE_TITLE}</h1>
+
+		<!-- atmosphere: light shafts + slanted panels (pure CSS, no artwork) -->
+		<div class="scene" aria-hidden="true">
+			<i class="shard s1"></i>
+			<i class="shard s2"></i>
+			<i class="shard s3"></i>
+			<i class="shaft f1"></i>
+			<i class="shaft f2"></i>
+		</div>
+
+		<!-- ═ top bar ═ -->
+		<header class="topbar">
+			<nav class="tabs" aria-label="主導覽">
+				{
+					tabs.map((t) => (
+						<a class:list={['tab', { active: t.active }]} href={t.href} aria-current={t.active ? 'page' : undefined}>
+							{t.label}
+							{t.active && <i class="dot" />}
+						</a>
+					))
+				}
+			</nav>
+			<div class="ctrl">
+				<div class="duo">
+					<a href="/rss.xml" aria-label="RSS" title="RSS"><span class="ic" set:html={IC.rss} /></a>
+					<a href="/about/" aria-label="About" title="About"><span class="ic" set:html={IC.person} /></a>
+				</div>
+				<button type="button" class="gear" data-search-open aria-label="搜尋" title="Search">
+					<span class="ic" set:html={IC.gear} />
+				</button>
 			</div>
-			<p class="page-sub">
-				分享 Linux 開源工具、自架伺服器、程式開發與技術隨筆的作戰檔案室——每一篇筆記，都是一場已完成的作戰紀錄。
-			</p>
+		</header>
 
-			{
-				latest && (
-					<section class="feat" aria-label="最新行動">
-						<div class="feat-body">
-							<span class="label" style="color: var(--red)">Latest Operation</span>
-							<h2 class="feat-title">
-								<a href={`/blog/${latest.id}/`}>{latest.data.title}</a>
-							</h2>
-							<div class="nc-row">
-								<span class="tag-date"><FormattedDate date={latest.data.pubDate} /></span>
-								<a class="chip" href={`/tags/${latest.data.tags[0]}/`}>
-									{categoryLabel(latest.data.category)}
-								</a>
-							</div>
-							<p class="feat-desc">{latest.data.description}</p>
-							<a class="btn-redbar" href={`/blog/${latest.id}/`}>Read More</a>
-						</div>
-						<div class="feat-art keyart" aria-hidden="true">
-							<span class="code">R6 // ARCHIVE</span>
-						</div>
-					</section>
-				)
-			}
-		</section>
-	</div>
+		<!-- status strip -->
+		<a class="strip" href={`/blog/${latest.id}/`}>
+			<span class="strip-tag">LATEST OPERATION</span>
+			{latest.data.title} <time>— {df(latest.data.pubDate)}</time>
+		</a>
 
-	<div class="shell">
-		<section aria-labelledby="latest-news">
-			<div class="section-head">
-				<h2 class="section-title" id="latest-news">Latest News</h2>
-				<span class="section-code">{String(posts.length).padStart(4, '0')} FILES</span>
-				<a class="section-code" href="/blog/">ALL LOGS →</a>
+		<!-- ═ left column ═ -->
+		<main class="col">
+			<a class="play" href="/blog/">
+				<span class="ic" set:html={IC.bars} />
+				READ
+			</a>
+
+			<div class="grid">
+				<a class="tile" href="/notes/">
+					<span class="tic" set:html={IC.doc} />
+					<span class="party" set:html={IC.party} />
+				</a>
+				<a class="tile selected" href="/tags/">
+					<span class="tic" set:html={IC.bolt} />
+					<span class="party" set:html={IC.party} />
+				</a>
+				<a class="tile" href="/rss.xml">
+					<span class="tic" set:html={IC.feed} />
+					<span class="party" set:html={IC.party} />
+				</a>
+				<a class="tile secure" href="/about/">
+					<span class="sic" set:html={IC.shield} />
+					<span class="stxt"><b>BRIEFING</b><i>WHO IS G36</i></span>
+				</a>
 			</div>
-			<div class="card-grid">
-				{latestPosts.map((post) => <PostCard post={post} />)}
-			</div>
-		</section>
 
-		{
-			recentNotes.length > 0 && (
-				<section aria-labelledby="field-notes">
-					<div class="section-head">
-						<h2 class="section-title" id="field-notes">Field Notes</h2>
-						<span class="section-code">MEMOS // {String(notes.length).padStart(3, '0')}</span>
-						<a class="section-code" href="/notes/">ALL NOTES →</a>
-					</div>
-					<div class="notes-grid">
-						{recentNotes.map((note) => (
-							<a class="note-card" href={`/notes/${note.id}/`}>
-								<span class="note-title">{note.data.title}</span>
-								<span class="note-meta">
-									<FormattedDate date={note.data.pubDate} />
-									<span>{note.data.tags.map((t) => `#${t}`).join(' ')}</span>
-								</span>
-							</a>
-						))}
-					</div>
-				</section>
-			)
-		}
+			<a class="wide" href={`/blog/${latest.id}/`} aria-label={`最新文章：${latest.data.title}`}>
+				<span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="on"></i></span>
+				<span class="plus-box" aria-hidden="true">+</span>
+				<span class="viewmore" role="presentation">View More</span>
+			</a>
 
-		{
-			topTags.length > 0 && (
-				<section aria-labelledby="signal-index">
-					<div class="section-head">
-						<h2 class="section-title" id="signal-index">Signal Index</h2>
-						<span class="section-code">{String(tagCounts.size).padStart(3, '0')} NODES</span>
-						<a class="section-code" href="/tags/">ALL TAGS →</a>
-					</div>
-					<div class="tag-cloud">
-						{topTags.map(([tag, count]) => (
-							<a class="tag-chip" href={`/tags/${tag}/`}>
-								#{tag} <span class="count">×{count}</span>
-							</a>
-						))}
-					</div>
-				</section>
-			)
-		}
+			<a class="queue" href="/blog/">
+				<span class="bell">
+					<span class="ic" set:html={IC.bell} />
+					{notes.length > 0 && <b class="badge">{notes.length}</b>}
+				</span>
+				LATEST LOGS
+			</a>
+		</main>
+
+		<span class="mini" aria-hidden="true">UI LAYOUT STUDY // ORIGINAL CODE — NO GAME ASSETS · G36MAID</span>
 	</div>
 </Base>
+
+<style>
+	/*
+	 * Responsive model: components keep comfortable constant sizes;
+	 * the layout adapts by position. Boxes clamp with vh so short
+	 * windows squeeze heights gently; the column width only shrinks
+	 * when the viewport edge pushes in. Below 960px width or 5/6
+	 * aspect a stacked flow layout takes over.
+	 */
+	.r6 {
+		--inset: clamp(24px, 8.6vw, 165px);
+		--gap: 12px;
+		--tile-h: clamp(84px, 9.8vh, 106px);
+		--wide-h: clamp(116px, 15.4vh, 166px);
+		--queue-h: clamp(44px, 5.1vh, 55px);
+		position: relative;
+		min-height: 100vh;
+		overflow: hidden;
+		background: #0a0c0f;
+		color: #dfe3e8;
+		font-family: var(--font-narrow);
+	}
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+	}
+	.r6 :global(.ic),
+	.r6 :global(.tic),
+	.r6 :global(.sic) {
+		display: inline-grid;
+		place-items: center;
+	}
+	.r6 :global(.ic svg),
+	.r6 :global(.tic svg),
+	.r6 :global(.sic svg) {
+		width: 100%;
+		height: 100%;
+	}
+
+	/* ── atmosphere ────────────────────────────────────────────────────── */
+	.scene {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background:
+			/* orange glow, top-right */
+			radial-gradient(85% 120% at 88% -4%, rgba(217, 116, 30, 0.5), rgba(217, 116, 30, 0.12) 42%, transparent 66%),
+			/* blue smoke, bottom-left */
+			radial-gradient(58% 68% at 6% 104%, rgba(33, 112, 210, 0.5), transparent 62%),
+			radial-gradient(46% 56% at 30% 112%, rgba(70, 145, 232, 0.3), transparent 60%),
+			#0a0c0f;
+	}
+	.shard {
+		position: absolute;
+		top: -10%;
+		height: 130%;
+		transform: skewX(-7deg);
+		background: linear-gradient(180deg, rgba(24, 29, 34, 0.72), rgba(12, 15, 18, 0.9));
+		border-inline: 1px solid rgba(255, 255, 255, 0.04);
+	}
+	.s1 {
+		left: 52%;
+		width: 11%;
+	}
+	.s2 {
+		left: 66%;
+		width: 13%;
+	}
+	.s3 {
+		left: 82%;
+		width: 15%;
+	}
+	.shaft {
+		position: absolute;
+		top: -25%;
+		height: 160%;
+		transform: rotate(13deg);
+		background: linear-gradient(90deg, transparent, rgba(255, 196, 130, 0.07) 45%, rgba(255, 196, 130, 0.13) 55%, transparent);
+	}
+	.f1 {
+		left: 46%;
+		width: 250px;
+	}
+	.f2 {
+		left: 70%;
+		width: 134px;
+		opacity: 0.7;
+	}
+
+	/* ── top bar ───────────────────────────────────────────────────────── */
+	.topbar {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		padding: clamp(18px, 4.6vh, 44px) clamp(16px, 1.6vw, 32px) 0 var(--inset);
+		background: linear-gradient(180deg, rgba(6, 8, 10, 0.6), transparent);
+	}
+	.tabs {
+		display: flex;
+		gap: clamp(18px, 2.3vw, 40px);
+	}
+	.tab {
+		position: relative;
+		font-weight: 700;
+		font-size: 22px;
+		letter-spacing: 0.05em;
+		color: #6b7076;
+		text-decoration: none;
+		padding-bottom: 12px;
+		transition: color 0.15s ease;
+	}
+	.tab:hover {
+		color: #a9b1b8;
+	}
+	.tab.active {
+		color: #fff;
+	}
+	.tab.active::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 6px;
+		height: 2px;
+		background: #fff;
+	}
+	.tab .dot {
+		position: absolute;
+		left: 2px;
+		bottom: -6px;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: #f5c518;
+		box-shadow: 0 0 6px rgba(245, 197, 24, 0.8);
+	}
+	.ctrl {
+		display: flex;
+		gap: 10px;
+	}
+	.duo {
+		display: flex;
+	}
+	.duo a,
+	.gear {
+		width: clamp(96px, 7.3vw, 140px);
+		height: clamp(40px, 4.6vh, 50px);
+		display: grid;
+		place-items: center;
+		background: rgba(28, 36, 43, 0.85);
+		border: 1px solid #414c55;
+		color: #dfe3e8;
+		cursor: pointer;
+		transition: background 0.15s ease;
+	}
+	.duo a + a {
+		border-left: 0;
+	}
+	.gear {
+		width: clamp(40px, 4.6vh, 50px);
+	}
+	.duo a:hover,
+	.gear:hover {
+		background: rgba(48, 60, 70, 0.9);
+		color: #fff;
+	}
+	.ctrl :global(.ic) {
+		width: 22px;
+		height: 22px;
+	}
+
+	/* ── status strip ──────────────────────────────────────────────────── */
+	.strip {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 0.6em;
+		height: 40px;
+		padding: 0 12px 0 var(--inset);
+		background: rgba(11, 13, 16, 0.82);
+		border-block: 1px solid rgba(255, 255, 255, 0.05);
+		color: #d8dde1;
+		font-family: var(--font-body);
+		font-size: 14px;
+		text-decoration: none;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.strip:hover {
+		color: #fff;
+	}
+	.strip-tag {
+		flex: none;
+		font-family: var(--font-narrow);
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		font-size: 0.82em;
+		color: #f5c518;
+	}
+	.strip time {
+		color: #8b949c;
+	}
+
+	/* ── left column ───────────────────────────────────────────────────── */
+	.col {
+		position: absolute;
+		left: var(--inset);
+		/* floats in the slack under the strip; matches the 16:9 design at 1080p */
+		top: max(120px, calc(100vh - 720px));
+		width: min(547px, calc(100vw - var(--inset) - 32px));
+		display: flex;
+		flex-direction: column;
+		gap: var(--gap);
+		z-index: 5;
+	}
+	.play {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 14px;
+		height: var(--tile-h);
+		background: #45b6e0;
+		color: #fff;
+		font-weight: 700;
+		font-size: 26px;
+		letter-spacing: 0.06em;
+		text-decoration: none;
+		transition: background 0.15s ease;
+	}
+	.play:hover {
+		background: #63c6ec;
+	}
+	.play :global(.ic) {
+		width: 28px;
+		height: 28px;
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--gap);
+	}
+	.tile {
+		position: relative;
+		height: var(--tile-h);
+		display: grid;
+		place-items: center;
+		background: rgba(31, 39, 47, 0.88);
+		border: 1px solid #39434c;
+		color: #c3ccd3;
+		text-decoration: none;
+		transition: border-color 0.15s ease, background 0.15s ease;
+	}
+	.tile:hover {
+		border-color: #8f9ba4;
+		background: rgba(40, 50, 60, 0.92);
+	}
+	.tile.selected {
+		border: 2px solid #fff;
+		color: #fff;
+	}
+	.tic {
+		width: 34px;
+		height: 34px;
+	}
+	.party {
+		position: absolute;
+		top: 7px;
+		right: 8px;
+		width: 14px;
+		height: 14px;
+		color: #7f8992;
+	}
+	.tile.secure {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 12px;
+		padding: 0 14px;
+		place-items: unset;
+		background: rgba(38, 52, 63, 0.9);
+	}
+	.sic {
+		width: 32px;
+		height: 32px;
+		color: #fff;
+	}
+	.stxt {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.25;
+	}
+	.stxt b {
+		font-weight: 700;
+		font-size: 17px;
+		letter-spacing: 0.04em;
+		color: #fff;
+	}
+	.stxt i {
+		font-style: normal;
+		font-weight: 700;
+		font-size: 13px;
+		letter-spacing: 0.05em;
+		color: #f5c518;
+	}
+	.tile.secure::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		border: 8px solid transparent;
+		border-top-color: #45525c;
+		border-right-color: #45525c;
+	}
+
+	/* featured pack tile */
+	.wide {
+		position: relative;
+		display: block;
+		height: var(--wide-h);
+		background:
+			repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 56px, transparent 56px 64px),
+			repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 24px, transparent 24px 32px),
+			#0b0d10;
+		border: 1px solid #222a31;
+		text-decoration: none;
+		overflow: hidden;
+	}
+	.wide:hover {
+		border-color: #39434c;
+	}
+	.dots {
+		position: absolute;
+		top: 10px;
+		right: 12px;
+		display: flex;
+		gap: 5px;
+	}
+	.dots i {
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: #4a545c;
+	}
+	.dots i.on {
+		background: #fff;
+	}
+	.plus-box {
+		position: absolute;
+		left: 50%;
+		top: 46%;
+		transform: translate(-50%, -50%);
+		width: 84px;
+		aspect-ratio: 1;
+		border: 2px solid #fff;
+		display: grid;
+		place-items: center;
+		font-family: var(--font-body);
+		font-weight: 300;
+		font-size: 36px;
+		color: #fff;
+		transition: background 0.15s ease;
+	}
+	.wide:hover .plus-box {
+		background: rgba(255, 255, 255, 0.14);
+	}
+	.viewmore {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 28px;
+		display: flex;
+		align-items: center;
+		padding-left: 14px;
+		background: rgba(0, 0, 0, 0.82);
+		color: #cfd5da;
+		font-family: var(--font-body);
+		font-size: 13px;
+	}
+
+	/* blue queue bar */
+	.queue {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		height: var(--queue-h);
+		padding: 0 12px;
+		border-radius: 3px;
+		background: linear-gradient(180deg, #2f74ad, #1c4a75);
+		color: #fff;
+		font-weight: 700;
+		font-size: 17px;
+		letter-spacing: 0.05em;
+		text-decoration: none;
+		transition: filter 0.15s ease;
+	}
+	.queue:hover {
+		filter: brightness(1.15);
+	}
+	.bell {
+		position: relative;
+		width: 30px;
+		aspect-ratio: 1;
+		display: grid;
+		place-items: center;
+		background: rgba(255, 255, 255, 0.14);
+		border-radius: 4px;
+	}
+	.bell :global(.ic) {
+		width: 68%;
+		height: 68%;
+	}
+	.badge {
+		position: absolute;
+		top: -7px;
+		right: -9px;
+		min-width: 17px;
+		height: 17px;
+		padding: 0 4px;
+		display: grid;
+		place-items: center;
+		border-radius: 50%;
+		background: #fff;
+		color: #14202b;
+		font-family: var(--font-body);
+		font-size: 11px;
+		font-weight: 700;
+	}
+
+	/* misc */
+	.mini {
+		position: absolute;
+		right: 18px;
+		bottom: 14px;
+		font-family: var(--font-terminal);
+		font-size: 0.64rem;
+		letter-spacing: 0.1em;
+		color: rgba(255, 255, 255, 0.35);
+		z-index: 5;
+	}
+
+	/* ── small / portrait screens: stack in flow ───────────────────────── */
+	@media (max-width: 960px), (max-aspect-ratio: 5/6) {
+		.r6 {
+			display: flex;
+			flex-direction: column;
+		}
+		.scene .shard,
+		.scene .shaft {
+			display: none;
+		}
+		.topbar {
+			flex-direction: column;
+			gap: 14px;
+			padding: 18px 16px 0;
+		}
+		.tabs {
+			flex-wrap: wrap;
+			gap: 14px;
+		}
+		.tab {
+			font-size: 17px;
+			padding-bottom: 8px;
+		}
+		.duo a,
+		.gear {
+			width: 64px;
+			height: 40px;
+		}
+		.strip {
+			height: 36px;
+			padding: 0 16px;
+			font-size: 13px;
+		}
+		.col {
+			position: static;
+			width: auto;
+			max-width: 640px;
+			margin: 18px 16px;
+			gap: 12px;
+		}
+		.play {
+			height: 84px;
+			font-size: 22px;
+		}
+		.play :global(.ic) {
+			width: 26px;
+			height: 26px;
+		}
+		.grid {
+			grid-template-columns: 1fr 1fr;
+			gap: 12px;
+		}
+		.tile {
+			height: 84px;
+		}
+		.tic {
+			width: 32px;
+			height: 32px;
+		}
+		.stxt b {
+			font-size: 16px;
+		}
+		.stxt i {
+			font-size: 12px;
+		}
+		.tile.secure::after {
+			border-width: 8px;
+		}
+		.wide {
+			height: 140px;
+		}
+		.plus-box {
+			width: 72px;
+			font-size: 32px;
+			border-width: 2px;
+		}
+		.viewmore {
+			height: 28px;
+			font-size: 12px;
+		}
+		.queue {
+			height: 52px;
+			font-size: 16px;
+		}
+		.bell {
+			width: 30px;
+		}
+		.badge {
+			min-width: 17px;
+			height: 17px;
+			font-size: 11px;
+		}
+		.mini {
+			position: static;
+			margin: 0 16px 14px;
+			font-size: 10px;
+		}
+	}
+</style>
