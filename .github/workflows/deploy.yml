@@ -46,8 +46,9 @@ jobs:
           curl -sL \
             https://github.com/1jehuang/mermaid-rs-renderer/releases/download/v0.3.1/mmdr-x86_64-unknown-linux-gnu.tar.gz \
             -o /tmp/mmdr.tar.gz
-          tar -xzf /tmp/mmdr.tar.gz -C /tmp
-          sudo install /tmp/mmdr /usr/local/bin/mmdr
+          mkdir -p /tmp/mmdr-extract
+          tar -xzf /tmp/mmdr.tar.gz -C /tmp/mmdr-extract --no-same-owner --no-same-permissions
+          sudo install /tmp/mmdr-extract/mmdr /usr/local/bin/mmdr
           mmdr --version
 
       - name: Install dependencies
