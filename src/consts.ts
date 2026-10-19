@@ -1,7 +1,7 @@
 // site-wide constants — edit here to rebrand every page
 export const SITE_TITLE = 'G36MAID // WIRED ARCHIVE';
 export const SITE_DESCRIPTION =
-	'g36maid 的技術檔案室 — Astro / Linux / 自架服務筆記，收藏於 Wired 深層。Serial experiments Lain × 虹彩六號戰術 UI × 少女前線 G36。';
+	'g36maid 的技術檔案室 — Linux 開源工具、自架伺服器（homelab）、程式開發與技術隨筆，收藏於 Wired 深層。';
 export const SITE_AUTHOR = 'g36maid';
 export const SITE_URL = 'https://blog.g36maid.dev';
 

@@ -13,18 +13,47 @@ const isActive = (href: string) =>
 			<span class="brand-word glitch">G36<span class="accent">MAID</span></span>
 			<span class="brand-sub">// WIRED ARCHIVE</span>
 		</a>
-		<nav class="site-nav" aria-label="主導覽">
-			{
-				NAV_ITEMS.map((item) => (
-					<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
-						<span class="nav-code">{item.code}</span>
-						{item.label}
-					</a>
-				))
-			}
-			<button type="button" class="search-trigger" data-search-open>
-				SEARCH<span class="key"> [CTRL+K]</span>
+		<div class="header-tools">
+			<nav class="site-nav" aria-label="主導覽">
+				{
+					NAV_ITEMS.map((item) => (
+						<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+							{item.label}
+						</a>
+					))
+				}
+			</nav>
+			<button type="button" class="search-trigger" data-search-open aria-label="搜尋">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="10.5" cy="10.5" r="6.5" />
+					<path d="m15.5 15.5 5 5" />
+				</svg>
+				<span class="search-label">SEARCH</span><span class="key"> [CTRL+K]</span>
 			</button>
-		</nav>
+			<button type="button" class="theme-toggle" data-theme-toggle aria-label="切換深色／淺色模式">
+				<svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" />
+				</svg>
+				<svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="12" cy="12" r="4.2" />
+					<path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7" />
+				</svg>
+			</button>
+		</div>
 	</div>
 </header>
+
+<script>
+	// dark / light toggle — persists to localStorage, <html data-theme> drives CSS
+	document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const root = document.documentElement;
+			const next = root.dataset.theme === 'light' ? 'dark' : 'light';
+			if (next === 'dark') delete root.dataset.theme;
+			else root.dataset.theme = 'light';
+			try {
+				localStorage.setItem('theme', next);
+			} catch {}
+		});
+	});
+</script>
