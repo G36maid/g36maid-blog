@@ -100,6 +100,20 @@ export default defineConfig({
 		},
 		{
 			provider: fontProviders.google(),
+			name: 'Barlow Condensed',
+			cssVariable: '--font-cond',
+			weights: [500, 600, 700],
+			fallbacks: ['Oswald', 'Arial Narrow', 'sans-serif'],
+		},
+		{
+			provider: fontProviders.google(),
+			name: 'IBM Plex Mono',
+			cssVariable: '--font-plexmono',
+			weights: [400, 500],
+			fallbacks: ['ui-monospace', 'monospace'],
+		},
+		{
+			provider: fontProviders.google(),
 			name: 'Courier Prime',
 			cssVariable: '--font-code',
 			weights: [400, 700],

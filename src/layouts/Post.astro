@@ -22,13 +22,23 @@ const { prev, next } = series ? getSeriesNeighbors(series, post, allPosts) : {};
 <Base title={`${title} — ${SITE_TITLE}`} description={description}>
 	<article class="post-layout" itemscope itemtype="https://schema.org/BlogPosting">
 		<div>
+			<div class="back-row">
+				<a class="btn-read" href="/blog/">← Back to Logs</a>
+			</div>
+
+			<div class="article-hero">
+				<div class="keyart" aria-hidden="true">
+					<span class="code">{categoryLabel(category)}</span>
+				</div>
+			</div>
+
 			<header class="article-head" itemprop="about">
+				<h1 class="article-title" itemprop="headline">{title}</h1>
 				<div class="a-row">
 					<span class="tag-date"><FormattedDate date={pubDate} /></span>
 					<span class="chip">{categoryLabel(category)}</span>
 					<span class="label">{layer}</span>
 				</div>
-				<h1 class="article-title" itemprop="headline">{title}</h1>
 				{
 					updated && (
 						<p class="article-sub">
@@ -39,7 +49,6 @@ const { prev, next } = series ? getSeriesNeighbors(series, post, allPosts) : {};
 				<p class="article-sub">{tags.map((t) => `#${t}`).join(' · ')}{series && ` · SERIES // ${series}`}</p>
 				<p class="article-desc" itemprop="description">{description}</p>
 			</header>
-			<div class="article-rule" aria-hidden="true"></div>
 
 			<div class="prose" itemprop="articleBody">
 				<slot />

@@ -16,15 +16,17 @@ const { Content } = await render(note);
 
 <Base title={note.data.title} description={`筆記：${note.data.title}`}>
 	<article>
+		<div class="back-row">
+			<a class="btn-read" href="/notes/">← Back to Notes</a>
+		</div>
 		<header class="article-head">
+			<h1 class="article-title">{note.data.title}</h1>
 			<div class="a-row">
 				<span class="tag-date"><FormattedDate date={note.data.pubDate} /></span>
 				<span class="chip">Field Note</span>
 			</div>
-			<h1 class="article-title">{note.data.title}</h1>
 			<p class="article-sub">{note.data.tags.map((t) => `#${t}`).join(' · ')}</p>
 		</header>
-		<div class="article-rule" aria-hidden="true"></div>
 		<div class="prose">
 			<Content />
 		</div>

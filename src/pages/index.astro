@@ -12,99 +12,101 @@ const latestPosts = posts.slice(0, LATEST_POSTS_COUNT + 2);
 const recentNotes = notes.slice(0, 4);
 const tagCounts = await getTagCounts();
 const topTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
-
-const df = (d: Date) =>
-	d.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
 ---
 
 <Base>
-	<section class="banner">
-		<h1>G36<b style="color: var(--red)">MAID</b> — WIRED ARCHIVE</h1>
-		<div class="b-row">
-			<span class="page-code">{String(posts.length).padStart(4, '0')} FILES</span>
-			<span class="page-code">Linux · Open Source · Self-Hosting · Homelab</span>
-		</div>
-		<p class="page-sub">
-			分享 Linux 開源工具、自架伺服器、程式開發與技術隨筆的作戰檔案室——每一篇筆記，都是一場已完成的作戰紀錄。
-		</p>
-	</section>
+	<div class="banner-break">
+		<section
+			class="banner"
+			style={`padding-bottom: 0; padding-top: calc(var(--header-h) + 4rem)`}
+		>
+			<h1>G36<span style="color: var(--red)">MAID</span> — WIRED ARCHIVE</h1>
+			<div class="b-row">
+				<span class="page-code">{String(posts.length).padStart(4, '0')} FILES</span>
+				<span class="page-code">Linux · Open Source · Self-Hosting · Homelab</span>
+			</div>
+			<p class="page-sub">
+				分享 Linux 開源工具、自架伺服器、程式開發與技術隨筆的作戰檔案室——每一篇筆記，都是一場已完成的作戰紀錄。
+			</p>
 
-	{
-		latest && (
-			<section class="feat" aria-label="最新行動">
-				<div class="feat-body">
-					<span class="feat-label">Latest Operation</span>
-					<h2 class="feat-title">
-						<a href={`/blog/${latest.id}/`}>{latest.data.title}</a>
-					</h2>
-					<div class="nc-row">
-						<span class="tag-date">{df(latest.data.pubDate)}</span>
-						<a class="chip" href={`/tags/${latest.data.tags[0]}/`}>
-							{categoryLabel(latest.data.category)}
-						</a>
+			{
+				latest && (
+					<section class="feat" aria-label="最新行動">
+						<div class="feat-body">
+							<span class="label" style="color: var(--red)">Latest Operation</span>
+							<h2 class="feat-title">
+								<a href={`/blog/${latest.id}/`}>{latest.data.title}</a>
+							</h2>
+							<div class="nc-row">
+								<span class="tag-date"><FormattedDate date={latest.data.pubDate} /></span>
+								<a class="chip" href={`/tags/${latest.data.tags[0]}/`}>
+									{categoryLabel(latest.data.category)}
+								</a>
+							</div>
+							<p class="feat-desc">{latest.data.description}</p>
+							<a class="btn-redbar" href={`/blog/${latest.id}/`}>Read More</a>
+						</div>
+						<div class="feat-art keyart" aria-hidden="true">
+							<span class="code">R6 // ARCHIVE</span>
+						</div>
+					</section>
+				)
+			}
+		</section>
+	</div>
+
+	<div class="shell">
+		<section aria-labelledby="latest-news">
+			<div class="section-head">
+				<h2 class="section-title" id="latest-news">Latest News</h2>
+				<span class="section-code">{String(posts.length).padStart(4, '0')} FILES</span>
+				<a class="section-code" href="/blog/">ALL LOGS →</a>
+			</div>
+			<div class="card-grid">
+				{latestPosts.map((post) => <PostCard post={post} />)}
+			</div>
+		</section>
+
+		{
+			recentNotes.length > 0 && (
+				<section aria-labelledby="field-notes">
+					<div class="section-head">
+						<h2 class="section-title" id="field-notes">Field Notes</h2>
+						<span class="section-code">MEMOS // {String(notes.length).padStart(3, '0')}</span>
+						<a class="section-code" href="/notes/">ALL NOTES →</a>
 					</div>
-					<p class="feat-desc">{latest.data.description}</p>
-					<div class="feat-cta">
-						<a href={`/blog/${latest.id}/`}>Read More →</a>
+					<div class="notes-grid">
+						{recentNotes.map((note) => (
+							<a class="note-card" href={`/notes/${note.id}/`}>
+								<span class="note-title">{note.data.title}</span>
+								<span class="note-meta">
+									<FormattedDate date={note.data.pubDate} />
+									<span>{note.data.tags.map((t) => `#${t}`).join(' ')}</span>
+								</span>
+							</a>
+						))}
 					</div>
-				</div>
-				<div class="feat-art" aria-hidden="true">
-					<span class="code">R6 // ARCHIVE</span>
-				</div>
-			</section>
-		)
-	}
+				</section>
+			)
+		}
 
-	<section aria-labelledby="latest-news">
-		<div class="section-head">
-			<h2 class="section-title" id="latest-news">Latest News</h2>
-			<span class="section-code">{String(posts.length).padStart(4, '0')} FILES</span>
-			<a class="section-code" href="/blog/">ALL LOGS →</a>
-		</div>
-		<div class="card-grid">
-			{latestPosts.map((post) => <PostCard post={post} />)}
-		</div>
-	</section>
-
-	{
-		recentNotes.length > 0 && (
-			<section aria-labelledby="field-notes">
-				<div class="section-head">
-					<h2 class="section-title" id="field-notes">Field Notes</h2>
-					<span class="section-code">MEMOS // {String(notes.length).padStart(3, '0')}</span>
-					<a class="section-code" href="/notes/">ALL NOTES →</a>
-				</div>
-				<div class="notes-grid">
-					{recentNotes.map((note) => (
-						<a class="note-card" href={`/notes/${note.id}/`}>
-							<span class="note-title">{note.data.title}</span>
-							<span class="note-meta">
-								<FormattedDate date={note.data.pubDate} />
-								<span>{note.data.tags.map((t) => `#${t}`).join(' ')}</span>
-							</span>
-						</a>
-					))}
-				</div>
-			</section>
-		)
-	}
-
-	{
-		topTags.length > 0 && (
-			<section aria-labelledby="signal-index">
-				<div class="section-head">
-					<h2 class="section-title" id="signal-index">Signal Index</h2>
-					<span class="section-code">{String(tagCounts.size).padStart(3, '0')} NODES</span>
-					<a class="section-code" href="/tags/">ALL TAGS →</a>
-				</div>
-				<div class="tag-cloud">
-					{topTags.map(([tag, count]) => (
-						<a class="tag-chip" href={`/tags/${tag}/`}>
-							#{tag} <span class="count">×{count}</span>
-						</a>
-					))}
-				</div>
-			</section>
-		)
-	}
+		{
+			topTags.length > 0 && (
+				<section aria-labelledby="signal-index">
+					<div class="section-head">
+						<h2 class="section-title" id="signal-index">Signal Index</h2>
+						<span class="section-code">{String(tagCounts.size).padStart(3, '0')} NODES</span>
+						<a class="section-code" href="/tags/">ALL TAGS →</a>
+					</div>
+					<div class="tag-cloud">
+						{topTags.map(([tag, count]) => (
+							<a class="tag-chip" href={`/tags/${tag}/`}>
+								#{tag} <span class="count">×{count}</span>
+							</a>
+						))}
+					</div>
+				</section>
+			)
+		}
+	</div>
 </Base>
