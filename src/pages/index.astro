@@ -2,13 +2,13 @@
 import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import { getSortedPosts, getSortedNotes, getTagCounts } from '../lib/content';
+import { getSortedPosts, getSortedNotes, getTagCounts, categoryLabel } from '../lib/content';
 import { LATEST_POSTS_COUNT } from '../consts';
 
 const posts = await getSortedPosts();
 const notes = await getSortedNotes();
 const latest = posts[0];
-const latestPosts = posts.slice(0, LATEST_POSTS_COUNT + 3);
+const latestPosts = posts.slice(0, LATEST_POSTS_COUNT + 2);
 const recentNotes = notes.slice(0, 4);
 const tagCounts = await getTagCounts();
 const topTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
@@ -18,45 +18,47 @@ const df = (d: Date) =>
 ---
 
 <Base>
+	<section class="banner">
+		<h1>G36<b style="color: var(--red)">MAID</b> — WIRED ARCHIVE</h1>
+		<div class="b-row">
+			<span class="page-code">{String(posts.length).padStart(4, '0')} FILES</span>
+			<span class="page-code">Linux · Open Source · Self-Hosting · Homelab</span>
+		</div>
+		<p class="page-sub">
+			分享 Linux 開源工具、自架伺服器、程式開發與技術隨筆的作戰檔案室——每一篇筆記，都是一場已完成的作戰紀錄。
+		</p>
+	</section>
+
 	{
 		latest && (
-			<a class="op-strip" href={`/blog/${latest.id}/`}>
-				<span class="op-tag">Latest Operation</span>
-				<span class="op-title">{latest.data.title}</span>
-				<span class="chev" aria-hidden="true">→</span>
-				<span class="op-date">{df(latest.data.pubDate)}</span>
-			</a>
+			<section class="feat" aria-label="最新行動">
+				<div class="feat-body">
+					<span class="feat-label">Latest Operation</span>
+					<h2 class="feat-title">
+						<a href={`/blog/${latest.id}/`}>{latest.data.title}</a>
+					</h2>
+					<div class="nc-row">
+						<span class="tag-date">{df(latest.data.pubDate)}</span>
+						<a class="chip" href={`/tags/${latest.data.tags[0]}/`}>
+							{categoryLabel(latest.data.category)}
+						</a>
+					</div>
+					<p class="feat-desc">{latest.data.description}</p>
+					<div class="feat-cta">
+						<a href={`/blog/${latest.id}/`}>Read More →</a>
+					</div>
+				</div>
+				<div class="feat-art" aria-hidden="true">
+					<span class="code">R6 // ARCHIVE</span>
+				</div>
+			</section>
 		)
 	}
 
-	<section class="hero">
-		<div>
-			<p class="hero-eyebrow">// WIRED ARCHIVE — TACTICAL BRIEFING</p>
-			<h1 class="hero-title">G36<span>MAID</span></h1>
-			<p class="hero-tagline">Linux · Open Source · Self-Hosting · Homelab</p>
-			<p class="hero-desc">
-				分享 Linux 開源工具、自架伺服器、程式開發與技術隨筆的作戰檔案室——每一篇筆記，都是一場已完成的作戰紀錄。
-			</p>
-			<div class="hero-ctas">
-				<a class="btn btn-primary" href="/blog/">Read All Logs</a>
-				<a class="btn btn-ghost" href="/tags/">Tag Index</a>
-			</div>
-		</div>
-		<aside class="hero-side" aria-label="站台狀態">
-			<span>OPERATOR <b>g36maid</b></span>
-			<span>LOGS <b>{String(posts.length).padStart(3, '0')}</b></span>
-			<span>NOTES <b>{String(notes.length).padStart(3, '0')}</b></span>
-			<span>TAGS <b>{String(tagCounts.size).padStart(3, '0')}</b></span>
-			{latest && <span>LAST SORTIE <b>{df(latest.data.pubDate)}</b></span>}
-			<span><span class="status-dot" aria-hidden="true"></span>STATUS <b class="ok">ONLINE</b></span>
-			<div class="barcode" style="width: 9rem; margin-top: 0.4rem" aria-hidden="true"></div>
-		</aside>
-	</section>
-
-	<section aria-labelledby="latest-ops">
+	<section aria-labelledby="latest-news">
 		<div class="section-head">
-			<h2 class="section-title" id="latest-ops">Latest Operations</h2>
-			<span class="section-code">{String(posts.length).padStart(3, '0')} FILES</span>
+			<h2 class="section-title" id="latest-news">Latest News</h2>
+			<span class="section-code">{String(posts.length).padStart(4, '0')} FILES</span>
 			<a class="section-code" href="/blog/">ALL LOGS →</a>
 		</div>
 		<div class="card-grid">
@@ -74,13 +76,12 @@ const df = (d: Date) =>
 				</div>
 				<div class="notes-grid">
 					{recentNotes.map((note) => (
-						<a class="note-bar" href={`/notes/${note.id}/`}>
+						<a class="note-card" href={`/notes/${note.id}/`}>
 							<span class="note-title">{note.data.title}</span>
 							<span class="note-meta">
 								<FormattedDate date={note.data.pubDate} />
 								<span>{note.data.tags.map((t) => `#${t}`).join(' ')}</span>
 							</span>
-							<span class="chev" aria-hidden="true">→</span>
 						</a>
 					))}
 				</div>

@@ -22,32 +22,24 @@ const { prev, next } = series ? getSeriesNeighbors(series, post, allPosts) : {};
 <Base title={`${title} — ${SITE_TITLE}`} description={description}>
 	<article class="post-layout" itemscope itemtype="https://schema.org/BlogPosting">
 		<div>
-			<header class="briefing" itemprop="about">
-				<div class="b-top">
-					{layer} <span class="dim">//</span>
+			<header class="article-head" itemprop="about">
+				<div class="a-row">
+					<span class="tag-date"><FormattedDate date={pubDate} /></span>
 					<span class="chip">{categoryLabel(category)}</span>
+					<span class="label">{layer}</span>
 				</div>
-				<h1 class="post-title" itemprop="headline">{title}</h1>
-				<div class="post-meta">
-					<FormattedDate date={pubDate} />
-					{
-						updated && (
-							<span>
-								UPDATED <FormattedDate date={updated} />
-							</span>
-						)
-					}
-					<span>{tags.map((t) => `#${t}`).join(' ')}</span>
-					{
-						series && (
-							<span class="series">
-								SERIES // {series}
-							</span>
-						)
-					}
-				</div>
-				<p class="post-desc" itemprop="description">{description}</p>
+				<h1 class="article-title" itemprop="headline">{title}</h1>
+				{
+					updated && (
+						<p class="article-sub">
+							Updated <FormattedDate date={updated} />
+						</p>
+					)
+				}
+				<p class="article-sub">{tags.map((t) => `#${t}`).join(' · ')}{series && ` · SERIES // ${series}`}</p>
+				<p class="article-desc" itemprop="description">{description}</p>
 			</header>
+			<div class="article-rule" aria-hidden="true"></div>
 
 			<div class="prose" itemprop="articleBody">
 				<slot />

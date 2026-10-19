@@ -7,19 +7,26 @@ interface Props {
 	post: Post;
 }
 const { post } = Astro.props;
+const df = (d: Date) =>
+	d.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
 ---
 
-<article class="op-card">
-	<div class="op-card-top">
-		<span class="chip">{categoryLabel(post.data.category)}</span>
-		<span class="op-card-date"><FormattedDate date={post.data.pubDate} /></span>
-	</div>
-	<h3 class="op-card-title">
-		<a href={`/blog/${post.id}/`}>{post.data.title}</a>
-	</h3>
-	<p class="op-card-desc">{post.data.description}</p>
-	<div class="op-card-meta">
-		<span>{post.data.tags.map((t) => `#${t}`).join(' ')}</span>
-		<span class="go" aria-hidden="true">DEPLOY →</span>
+<article class="news-card">
+	<a class="nc-art" href={`/blog/${post.id}/`} aria-hidden="true" tabindex="-1">
+		<span class="code">{categoryLabel(post.data.category)}</span>
+	</a>
+	<div class="nc-body">
+		<h3 class="nc-title">
+			<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+		</h3>
+		<div class="nc-row">
+			<span class="tag-date">{df(post.data.pubDate)}</span>
+			<span class="chip">{categoryLabel(post.data.category)}</span>
+		</div>
+		<p class="nc-desc">{post.data.description}</p>
+		<div class="nc-meta">
+			<span>{post.data.tags.map((t) => `#${t}`).join(' ')}</span>
+			<span class="nc-more">Read More →</span>
+		</div>
 	</div>
 </article>
