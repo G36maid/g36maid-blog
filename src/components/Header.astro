@@ -1,5 +1,5 @@
 ---
-import { NAV_ITEMS, SITE_TITLE } from '../consts';
+import { NAV_ITEMS } from '../consts';
 
 const { cur } = Astro.props as { cur?: string };
 const path = cur ?? Astro.url.pathname;
@@ -9,51 +9,39 @@ const isActive = (href: string) =>
 
 <header class="site-header">
 	<div class="shell header-row">
-		<a class="brand" href="/" aria-label={SITE_TITLE}>
-			<span class="brand-word"><span class="r6">G36</span><span class="pipe">|</span>MAID</span>
-			<span class="brand-sub">WIRED ARCHIVE</span>
-		</a>
+		<nav class="tabs" aria-label="主導覽">
+			{
+				NAV_ITEMS.map((item) => (
+					<a
+						class:list={['tab', { active: isActive(item.href) }]}
+						href={item.href}
+						aria-current={isActive(item.href) ? 'page' : undefined}
+					>
+						{item.label}
+						{isActive(item.href) && <i class="dot" />}
+					</a>
+				))
+			}
+		</nav>
 		<div class="header-tools">
-			<nav class="site-nav" aria-label="主導覽">
-				{
-					NAV_ITEMS.map((item) => (
-						<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
-							{item.label}
-						</a>
-					))
-				}
-			</nav>
-			<button type="button" class="search-trigger" data-search-open aria-label="搜尋">
+			<button type="button" class="icon-btn" data-search-open aria-label="搜尋">
 				<svg viewBox="0 0 24 24" aria-hidden="true">
 					<circle cx="10.5" cy="10.5" r="6.5" />
 					<path d="m15.5 15.5 5 5" />
 				</svg>
-				<span class="search-label">Search</span>
 			</button>
-			<button type="button" class="theme-toggle" data-theme-toggle aria-label="切換深色／淺色模式">
-				<svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true">
-					<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" />
+			<a class="icon-btn" href="/rss.xml" aria-label="RSS" title="RSS">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M5 11.5a7.5 7.5 0 0 1 7.5 7.5M5 6a13 13 0 0 1 13 13" />
+					<circle cx="6.2" cy="17.8" r="1.5" fill="currentColor" stroke="none" />
 				</svg>
-				<svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true">
-					<circle cx="12" cy="12" r="4.2" />
-					<path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7" />
+			</a>
+			<a class="icon-btn" href="/about/" aria-label="關於" title="About">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="12" cy="8" r="3.6" />
+					<path d="M4.5 20.5c1-4 4-6 7.5-6s6.5 2 7.5 6" />
 				</svg>
-			</button>
+			</a>
 		</div>
 	</div>
 </header>
-
-<script>
-	// dark / light toggle — persists to localStorage, <html data-theme> drives CSS
-	document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((btn) => {
-		btn.addEventListener('click', () => {
-			const root = document.documentElement;
-			const next = root.dataset.theme === 'light' ? 'dark' : 'light';
-			if (next === 'dark') delete root.dataset.theme;
-			else root.dataset.theme = 'light';
-			try {
-				localStorage.setItem('theme', next);
-			} catch {}
-		});
-	});
-</script>

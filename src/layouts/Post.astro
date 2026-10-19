@@ -23,31 +23,34 @@ const { prev, next } = series ? getSeriesNeighbors(series, post, allPosts) : {};
 	<article class="post-layout" itemscope itemtype="https://schema.org/BlogPosting">
 		<div>
 			<div class="back-row">
-				<a class="btn-read" href="/blog/">← Back to Logs</a>
+				<a class="btn-back" href="/blog/">← Back to Logs</a>
 			</div>
 
-			<div class="article-hero">
-				<div class="keyart" aria-hidden="true">
-					<span class="code">{categoryLabel(category)}</span>
-				</div>
-			</div>
-
-			<header class="article-head" itemprop="about">
-				<h1 class="article-title" itemprop="headline">{title}</h1>
-				<div class="a-row">
-					<span class="tag-date"><FormattedDate date={pubDate} /></span>
-					<span class="chip">{categoryLabel(category)}</span>
+			<header class="mission-head" itemprop="about">
+				<div class="m-row">
+					<span class="m-cat">{categoryLabel(category)}</span>
 					<span class="label">{layer}</span>
 				</div>
-				{
-					updated && (
-						<p class="article-sub">
-							Updated <FormattedDate date={updated} />
-						</p>
-					)
-				}
-				<p class="article-sub">{tags.map((t) => `#${t}`).join(' · ')}{series && ` · SERIES // ${series}`}</p>
-				<p class="article-desc" itemprop="description">{description}</p>
+				<h1 class="mission-title" itemprop="headline">{title}</h1>
+				<div class="mission-meta">
+					<FormattedDate date={pubDate} />
+					{
+						updated && (
+							<span>
+								UPDATED <FormattedDate date={updated} />
+							</span>
+						)
+					}
+					<span>{tags.map((t) => `#${t}`).join(' ')}</span>
+					{
+						series && (
+							<span style="color: var(--blue)">
+								SERIES // {series}
+							</span>
+						)
+					}
+				</div>
+				<p class="mission-desc" itemprop="description">{description}</p>
 			</header>
 
 			<div class="prose" itemprop="articleBody">

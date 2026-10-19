@@ -17,15 +17,17 @@ const { Content } = await render(note);
 <Base title={note.data.title} description={`筆記：${note.data.title}`}>
 	<article>
 		<div class="back-row">
-			<a class="btn-read" href="/notes/">← Back to Notes</a>
+			<a class="btn-back" href="/notes/">← Back to Notes</a>
 		</div>
-		<header class="article-head">
-			<h1 class="article-title">{note.data.title}</h1>
-			<div class="a-row">
-				<span class="tag-date"><FormattedDate date={note.data.pubDate} /></span>
-				<span class="chip">Field Note</span>
+		<header class="mission-head">
+			<div class="m-row">
+				<span class="m-cat">Field Note</span>
 			</div>
-			<p class="article-sub">{note.data.tags.map((t) => `#${t}`).join(' · ')}</p>
+			<h1 class="mission-title">{note.data.title}</h1>
+			<div class="mission-meta">
+				<FormattedDate date={note.data.pubDate} />
+				<span>{note.data.tags.map((t) => `#${t}`).join(' ')}</span>
+			</div>
 		</header>
 		<div class="prose">
 			<Content />

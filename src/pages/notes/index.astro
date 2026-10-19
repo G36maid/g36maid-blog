@@ -4,34 +4,24 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import { getSortedNotes } from '../../lib/content';
 
 const notes = await getSortedNotes();
-const df = (d: Date) =>
-	d.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
 ---
 
 <Base title="NOTES — 隨手筆記" description="短篇技術筆記與快速紀錄（TIL）。">
-	<section class="banner">
-		<h1>Field <span style="color: var(--red)">Notes</span></h1>
-		<div class="b-row">
-			<span class="page-code">{String(notes.length).padStart(3, '0')} MEMOS</span>
-		</div>
-		<p class="page-sub">短篇技術筆記與快速紀錄——偵察回報，隨手歸檔。</p>
-	</section>
+	<div class="strip">
+		<span class="s-tag">Field Notes</span>
+		<span class="s-title">偵察回報，隨手歸檔</span>
+		<span class="s-end">{String(notes.length).padStart(3, '0')} MEMOS</span>
+	</div>
 
-	<div class="card-grid">
+	<div class="notes-grid" style="margin-top: 1.5rem">
 		{
 			notes.map((note) => (
-				<a class="news-card" href={`/notes/${note.id}/`}>
-					<div class="nc-body">
-						<h3 class="nc-title">{note.data.title}</h3>
-						<div class="nc-row">
-							<span class="tag-date">{df(note.data.pubDate)}</span>
-						</div>
-						<p class="nc-desc">{note.data.tags.map((t) => `#${t}`).join(' ')}</p>
-						<div class="nc-meta">
-							<span>MEMO</span>
-							<span class="nc-more">Read More →</span>
-						</div>
-					</div>
+				<a class="note-card" href={`/notes/${note.id}/`}>
+					<span class="note-title">{note.data.title}</span>
+					<span class="note-meta">
+						<FormattedDate date={note.data.pubDate} />
+						<span>{note.data.tags.map((t) => `#${t}`).join(' ')}</span>
+					</span>
 				</a>
 			))
 		}

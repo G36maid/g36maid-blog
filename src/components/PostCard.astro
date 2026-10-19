@@ -9,19 +9,17 @@ interface Props {
 const { post } = Astro.props;
 ---
 
-<article class="news-card">
-	<a class="nc-art keyart" href={`/blog/${post.id}/`} aria-hidden="true" tabindex="-1">
-		<span class="code">{categoryLabel(post.data.category)}</span>
-	</a>
-	<div class="nc-body">
-		<h3 class="nc-title">
-			<a href={`/blog/${post.id}/`}>{post.data.title}</a>
-		</h3>
-		<div class="nc-row">
-			<span class="tag-date"><FormattedDate date={post.data.pubDate} /></span>
-			<span class="chip">{categoryLabel(post.data.category)}</span>
-		</div>
-		<p class="nc-desc">{post.data.description}</p>
-		<a class="btn-read" href={`/blog/${post.id}/`} style="margin-top: auto">Read More</a>
+<article class="tile-card">
+	<div class="tc-top">
+		<span class="tc-cat">{categoryLabel(post.data.category)}</span>
+		<span class="tc-date"><FormattedDate date={post.data.pubDate} /></span>
+	</div>
+	<h3 class="tc-title">
+		<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+	</h3>
+	<p class="tc-desc">{post.data.description}</p>
+	<div class="tc-meta">
+		<span>{post.data.tags.map((t) => `#${t}`).join(' ')}</span>
+		<span class="tc-go" aria-hidden="true">▸ READ</span>
 	</div>
 </article>

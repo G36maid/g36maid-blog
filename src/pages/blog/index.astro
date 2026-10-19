@@ -16,20 +16,18 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
 ---
 
 <Base title="LOGS — 全部文章" description="g36maid 的全部技術文章存檔，按年份排列。">
-	<section class="banner">
-		<h1>Operations <span style="color: var(--red)">Archive</span></h1>
-		<div class="b-row">
-			<span class="page-code">{String(posts.length).padStart(4, '0')} FILES ON RECORD</span>
-		</div>
-		<p class="page-sub">全部作戰紀錄，按年份歸檔。</p>
-	</section>
+	<div class="strip">
+		<span class="s-tag">Operations Archive</span>
+		<span class="s-title">全部作戰紀錄，按年份歸檔</span>
+		<span class="s-end">{String(posts.length).padStart(4, '0')} FILES</span>
+	</div>
 
 	{
 		years.map((year) => (
 			<section>
 				<div class="year-head">
 					<h2 class="year-title">{year}</h2>
-					<div class="line" aria-hidden="true"></div>
+					<div class="line" aria-hidden="true" />
 					<span class="count">{String(byYear.get(year)!.length).padStart(3, '0')} OPS</span>
 				</div>
 				<ul class="log-list">

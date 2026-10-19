@@ -12,14 +12,33 @@ if (about) {
 ---
 
 <Base title="ABOUT — OPERATOR DOSSIER" description={description}>
-	<section class="banner">
-		<h1>Operator <span style="color: var(--red)">Dossier</span></h1>
-		<div class="b-row">
-			<span class="page-code">FILE 01 // CLEARANCE: PUBLIC</span>
+	<div class="strip">
+		<span class="s-tag">Operator Dossier</span>
+		<span class="s-title">作戰人員檔案</span>
+		<span class="s-end">FILE 01 // CLEARANCE: PUBLIC</span>
+	</div>
+
+	<section class="tile-panel" style="margin-top: 1.5rem; padding: 1.5rem 1.7rem; display: flex; gap: 1.1rem; align-items: flex-start">
+		<svg
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+			style="flex: none; width: 2.6rem; height: 2.6rem; fill: none; stroke: var(--blue); stroke-width: 1.6; stroke-linejoin: round; margin-top: 0.2rem"
+		>
+			<path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6l8-3z" />
+			<path d="M8.5 12l2.5 2.5 4.5-5" stroke-linecap="round" />
+		</svg>
+		<div>
+			<div class="label-amber">Briefing</div>
+			<h1 style="font-size: 1.6rem; font-weight: 700; text-transform: none; letter-spacing: 0; margin: 0.2rem 0 0.4rem">
+				WHO IS G36MAID
+			</h1>
+			<p style="margin: 0; color: var(--text-dim); font-size: 0.98rem">
+				作戰人員檔案——g36maid 是誰、這個檔案室收容什麼。
+			</p>
 		</div>
-		<p class="page-sub">作戰人員檔案——g36maid 是誰、這個檔案室收容什麼。</p>
 	</section>
-	<article class="prose">
+
+	<article class="prose" style="margin-top: 2rem">
 		{
 			Content ? (
 				<Content />
@@ -30,7 +49,7 @@ if (about) {
 					</p>
 					<p>
 						這裡是 <strong>g36maid</strong> 的技術檔案室，部署於 Cloudflare Workers。
-						設計語言以虹彩六號官方網站的黑白紅戰術 UI 為底。
+						設計語言以虹彩六號遊戲內主選單為範本。
 					</p>
 				</>
 			)

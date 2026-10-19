@@ -22,19 +22,20 @@ const {
 <!doctype html>
 <html lang="zh-Hant">
 	<head>
-		<!-- theme before first paint: stored preference wins, default is dark -->
-		<script is:inline>
-			(() => {
-				try {
-					if (localStorage.getItem('theme') === 'light') {
-						document.documentElement.dataset.theme = 'light';
-					}
-				} catch {}
-			})();
-		</script>
 		<BaseHead title={title} description={description} />
 	</head>
 	<body>
+		{
+			chrome && (
+				<div class="scene" aria-hidden="true">
+					<i class="shard s1" />
+					<i class="shard s2" />
+					<i class="shard s3" />
+					<i class="shaft f1" />
+					<i class="shaft f2" />
+				</div>
+			)
+		}
 		{chrome && <Header />}
 		<main class:list={['shell', { 'shell--bleed': !chrome }]}>
 			<slot />

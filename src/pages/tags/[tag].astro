@@ -15,14 +15,12 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <Base title={`#${tag} — 標籤`} description={`標籤 #${tag} 下的所有文章。`}>
-	<section class="banner">
-		<h1>#{tag}</h1>
-		<div class="b-row">
-			<span class="page-code">{String(posts.length).padStart(3, '0')} FILES</span>
-		</div>
-		<p class="page-sub">訊號節點 #{tag} 下的所有作戰紀錄。</p>
-	</section>
-	<div class="card-grid">
+	<div class="strip">
+		<span class="s-tag">Signal Node</span>
+		<span class="s-title">#{tag}</span>
+		<span class="s-end">{String(posts.length).padStart(3, '0')} FILES</span>
+	</div>
+	<div class="card-grid" style="margin-top: 1.5rem">
 		{posts.map((post) => <PostCard post={post} />)}
 	</div>
 	<p style="margin-top: 2.5rem">
