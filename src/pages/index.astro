@@ -124,8 +124,18 @@ const IC: Record<string, string> = {
 </Base>
 
 <style>
-	/* ── stage ─────────────────────────────────────────────────────────── */
+	/*
+	 * Responsive model (same as the GFL branch):
+	 * one design canvas 1920x1080, one scale unit
+	 *   --s = min(100vw / 1920, 100vh / 1080)
+	 * every length / font is calc(N * --s) so the composition renders
+	 * as a uniformly scaled 16:9 design anchored top-left at ANY size;
+	 * the atmosphere layer stays full-bleed and fills the leftover
+	 * space on wider/taller aspects. Below 960px width a stacked
+	 * flow layout takes over with fixed readable sizes.
+	 */
 	.r6 {
+		--s: min(calc(100vw / 1920), calc(100vh / 1080));
 		position: relative;
 		min-height: 100vh;
 		overflow: hidden;
@@ -195,11 +205,11 @@ const IC: Record<string, string> = {
 	}
 	.f1 {
 		left: 46%;
-		width: 13vw;
+		width: calc(250 * var(--s));
 	}
 	.f2 {
 		left: 70%;
-		width: 7vw;
+		width: calc(134 * var(--s));
 		opacity: 0.7;
 	}
 
@@ -209,21 +219,21 @@ const IC: Record<string, string> = {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-		padding: clamp(24px, 4.6vh, 50px) clamp(16px, 1.6vw, 32px) 0 8.6%;
+		padding: calc(50 * var(--s)) calc(32 * var(--s)) 0 calc(165 * var(--s));
 		background: linear-gradient(180deg, rgba(6, 8, 10, 0.6), transparent);
 	}
 	.tabs {
 		display: flex;
-		gap: clamp(18px, 2.3vw, 44px);
+		gap: calc(44 * var(--s));
 	}
 	.tab {
 		position: relative;
 		font-weight: 700;
-		font-size: clamp(19px, 1.55vw, 30px);
+		font-size: calc(30 * var(--s));
 		letter-spacing: 0.05em;
 		color: #6b7076;
 		text-decoration: none;
-		padding-bottom: 16px;
+		padding-bottom: calc(16 * var(--s));
 		transition: color 0.15s ease;
 	}
 	.tab:hover {
@@ -237,31 +247,31 @@ const IC: Record<string, string> = {
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 6px;
-		height: 2px;
+		bottom: calc(6 * var(--s));
+		height: calc(2 * var(--s));
 		background: #fff;
 	}
 	.tab .dot {
 		position: absolute;
-		left: 2px;
-		bottom: -8px;
-		width: 7px;
-		height: 7px;
+		left: calc(2 * var(--s));
+		bottom: calc(-8 * var(--s));
+		width: calc(7 * var(--s));
+		height: calc(7 * var(--s));
 		border-radius: 50%;
 		background: #f5c518;
-		box-shadow: 0 0 6px rgba(245, 197, 24, 0.8);
+		box-shadow: 0 0 calc(6 * var(--s)) rgba(245, 197, 24, 0.8);
 	}
 	.ctrl {
 		display: flex;
-		gap: 10px;
+		gap: calc(10 * var(--s));
 	}
 	.duo {
 		display: flex;
 	}
 	.duo a,
 	.gear {
-		width: clamp(84px, 7.9vw, 152px);
-		height: clamp(40px, 5.2vh, 56px);
+		width: calc(152 * var(--s));
+		height: calc(56 * var(--s));
 		display: grid;
 		place-items: center;
 		background: rgba(28, 36, 43, 0.85);
@@ -274,7 +284,7 @@ const IC: Record<string, string> = {
 		border-left: 0;
 	}
 	.gear {
-		width: clamp(40px, 5.2vh, 56px);
+		width: calc(56 * var(--s));
 	}
 	.duo a:hover,
 	.gear:hover {
@@ -282,8 +292,8 @@ const IC: Record<string, string> = {
 		color: #fff;
 	}
 	.ctrl :global(.ic) {
-		width: clamp(18px, 1.35vw, 26px);
-		height: clamp(18px, 1.35vw, 26px);
+		width: calc(26 * var(--s));
+		height: calc(26 * var(--s));
 	}
 
 	/* ── status strip ──────────────────────────────────────────────────── */
@@ -292,13 +302,13 @@ const IC: Record<string, string> = {
 		display: flex;
 		align-items: center;
 		gap: 0.6em;
-		height: clamp(32px, 3.9vh, 42px);
-		padding: 0 12px 0 8.6%;
+		height: calc(42 * var(--s));
+		padding: 0 calc(12 * var(--s)) 0 calc(165 * var(--s));
 		background: rgba(11, 13, 16, 0.82);
 		border-block: 1px solid rgba(255, 255, 255, 0.05);
 		color: #d8dde1;
 		font-family: var(--font-body);
-		font-size: clamp(12px, 0.8vw, 15px);
+		font-size: calc(15 * var(--s));
 		text-decoration: none;
 		white-space: nowrap;
 		overflow: hidden;
@@ -322,24 +332,24 @@ const IC: Record<string, string> = {
 	/* ── left column ───────────────────────────────────────────────────── */
 	.col {
 		position: absolute;
-		left: 8.6%;
-		top: 34.5%;
-		width: 28.5%;
+		left: calc(165 * var(--s));
+		top: calc(373 * var(--s));
+		width: calc(547 * var(--s));
 		display: flex;
 		flex-direction: column;
-		gap: clamp(10px, 1.3vh, 14px);
+		gap: calc(14 * var(--s));
 		z-index: 5;
 	}
 	.play {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 14px;
-		height: clamp(72px, 9.8vh, 106px);
+		gap: calc(14 * var(--s));
+		height: calc(106 * var(--s));
 		background: #45b6e0;
 		color: #fff;
 		font-weight: 700;
-		font-size: clamp(24px, 1.8vw, 34px);
+		font-size: calc(34 * var(--s));
 		letter-spacing: 0.06em;
 		text-decoration: none;
 		transition: background 0.15s ease;
@@ -348,18 +358,18 @@ const IC: Record<string, string> = {
 		background: #63c6ec;
 	}
 	.play :global(.ic) {
-		width: clamp(22px, 1.7vw, 32px);
-		height: clamp(22px, 1.7vw, 32px);
+		width: calc(32 * var(--s));
+		height: calc(32 * var(--s));
 	}
 
 	.grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: clamp(10px, 1.3vh, 14px);
+		gap: calc(14 * var(--s));
 	}
 	.tile {
 		position: relative;
-		height: clamp(72px, 9.8vh, 106px);
+		height: calc(106 * var(--s));
 		display: grid;
 		place-items: center;
 		background: rgba(31, 39, 47, 0.88);
@@ -373,33 +383,33 @@ const IC: Record<string, string> = {
 		background: rgba(40, 50, 60, 0.92);
 	}
 	.tile.selected {
-		border: 2px solid #fff;
+		border: calc(2 * var(--s)) solid #fff;
 		color: #fff;
 	}
 	.tic {
-		width: clamp(28px, 2.1vw, 40px);
-		height: clamp(28px, 2.1vw, 40px);
+		width: calc(40 * var(--s));
+		height: calc(40 * var(--s));
 	}
 	.party {
 		position: absolute;
-		top: 7px;
-		right: 8px;
-		width: clamp(12px, 0.85vw, 16px);
-		height: clamp(12px, 0.85vw, 16px);
+		top: calc(7 * var(--s));
+		right: calc(8 * var(--s));
+		width: calc(16 * var(--s));
+		height: calc(16 * var(--s));
 		color: #7f8992;
 	}
 	.tile.secure {
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
-		gap: 12px;
-		padding: 0 14px;
+		gap: calc(12 * var(--s));
+		padding: 0 calc(14 * var(--s));
 		place-items: unset;
 		background: rgba(38, 52, 63, 0.9);
 	}
 	.sic {
-		width: clamp(26px, 2vw, 38px);
-		height: clamp(26px, 2vw, 38px);
+		width: calc(38 * var(--s));
+		height: calc(38 * var(--s));
 		color: #fff;
 	}
 	.stxt {
@@ -409,14 +419,14 @@ const IC: Record<string, string> = {
 	}
 	.stxt b {
 		font-weight: 700;
-		font-size: clamp(14px, 1.05vw, 20px);
+		font-size: calc(20 * var(--s));
 		letter-spacing: 0.04em;
 		color: #fff;
 	}
 	.stxt i {
 		font-style: normal;
 		font-weight: 700;
-		font-size: clamp(11px, 0.85vw, 16px);
+		font-size: calc(16 * var(--s));
 		letter-spacing: 0.05em;
 		color: #f5c518;
 	}
@@ -425,7 +435,7 @@ const IC: Record<string, string> = {
 		position: absolute;
 		top: 0;
 		right: 0;
-		border: 9px solid transparent;
+		border: calc(9 * var(--s)) solid transparent;
 		border-top-color: #45525c;
 		border-right-color: #45525c;
 	}
@@ -434,10 +444,10 @@ const IC: Record<string, string> = {
 	.wide {
 		position: relative;
 		display: block;
-		height: clamp(116px, 15.4vh, 166px);
+		height: calc(166 * var(--s));
 		background:
-			repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 62px, transparent 62px 70px),
-			repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 24px, transparent 24px 32px),
+			repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 calc(62 * var(--s)), transparent calc(62 * var(--s)) calc(70 * var(--s))),
+			repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 calc(24 * var(--s)), transparent calc(24 * var(--s)) calc(32 * var(--s))),
 			#0b0d10;
 		border: 1px solid #222a31;
 		text-decoration: none;
@@ -448,14 +458,14 @@ const IC: Record<string, string> = {
 	}
 	.dots {
 		position: absolute;
-		top: 10px;
-		right: 12px;
+		top: calc(10 * var(--s));
+		right: calc(12 * var(--s));
 		display: flex;
-		gap: 6px;
+		gap: calc(6 * var(--s));
 	}
 	.dots i {
-		width: 10px;
-		height: 10px;
+		width: calc(10 * var(--s));
+		height: calc(10 * var(--s));
 		border-radius: 50%;
 		background: #4a545c;
 	}
@@ -467,14 +477,14 @@ const IC: Record<string, string> = {
 		left: 50%;
 		top: 46%;
 		transform: translate(-50%, -50%);
-		width: clamp(64px, 5vw, 96px);
+		width: calc(96 * var(--s));
 		aspect-ratio: 1;
-		border: 2px solid #fff;
+		border: calc(2 * var(--s)) solid #fff;
 		display: grid;
 		place-items: center;
 		font-family: var(--font-body);
 		font-weight: 300;
-		font-size: clamp(28px, 2.2vw, 42px);
+		font-size: calc(42 * var(--s));
 		color: #fff;
 		transition: background 0.15s ease;
 	}
@@ -486,28 +496,28 @@ const IC: Record<string, string> = {
 		left: 0;
 		right: 0;
 		bottom: 0;
-		height: clamp(24px, 3vh, 32px);
+		height: calc(32 * var(--s));
 		display: flex;
 		align-items: center;
-		padding-left: 14px;
+		padding-left: calc(14 * var(--s));
 		background: rgba(0, 0, 0, 0.82);
 		color: #cfd5da;
 		font-family: var(--font-body);
-		font-size: clamp(11px, 0.8vw, 15px);
+		font-size: calc(15 * var(--s));
 	}
 
 	/* blue queue bar */
 	.queue {
 		display: flex;
 		align-items: center;
-		gap: 12px;
-		height: clamp(42px, 5.1vh, 55px);
-		padding: 0 12px;
-		border-radius: 3px;
+		gap: calc(12 * var(--s));
+		height: calc(55 * var(--s));
+		padding: 0 calc(12 * var(--s));
+		border-radius: calc(3 * var(--s));
 		background: linear-gradient(180deg, #2f74ad, #1c4a75);
 		color: #fff;
 		font-weight: 700;
-		font-size: clamp(14px, 1.05vw, 20px);
+		font-size: calc(20 * var(--s));
 		letter-spacing: 0.05em;
 		text-decoration: none;
 		transition: filter 0.15s ease;
@@ -517,12 +527,12 @@ const IC: Record<string, string> = {
 	}
 	.bell {
 		position: relative;
-		width: clamp(26px, 1.9vw, 34px);
+		width: calc(34 * var(--s));
 		aspect-ratio: 1;
 		display: grid;
 		place-items: center;
 		background: rgba(255, 255, 255, 0.14);
-		border-radius: 4px;
+		border-radius: calc(4 * var(--s));
 	}
 	.bell :global(.ic) {
 		width: 68%;
@@ -530,35 +540,35 @@ const IC: Record<string, string> = {
 	}
 	.badge {
 		position: absolute;
-		top: -7px;
-		right: -9px;
-		min-width: 18px;
-		height: 18px;
-		padding: 0 4px;
+		top: calc(-7 * var(--s));
+		right: calc(-9 * var(--s));
+		min-width: calc(18 * var(--s));
+		height: calc(18 * var(--s));
+		padding: 0 calc(4 * var(--s));
 		display: grid;
 		place-items: center;
 		border-radius: 50%;
 		background: #fff;
 		color: #14202b;
 		font-family: var(--font-body);
-		font-size: 11px;
+		font-size: calc(11 * var(--s));
 		font-weight: 700;
 	}
 
 	/* misc */
 	.mini {
 		position: absolute;
-		right: 18px;
-		bottom: 14px;
+		right: calc(18 * var(--s));
+		bottom: calc(14 * var(--s));
 		font-family: var(--font-terminal);
-		font-size: 0.64rem;
+		font-size: max(9px, calc(11 * var(--s)));
 		letter-spacing: 0.1em;
 		color: rgba(255, 255, 255, 0.35);
 		z-index: 5;
 	}
 
-	/* ── small screens: stack in flow ──────────────────────────────────── */
-	@media (max-width: 960px) {
+	/* ── small / portrait screens: stack in flow ───────────────────────── */
+	@media (max-width: 960px), (max-aspect-ratio: 5/6) {
 		.r6 {
 			display: flex;
 			flex-direction: column;
@@ -577,19 +587,82 @@ const IC: Record<string, string> = {
 			gap: 14px;
 		}
 		.tab {
+			font-size: 17px;
 			padding-bottom: 8px;
+		}
+		.duo a,
+		.gear {
+			width: 64px;
+			height: 40px;
+		}
+		.strip {
+			height: 36px;
+			padding: 0 16px;
+			font-size: 13px;
 		}
 		.col {
 			position: static;
 			width: auto;
+			max-width: 640px;
 			margin: 18px 16px;
+			gap: 12px;
+		}
+		.play {
+			height: 84px;
+			font-size: 22px;
+		}
+		.play :global(.ic) {
+			width: 26px;
+			height: 26px;
 		}
 		.grid {
 			grid-template-columns: 1fr 1fr;
+			gap: 12px;
+		}
+		.tile {
+			height: 84px;
+		}
+		.tic {
+			width: 32px;
+			height: 32px;
+		}
+		.stxt b {
+			font-size: 16px;
+		}
+		.stxt i {
+			font-size: 12px;
+		}
+		.tile.secure::after {
+			border-width: 8px;
+		}
+		.wide {
+			height: 140px;
+		}
+		.plus-box {
+			width: 72px;
+			font-size: 32px;
+			border-width: 2px;
+		}
+		.viewmore {
+			height: 28px;
+			font-size: 12px;
+		}
+		.queue {
+			height: 52px;
+			font-size: 16px;
+		}
+		.bell {
+			width: 30px;
+		}
+		.badge {
+			min-width: 17px;
+			height: 17px;
+			font-size: 11px;
 		}
 		.mini {
 			position: static;
 			margin: 0 16px 14px;
+			font-size: 10px;
 		}
 	}
 </style>
