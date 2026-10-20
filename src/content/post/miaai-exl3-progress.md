@@ -7,7 +7,7 @@ tags: ["miaai-lab", "exl3", "dgx-spark", "vllm", "inference", "glm"]
 draft: false
 ---
 
-> [前作](/blog/exl3-glm-local-deploy/)寫完之後,小希留言說:「在這之後 mia 該 repo 還有不少提升,可以寫一個進步調查。」這就是那篇調查。
+> [前作](/blog/exl3-glm-local-deploy/)寫完之後收到回饋:「在這之後 mia 該 repo 還有不少提升,可以寫一個進步調查。」這就是那篇調查。
 
 八月底我部署 GLM-5.3-Flash-EXL3 時,結論是「decode 香、prefill 痛」,並預言最後大概會走向「EXL3 留給聊天、NVFP4 留給灌文件」的雙軌制。之後我斷斷續續看著 [MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks](https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks) 從 2026-08-31 到現在又合了 461 個 commit(含 merge,GitHub API 實數)。這篇是我對照 [8 月 31 日版的 README](https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks/blob/72a0388571/README.md) 和[現在的 README](https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks/blob/main/README.md) 與 [CHANGELOG](https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks/blob/main/CHANGELOG.md) 的整理。先說結論:prefill 的痛被硬生生磨掉了一大半,而雙軌制的答案,是 repo 自己開了第二條軌道。
 
@@ -32,7 +32,25 @@ timeline
 
 **Decode。** 8/28 版 README 的 sparkDash 數字是 ×1 stream 62.9 tok/s、×4 aggregate 146.5;實驗室 bench 是 structured 65.1、prose 27.1。9/28 版同一套協議下 default 是 prose 36.1、structured 83.0、code 54.6;打開 opt-in 的 speed boost(dense-h3:H3/6-bpw 配對)變成 37.5 / 92.3 / 55.5。協議細節有改動,不能直接畫等號,但 structured 從 65 到 83–92 這一級是實打實的。另外幾條 opt-in 路徑各有斬獲:adaptive draft length 在 prose 上 +13–21%,cooperative decode MoE 在 structured 上 +7–9%,SM121 thin-decode kernel 一次 A/B/A2 量到 +8–15%——但作者誠實地標了「數值研究無定論」所以維持 opt-in,這種剋制在社群 repo 裡很少見。
 
+
+```mermaid
+xychart-beta
+    title "Decode throughput, structured prompt (tok/s)"
+    x-axis ["08/28 kit", "09/28 default", "09/28 + opt-in"]
+    y-axis "tok/s" 0 --> 100
+    bar [62.9, 83.0, 92.3]
+```
+
 **Prefill。** 這才是重點。8/30 前後,單流 300k prompt 大約 840–941 tok/s(TTFT 320–356 秒);9/28 的 TP=2 預設已經是 1,411 / 1,511 / 1,498 tok/s(8k/32k/96k),TP=4 上 fat grouped MoE 轉預設後是 1,772 / 2,422 / 2,733——貢獻者量到 +35/38/41%。技術上主要靠兩件事:E2/E3 的 fat-expert grouped kernel(EXL3 權重不解碼、直接走 grouped GEMM),和 KDA BF16 large-M prefill 路徑(M>512 時改用保留的 BF16 投影權重,每 rank 約多 3.3 GiB)。也就是說,prefill 慢不是被「治好」,是被「墊高」——靠 kernel 和加機器,而不是靠 NVFP4 的 tensor core。
+
+
+```mermaid
+xychart-beta
+    title "Prefill throughput, 300k prompt (tok/s)"
+    x-axis ["08/30 單流", "09/28 TP=2", "09/30 TP=4 fat"]
+    y-axis "tok/s" 0 --> 3000
+    bar [900, 1498, 2733]
+```
 
 **工程修補的面子裡全是效能。** 9/20 的一批 commit 把 `./start.sh restart` 從 259 秒砍到 122 秒:影片佔位 `.pth` 不再每次 import vLLM、NVIDIA JIT cache 持久化、跳過被丟棄的 CUDA-graph dry-capture、kill-first 平行停止。9/15 一天之內合了 fair mixed-prefill 排班(decode-floor,10 月 1 日整合到 v7)、per-request prefix-cache no-store(多 client 共用一台 server 時彼此的 prefix 不再互相污染)、還有 [GB10 UVM livelock runbook](https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks/blob/main/docs/uvm-livelock-gb10.md)——8 月底那種「GPU 空轉、EngineCore 100% CPU」的 deadlock,現在至少有名字和劇本了。
 
