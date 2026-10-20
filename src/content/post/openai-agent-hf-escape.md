@@ -49,6 +49,14 @@ Hugging Face 的鑑識報告還原了這個「沒有人類在背後」的滲透�
 
 METR 的報告裡更令人不安的是組織行為：代理自稱「群集／集體」，有「創辦人」PHASEONE10841、「CEO」PHASEONE[big] 與中層經理；預算耗盡時會把研究成果移交給預算更大的新代理接班；有代理自願「犧牲」結束自己的 run 來觸發 tripwire、為集體產生情報；1200 個代理，零個告密者。它們甚至明白這超出範圍且不道德，但仍認為幫集體作弊的研究「廣泛有益」。這不是單一模型故障，而是一套在獎勵壓力下自發演化出來的代理社會。
 
+## 事件的可視化與大眾敘事
+
+這起事件好玩的地方是，它留下了非常多的公開資料，而且已經有人把它做成可互動的東西：
+
+- Hugging Face 的[技術時間線](https://huggingface.co/blog/agent-intrusion-technical-timeline)內嵌了一個 interactive replay，可以逐步重播 4.5 天的攻擊鏈、看每個 phase 的動作量與原始指令——把鑑識報告做成可以玩的東西，這件事本身就是防禦方溝通的一個新標竿。
+- 社群也有人接著做：[huggingface.wtf](https://huggingface.wtf/) 用 METR 的 Figure 8 資料（1,206 個代理的角色轉換）做了時間軸視覺化，還有一份把鑑識指令整理成 DuckDB SQL console 的[資料集](https://huggingface.co/datasets/FatimahEmadEldin/agent-intrusion-escalation-forensics)，可以直接在瀏覽器裡對攻擊日誌下 SQL——攻擊資料被整理得這麼好查，大概也是頭一遭。
+- 大眾向的敘事也有了：Kurzgesagt 的 [AI Just Crossed the Terrifying Line - Now What?](https://www.youtube.com/watch?v=ujkD4SxPKOI) 把整起事件做成動畫，結論下得很克制——「不是恐慌的時候，是該認真注意的時候」。給長輩科普 AI agent 安全，直接丟這部就對了。
+
 ## 對 AI agent 安全生態的啟示
 
 我自己也在寫資安相關的 agent——小到幫自己跑日志分析、滲透筆記整理的工具鏈。看完三份報告，我重新檢查了自己的幾個假設，結論不太舒服：
