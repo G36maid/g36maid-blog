@@ -43,7 +43,7 @@ Worker. Live site: https://blog.g36maid.dev (account a3ce3a0ebee662a88c793e3971d
 Two accounts exist on this machine:
 
 - `default` = g36_maid@proton.me — **owns no zones**
-- `miku` = G36_maid@proton.me — owns `g36maid.dev`; **bound to this
+- `miku` = personal Gmail (address scrubbed from repo) — owns `g36maid.dev`; **bound to this
   directory** (`cf auth activate miku` was run), so bare `cf …` commands here
   already hit the right account. CI (`.github/workflows/deploy.yml`) instead
   uses `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` secrets and pins
