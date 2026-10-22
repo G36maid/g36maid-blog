@@ -74,7 +74,8 @@ export function layerCode(posts: Post[], post: Post): string {
 	return `Layer:${String(posts.length - i).padStart(2, '0')}`;
 }
 
-/** category display labels (slug → zh/en label) — scripts/classify.py writes these slugs */
+/** category display labels (slug → zh/en label) — scripts/classify.py writes these slugs;
+	   unknown slugs fall back to the raw slug */
 export const CATEGORY_LABELS: Record<string, string> = {
 	linux: 'Linux',
 	'self-hosting': 'Self-hosting',
@@ -88,14 +89,11 @@ export const CATEGORY_LABELS: Record<string, string> = {
 	life: 'Life',
 	shitpost: '廢文',
 	essay: '隨筆',
+	astro: 'Astro',
+	meta: 'Meta',
 };
 
-/** TD-style category code, e.g. "astro" → "TD-ASTRO" */
-export function categoryCode(category: string): string {
-	return `TD-${category.toUpperCase().replace(/[^A-Z0-9]/g, '-').replace(/-+/g, '-')}`;
-}
-
-/** display label for a category slug, falling back to the TD code */
+/** display label for a category slug, falling back to the raw slug */
 export function categoryLabel(category: string): string {
-	return CATEGORY_LABELS[category] ?? categoryCode(category);
+	return CATEGORY_LABELS[category] ?? category;
 }
