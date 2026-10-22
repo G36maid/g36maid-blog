@@ -15,7 +15,8 @@ export const NAV_ITEMS = [
 	{ href: '/notes/', label: '筆記', code: '02' },
 	{ href: '/categories/', label: '分類', code: '03' },
 	{ href: '/tags/', label: '標籤', code: '04' },
-	{ href: '/about/', label: '關於', code: '05' },
+	{ href: '/friends/', label: '友站', code: '05' },
+	{ href: '/about/', label: '關於', code: '06' },
 ] as const;
 
 /** lain easter eggs */

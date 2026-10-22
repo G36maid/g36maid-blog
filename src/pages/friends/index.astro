@@ -1,0 +1,98 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const friends = (await getCollection('friend')).sort((a, b) => a.data.name.localeCompare(b.data.name, 'zh-Hant'));
+const hostname = (url: string) => new URL(url).hostname.replace(/^www\./, '');
+---
+
+<Base title="FRIENDS — 友站連結" description="朋友們的站點。">
+	<div class="strip">
+		<span class="s-tag">Blogroll</span>
+		<span class="s-title">友站連結</span>
+		<span class="s-end">{String(friends.length).padStart(3, '0')} LINKS</span>
+	</div>
+
+	{
+		friends.length > 0 ? (
+			<div class="friends-grid">
+				{friends.map((friend) => (
+					<a class="friend-card" href={friend.data.url} target="_blank" rel="noopener noreferrer">
+						<span class="fc-head">
+							{friend.data.avatar ? <img class="fc-avatar" src={friend.data.avatar} alt="" loading="lazy" /> : <span class="fc-avatar fc-avatar--empty" aria-hidden="true">{friend.data.name.slice(0, 1).toUpperCase()}</span>}
+							<b class="fc-name">{friend.data.name}</b>
+						</span>
+						{friend.data.description && <p class="fc-desc">{friend.data.description}</p>}
+						<span class="fc-host">{hostname(friend.data.url)}</span>
+					</a>
+				))}
+			</div>
+		) : (
+			<p class="friends-empty label">還沒有加入任何友站。</p>
+		)
+	}
+</Base>
+
+<style>
+	.friends-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+		gap: 0.9rem;
+		margin-top: 1.5rem;
+	}
+	.friend-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding: 1.1rem 1.2rem;
+		background: var(--panel);
+		border: 1px solid var(--border);
+		transition: border-color 0.15s ease, background 0.15s ease;
+	}
+	.friend-card:hover {
+		border-color: var(--border-bright);
+		background: rgba(40, 50, 60, 0.92);
+	}
+	.fc-head {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+	}
+	.fc-avatar {
+		width: 2.4rem;
+		height: 2.4rem;
+		flex: none;
+		object-fit: cover;
+		border: 1px solid var(--border);
+	}
+	.fc-avatar--empty {
+		display: grid;
+		place-items: center;
+		background: rgba(69, 182, 224, 0.16);
+		color: var(--blue);
+		font-family: var(--font-narrow);
+		font-weight: 700;
+		font-size: 1.1rem;
+	}
+	.fc-name {
+		font-family: var(--font-narrow);
+		font-weight: 700;
+		font-size: 1.05rem;
+		letter-spacing: 0.04em;
+		color: var(--text-bright);
+	}
+	.fc-desc {
+		margin: 0;
+		font-size: 0.92rem;
+		line-height: 1.6;
+		color: var(--text-dim);
+	}
+	.fc-host {
+		font-family: var(--font-terminal);
+		font-size: 0.9rem;
+		color: var(--text-faint);
+	}
+	.friends-empty {
+		margin-top: 1.5rem;
+	}
+</style>

@@ -97,6 +97,9 @@ no Chromium. CI installs the prebuilt mmdr binary from GitHub releases.
   (public dir, no astro:assets processing).
 - `src/content/post/about.md` is special: it renders on `/about/` and is
   excluded from the blog list/archive (see `src/lib/content.ts`).
+- Blogroll lives in `src/data/friends.json` (file-loader collection
+  `friend`, rendered on `/friends/`): add an object per friend with a
+  unique `id` plus `name` / `url` / optional `description` / `avatar`.
 
 ## Conventions
 
