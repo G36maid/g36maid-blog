@@ -1,5 +1,5 @@
 import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 
 /**
  * post — full technical articles / tutorials (main content)
@@ -34,4 +34,18 @@ const note = defineCollection({
 	}),
 });
 
-export const collections = { post, note };
+/**
+ * friend — blogroll entries in a single JSON file; add an object per friend
+ * (id = unique slug, e.g. "ivonblog"); rendered on /friends/
+ */
+const friend = defineCollection({
+	loader: file('./src/data/friends.json'),
+	schema: z.object({
+		name: z.string(),
+		url: z.string().url(),
+		description: z.string().default(''),
+		avatar: z.string().url().optional(),
+	}),
+});
+
+export const collections = { post, note, friend };
