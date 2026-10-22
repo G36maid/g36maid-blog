@@ -7,7 +7,7 @@ draft: true
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1729303328
-category: essay
+category: programming
 ---
 
 Assignment 2 - Handwritten Part (50%)
