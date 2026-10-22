@@ -37,13 +37,24 @@
 	/* identical formula to the menu topbar — header hangs at the same height */
 	--header-top: clamp(18px, 4.6vh, 44px);
 
+	/* nav tabs — single source shared by the menu topbar (homepage) and the
+	   site header, so the tab size never drifts between the two */
+	--tab-gap: clamp(18px, 2.3vw, 40px);
+	--tab-size: 22px;
+	--tab-pad-b: 12px;
+	--tab-underline-b: 6px;
+	--tab-dot-b: -6px;
+
 	color-scheme: dark;
 }
 
-/* match the menu's stacked topbar padding below its own breakpoint */
+/* match the menu's stacked topbar below its own breakpoint */
 @media (max-width: 960px), (max-aspect-ratio: 5/6) {
 	:root {
 		--header-top: 18px;
+		--tab-gap: 14px;
+		--tab-size: 17px;
+		--tab-pad-b: 8px;
 	}
 }
 
@@ -291,20 +302,18 @@ main.shell {
 .tabs {
 	display: flex;
 	align-items: flex-start;
-	gap: clamp(0.9rem, 2.3vw, 2.75rem);
+	gap: var(--tab-gap);
 }
 .tab {
 	margin-top: 0;
-}
-.tab {
 	position: relative;
 	font-family: var(--font-narrow);
 	font-weight: 700;
-	font-size: 1.05rem;
+	font-size: var(--tab-size);
 	letter-spacing: 0.05em;
 	color: var(--text-faint);
 	text-transform: uppercase;
-	padding-bottom: 0.9rem;
+	padding-bottom: var(--tab-pad-b);
 	transition: color 0.15s ease;
 }
 .tab:hover { color: #a9b1b8; }
@@ -312,14 +321,14 @@ main.shell {
 .tab.active::after {
 	content: '';
 	position: absolute;
-	left: 0; right: 0; bottom: 0.35rem;
+	left: 0; right: 0; bottom: var(--tab-underline-b);
 	height: 2px;
 	background: var(--text-bright);
 }
 .tab .dot {
 	position: absolute;
 	left: 2px;
-	bottom: -4px;
+	bottom: var(--tab-dot-b);
 	width: 7px;
 	height: 7px;
 	border-radius: 50%;
@@ -358,8 +367,8 @@ main.shell {
 }
 
 @media (max-width: 48rem) {
-	.tab { font-size: 0.9rem; padding-bottom: 0.7rem; }
-	.tab.active::after { bottom: 0.25rem; }
+	/* tab metrics follow the shared --tab-* tokens, which switch at the
+	   menu topbar's own 960px breakpoint — no per-header override here */
 	.icon-btn { width: 2.6rem; }
 }
 

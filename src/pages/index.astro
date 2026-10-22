@@ -223,39 +223,41 @@ const IC: Record<string, string> = {
 		padding: clamp(18px, 4.6vh, 44px) clamp(16px, 1.6vw, 32px) 0 var(--inset);
 		background: linear-gradient(180deg, rgba(6, 8, 10, 0.6), transparent);
 	}
+	/* tab metrics come from the shared --tab-* tokens in global.css,
+	   keeping this topbar identical to the site header on every page */
 	.tabs {
 		display: flex;
-		gap: clamp(18px, 2.3vw, 40px);
+		gap: var(--tab-gap);
 	}
 	.tab {
 		position: relative;
 		font-weight: 700;
-		font-size: 22px;
+		font-size: var(--tab-size);
 		letter-spacing: 0.05em;
-		color: #6b7076;
+		color: var(--text-faint);
 		text-decoration: none;
-		padding-bottom: 12px;
+		padding-bottom: var(--tab-pad-b);
 		transition: color 0.15s ease;
 	}
 	.tab:hover {
 		color: #a9b1b8;
 	}
 	.tab.active {
-		color: #fff;
+		color: var(--text-bright);
 	}
 	.tab.active::after {
 		content: '';
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 6px;
+		bottom: var(--tab-underline-b);
 		height: 2px;
-		background: #fff;
+		background: var(--text-bright);
 	}
 	.tab .dot {
 		position: absolute;
 		left: 2px;
-		bottom: -6px;
+		bottom: var(--tab-dot-b);
 		width: 7px;
 		height: 7px;
 		border-radius: 50%;
@@ -586,11 +588,6 @@ const IC: Record<string, string> = {
 		}
 		.tabs {
 			flex-wrap: wrap;
-			gap: 14px;
-		}
-		.tab {
-			font-size: 17px;
-			padding-bottom: 8px;
 		}
 		.duo a,
 		.gear {
