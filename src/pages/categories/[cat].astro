@@ -1,6 +1,7 @@
 ---
 import { getPostsByCategory, getSortedPosts, categoryLabel } from '../../lib/content';
 import PostCard from '../../components/PostCard.astro';
+import CategoryIcon from '../../components/CategoryIcon.astro';
 import Base from '../../layouts/Base.astro';
 
 export async function getStaticPaths() {
@@ -18,7 +19,7 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 <Base title={`${label} — 分類`} description={`分類「${label}」下的所有文章。`}>
 	<div class="strip">
 		<span class="s-tag">Category</span>
-		<span class="s-title">{label}</span>
+		<span class="s-title"><CategoryIcon category={category} size="1.35rem" /> {label}</span>
 		<span class="s-end">{String(posts.length).padStart(3, '0')} FILES</span>
 	</div>
 	<div class="card-grid" style="margin-top: 1.5rem">
@@ -28,3 +29,11 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 		<a href="/categories/" class="label">← 全部分類</a>
 	</p>
 </Base>
+
+<style>
+	.s-title {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+</style>

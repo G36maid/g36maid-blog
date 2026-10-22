@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
+import CategoryIcon from '../../components/CategoryIcon.astro';
 import { getCategoryCounts, categoryLabel } from '../../lib/content';
+import { categoryMeta } from '../../lib/category-meta';
 
 const categoryCounts = await getCategoryCounts();
 const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
@@ -8,17 +10,136 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
 
 <Base title="CATEGORIES — 分類索引" description="所有文章分類，依文章數排序。">
 	<div class="strip">
-		<span class="s-tag">Categories</span>
+		<span class="s-tag">Operators</span>
 		<span class="s-title">全部分類，依文章數排序</span>
 		<span class="s-end">{String(categories.length).padStart(3, '0')} CATS</span>
 	</div>
-	<div class="tag-cloud" style="margin-top: 1.5rem">
+
+	<!-- r6 operator roster: portrait art with centered badge, light name plate below -->
+	<div class="roster">
 		{
 			categories.map(([category, count]) => (
-				<a class="tag-chip" href={`/categories/${category}/`}>
-					{categoryLabel(category)} <span class="count">×{count}</span>
+				<a class="op" href={`/categories/${category}/`} style={`--op:${categoryMeta(category).color}`}>
+					<span class="op-art">
+						<svg class="op-sil" viewBox="0 0 200 240" fill="currentColor" aria-hidden="true">
+							<path d="M100 14c-25 0-42 15-44 38l-2 16c-.5 6 2 10 7 12l3 10h72l3-10c5-2 7.5-6 7-12l-2-16c-2-23-19-38-44-38z" />
+							<path d="M64 62h72l-2 14c-.5 5-4 8-9 8H75c-5 0-8.5-3-9-8z" opacity=".5" />
+							<path d="M88 92h24v16c0 6-5 10-12 10s-12-4-12-10z" />
+							<path d="M30 240c3-42 20-72 44-84l12 16c4 5 8 8 14 8s10-3 14-8l12-16c24 12 41 42 44 84z" />
+							<path d="M78 172l8 68h6l-6-68zm44 0l-8 68h-6l6-68z" opacity=".45" />
+							<path d="M62 210h76v8H62z" opacity=".45" />
+						</svg>
+						<span class="op-badge">
+							<CategoryIcon category={category} size="4rem" />
+						</span>
+						<span class="op-count" aria-hidden="true">{String(count).padStart(4, '0')}</span>
+					</span>
+					<span class="op-plate">{categoryLabel(category)}</span>
 				</a>
 			))
 		}
 	</div>
 </Base>
+
+<style>
+	.roster {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(8.6rem, 1fr));
+		gap: 0.8rem;
+		margin-top: 1.5rem;
+	}
+
+	/* the operator tile: art panel + light name plate, like the game/wiki grid */
+	.op {
+		position: relative;
+		display: block;
+		border: 1px solid var(--border);
+		transition: border-color 0.15s ease, transform 0.15s ease;
+	}
+	.op:hover,
+	.op:focus-visible {
+		border-color: var(--text-bright);
+		transform: translateY(-4px);
+	}
+
+	.op-art {
+		position: relative;
+		display: block;
+		aspect-ratio: 5 / 7;
+		overflow: hidden;
+		background:
+			repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.05) 0 12px, transparent 12px 26px),
+			linear-gradient(180deg, #333c46, #14181d);
+	}
+	.op-sil {
+		position: absolute;
+		bottom: -4%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 124%;
+		color: #47525c;
+		opacity: 0.6;
+	}
+	.op-badge {
+		position: absolute;
+		left: 50%;
+		bottom: 12%;
+		transform: translateX(-50%);
+		filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.45));
+	}
+	.op-count {
+		position: absolute;
+		top: 0.45rem;
+		right: 0.55rem;
+		font-family: var(--font-terminal);
+		font-size: 0.9rem;
+		letter-spacing: 0.08em;
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	.op-plate {
+		display: block;
+		padding: 0.5rem 0.4rem;
+		background: #d8dbde;
+		color: #12161b;
+		font-family: var(--font-narrow);
+		font-weight: 700;
+		font-style: italic;
+		font-size: 1rem;
+		line-height: 1.2;
+		letter-spacing: 0.05em;
+		text-align: center;
+		text-transform: uppercase;
+		overflow-wrap: break-word;
+	}
+
+	/* selected state: category-colored accent bar, like the game's highlight */
+	.op::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 3px;
+		background: var(--op);
+		opacity: 0;
+		transition: opacity 0.15s ease;
+	}
+	.op:hover::after,
+	.op:focus-visible::after {
+		opacity: 1;
+	}
+
+	@media (max-width: 40rem) {
+		.roster {
+			grid-template-columns: repeat(auto-fill, minmax(7.2rem, 1fr));
+			gap: 0.6rem;
+		}
+		.op-plate {
+			font-size: 0.85rem;
+		}
+		.op-badge :global(.cicon) {
+			width: 2.9rem !important;
+		}
+	}
+</style>
