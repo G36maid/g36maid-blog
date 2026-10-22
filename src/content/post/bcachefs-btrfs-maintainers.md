@@ -8,6 +8,8 @@ draft: false
 source: "facebook"
 sourceType: "貼文"
 sourceTimestamp: 1756642788
+media:
+  - ebf2bfe-git-show.png
 ---
 
 > 擴寫自 2025-08-31 的隨筆（原發於 Facebook）。擴寫時已補查兩案的事件時間線與原始出處，脈絡以 2025-08-31 當時為準。
@@ -40,6 +42,8 @@ timeline
 爭議的核心是 2025 年 6 月那次 [6.16-rc3 的 pull request](https://lore.kernel.org/lkml/CAHk-=wi2ae794_MyuW1XJAR64RDkDLUsRHvSemuWAkO6T45=YA@mail.gmail.com/)：Kent 把新功能 `journal_rewind`（把整個檔案系統回捲到較早時間點的災難復原工具）混進了 rc 階段的修復 PR。Linus 的回覆很直白：「rc 的修復就該是純修復」，還補了一句後來被瘋狂引用的「我堅定地相信，任何用 bcachefs 的人都該預期它是實驗性的」。ext4 維護者 Ted Ts'o 也[下場提醒](https://lore.kernel.org/lkml/20250620124346.GB3571269@mit.edu/)：merge window 的規則是十幾年來社群的共識，而執行它正是 Linus 的職責。Kent 不服氣、搬出 XFS 和 Btrfs 在 rc 期也收過類似修補的先例重送，Linus 最後雖然合了那一批，但[丟下](https://theregister.com/2025/07/01/bcachefs_may_get_dropped/)「我想我們會在 6.17 合併窗分道揚鑣」和一句「we're done」。到了 7 月的 6.17 合併窗，他真的什麼都沒拉。
 
 Btrfs 這邊的時間線短得多——8 月 29 日一天就結束了。Bacik 自 2017 年起與 David Sterba 共同維護 Btrfs，負責過空間管理、extent 配置這類最難啃的部分。Sterba 還在，所以 Btrfs 並不是無人領導；但原稿裡我寫「Btrfs 在 META 可是撐起整個基礎設施的東西」，這不是誇飾：Meta 把 Btrfs 大規模跑在生產環境上，Bacik 正是那個把企業需求帶進 kernel 的人。這條管道現在細了。
+
+![Linus 在 2025-08-29（+0800）直接改 MAINTAINERS 的 commit，訊息只有一句話](/media/2025-08/ebf2bfe-git-show.png)
 
 ## 對 kernel 生態的影響
 
