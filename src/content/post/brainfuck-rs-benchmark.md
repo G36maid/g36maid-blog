@@ -8,7 +8,11 @@ draft: false
 source: "facebook"
 sourceType: "影片"
 sourceTimestamp: 1764448655
+media:
+  - mandelbrot-bfi-terminal.png
 ---
+media:
+  - mandelbrot-bfi-terminal.png
 
 > 擴寫自 2025-11-30 的隨筆（原為 FB 影片貼文，附操作錄影）。
 
@@ -67,6 +71,9 @@ hyperfine --warmup 3 --export-markdown bench_results.md \
 4. **多種輸出**：`--export-markdown` 掛 README、`--export-json` 餵給其他程式或 GitHub Action（我放在 [CI workflow](https://github.com/G36maid/brainfuck-rs/actions/workflows/benchmark.yml) 每次跑）
 
 ## 3. 結果與環境
+
+![以 repo 的 bfi 直譯器實際重跑 examples/mandelbrot.bf 的終端機輸出（2026-10 重現，48 行 × 130 字元的 ASCII Mandelbrot）](/media/2025-11/mandelbrot-bfi-terminal.png)
+
 
 環境：Linux x86_64，Rust stable（rustc -O -C opt-level=3），GitHub Actions `ubuntu-latest` runner；hyperfine `--warmup 3`、其餘預設。程式集是 mandelbrot.bf，計算量夠重、無 I/O 瓶頸，適合量 CPU 效能。README 記錄的典型結果：
 
