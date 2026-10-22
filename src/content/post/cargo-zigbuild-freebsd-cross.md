@@ -24,6 +24,9 @@ media:
 
 代價是它的官方支援範圍：README 明說[目前只支援 Linux 和 macOS target](https://github.com/rust-cross/cargo-zigbuild#Caveats)，其他平台「能讓它 work 就歡迎 PR」。FreeBSD 在 zig 那邊其實是 [Tier 2 target](https://ziglang.org/learn/platform-support)（x86_64/aarch64 都有 libc），所以這條路走得通，只是沒人幫你鋪。我用的版本是 cargo-zigbuild 0.22.3（自帶 Zig 0.15.2）、Zed 原始碼 tag `v1.0.0`。
 
+
+![使用 cargo-zigbuild 交叉編譯 zed-remote-server 並成功運行從 Linux 到 FreeBSD 的遠端開發環境，在某些無頭伺服器（headless server）一樣可以享受接近原生的舒適開發體驗。此 PR 解決問題後預計可以整合進 Zed 的 build pipeline。相關 workaround 文件：https://gist.github.com/G36maid/c2aff8c1561b307f38f9e1b3aff215e1](/media/2026-04/122159584838958395.jpg)
+
 ## 1. 裝 toolchain 與 FreeBSD sysroot
 
 ```bash
