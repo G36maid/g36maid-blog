@@ -1,0 +1,30 @@
+---
+import { getPostsByCategory, getSortedPosts, categoryLabel } from '../../lib/content';
+import PostCard from '../../components/PostCard.astro';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+	const posts = await getSortedPosts();
+	const categories = [...new Set(posts.map((post) => post.data.category))];
+	return categories.map((category) => ({ params: { cat: category }, props: { category } }));
+}
+
+const { category } = Astro.props;
+const label = categoryLabel(category);
+const posts = await getPostsByCategory(category);
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Base title={`${label} — 分類`} description={`分類「${label}」下的所有文章。`}>
+	<div class="strip">
+		<span class="s-tag">Category</span>
+		<span class="s-title">{label}</span>
+		<span class="s-end">{String(posts.length).padStart(3, '0')} FILES</span>
+	</div>
+	<div class="card-grid" style="margin-top: 1.5rem">
+		{posts.map((post) => <PostCard post={post} />)}
+	</div>
+	<p style="margin-top: 2.5rem">
+		<a href="/categories/" class="label">← 全部分類</a>
+	</p>
+</Base>

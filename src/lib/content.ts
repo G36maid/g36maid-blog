@@ -26,6 +26,23 @@ export async function getPostsByTag(tag: string): Promise<Post[]> {
 	return posts.filter((post) => post.data.tags.includes(tag));
 }
 
+/** posts filtered by category slug */
+export async function getPostsByCategory(category: string): Promise<Post[]> {
+	const posts = await getSortedPosts();
+	return posts.filter((post) => post.data.category === category);
+}
+
+/** unique category slug → post count map (public posts only) */
+export async function getCategoryCounts(): Promise<Map<string, number>> {
+	const posts = await getSortedPosts();
+	const counts = new Map<string, number>();
+	for (const post of posts) {
+		const c = post.data.category;
+		counts.set(c, (counts.get(c) ?? 0) + 1);
+	}
+	return counts;
+}
+
 /** unique tag → post count map */
 export async function getTagCounts(): Promise<Map<string, number>> {
 	const posts = await getSortedPosts();

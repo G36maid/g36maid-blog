@@ -7,20 +7,19 @@
  */
 import Base from '../layouts/Base.astro';
 import { getSortedPosts, getSortedNotes } from '../lib/content';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, NAV_ITEMS } from '../consts';
 
 const posts = await getSortedPosts();
 const notes = await getSortedNotes();
 const latest = posts[0];
 const df = (d: Date) => d.toISOString().slice(0, 10);
 
-const tabs = [
-	{ href: '/', label: 'HOME', active: true },
-	{ href: '/blog/', label: 'LOGS', active: false },
-	{ href: '/notes/', label: 'NOTES', active: false },
-	{ href: '/tags/', label: 'TAGS', active: false },
-	{ href: '/about/', label: 'ABOUT', active: false },
-];
+/* same nav as the site header — single source in consts.ts */
+const tabs = NAV_ITEMS.map((item) => ({
+	href: item.href,
+	label: item.label,
+	active: item.href === '/',
+}));
 
 const IC: Record<string, string> = {
 	bars: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="5" width="16" height="2.6"/><rect x="7" y="10.5" width="13" height="2.6"/><rect x="10" y="16" width="10" height="2.6"/></svg>',

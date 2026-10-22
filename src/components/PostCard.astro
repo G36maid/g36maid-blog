@@ -11,7 +11,7 @@ const { post } = Astro.props;
 
 <article class="tile-card">
 	<div class="tc-top">
-		<span class="tc-cat">{categoryLabel(post.data.category)}</span>
+		<a class="tc-cat" href={`/categories/${post.data.category}/`}>{categoryLabel(post.data.category)}</a>
 		<span class="tc-date"><FormattedDate date={post.data.pubDate} /></span>
 	</div>
 	<h3 class="tc-title">

@@ -1,4 +1,6 @@
 ---
+import { NAV_ITEMS } from '../consts';
+
 const year = new Date().getFullYear();
 ---
 
@@ -9,10 +11,9 @@ const year = new Date().getFullYear();
 			<div class="f-slogan">Close the world, Open the nExt. — © {year} G36MAID · CC BY-SA 4.0</div>
 		</div>
 		<nav class="f-links" aria-label="頁尾導覽">
-			<a href="/blog/">LOGS</a>
-			<a href="/notes/">NOTES</a>
-			<a href="/tags/">TAGS</a>
-			<a href="/about/">ABOUT</a>
+			{NAV_ITEMS.filter((item) => item.href !== '/').map((item) => (
+				<a href={item.href}>{item.label}</a>
+			))}
 			<a href="/rss.xml">RSS</a>
 			<a href="/sitemap-index.xml">SITEMAP</a>
 		</nav>

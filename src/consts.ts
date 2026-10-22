@@ -8,13 +8,14 @@ export const SITE_URL = 'https://blog.g36maid.dev';
 /** posts per page on the homepage "LATEST LOGS" feed */
 export const LATEST_POSTS_COUNT = 6;
 
-/** nav items — uppercase tactical style */
+/** nav items — shared by the site header, the footer and the homepage topbar */
 export const NAV_ITEMS = [
-	{ href: '/', label: 'HOME', code: '00' },
-	{ href: '/blog/', label: 'LOGS', code: '01' },
-	{ href: '/notes/', label: 'NOTES', code: '02' },
-	{ href: '/tags/', label: 'TAGS', code: '03' },
-	{ href: '/about/', label: 'ABOUT', code: '04' },
+	{ href: '/', label: '首頁', code: '00' },
+	{ href: '/blog/', label: '文章', code: '01' },
+	{ href: '/notes/', label: '筆記', code: '02' },
+	{ href: '/categories/', label: '分類', code: '03' },
+	{ href: '/tags/', label: '標籤', code: '04' },
+	{ href: '/about/', label: '關於', code: '05' },
 ] as const;
 
 /** lain easter eggs */

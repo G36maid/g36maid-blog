@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCategoryCounts, categoryLabel } from '../../lib/content';
+
+const categoryCounts = await getCategoryCounts();
+const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<Base title="CATEGORIES — 分類索引" description="所有文章分類，依文章數排序。">
+	<div class="strip">
+		<span class="s-tag">Categories</span>
+		<span class="s-title">全部分類，依文章數排序</span>
+		<span class="s-end">{String(categories.length).padStart(3, '0')} CATS</span>
+	</div>
+	<div class="tag-cloud" style="margin-top: 1.5rem">
+		{
+			categories.map(([category, count]) => (
+				<a class="tag-chip" href={`/categories/${category}/`}>
+					{categoryLabel(category)} <span class="count">×{count}</span>
+				</a>
+			))
+		}
+	</div>
+</Base>

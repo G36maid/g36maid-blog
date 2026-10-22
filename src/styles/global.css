@@ -287,16 +287,19 @@ main.shell {
 	top: var(--header-top);
 	left: 0; right: 0;
 	z-index: 100;
-	height: var(--header-h);
+	/* min-height: with six tabs the row may wrap to two lines on phones;
+	   desktop stays single-row and the height is unchanged in practice */
+	min-height: var(--header-h);
 	background: linear-gradient(180deg, rgba(6, 8, 10, 0.72), rgba(6, 8, 10, 0.45));
 	backdrop-filter: blur(6px);
 	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 .header-row {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: flex-start;
 	justify-content: space-between;
-	height: var(--header-h);
+	min-height: var(--header-h);
 	gap: 1rem;
 }
 .tabs {
