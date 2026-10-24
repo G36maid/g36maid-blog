@@ -2,7 +2,7 @@
 title: "Zed Remote 為什麼不做成 VS Code Server:兩種 SSH 遠端開發架構的取捨"
 description: "VS Code 在遠端跑一顆完整的 headless Node.js server,Zed 只放一支單一 binary——解析兩種 SSH 遠端開發架構的資源與功能取捨。"
 pubDate: 2026-05-13T00:19:01+08:00
-category: programming
+category: essay
 tags: ["zed", "vscode", "remote-development", "ssh"]
 draft: false
 source: "facebook"
