@@ -162,4 +162,4 @@ nginx error log 把案情補完：`/var/www/html/uploads/662f9a8dc30bb.php` 一�
 - [Nmap](https://nmap.org/)（`-sV -P-` 服務與全埠掃描）
 - [John the Ripper](https://www.openwall.com/john/)
 - [RFC 4033 — DNS Security Introduction and Requirements (DNSSEC)](https://datatracker.ietf.org/doc/html/rfc4033)
-- [RFC 6234 — HMAC / DH 無驗證之中間人問題可參照 TLS 1.3 RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446)
+- [RFC 8446 — TLS 1.3（HMAC / DH 無驗證之中間人問題可參照）](https://datatracker.ietf.org/doc/html/rfc8446)
