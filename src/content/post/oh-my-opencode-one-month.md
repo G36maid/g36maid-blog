@@ -77,7 +77,7 @@ opencode
 
 ## 延伸閱讀
 
-- [oh-my-opencode GitHub repo](https://github.com/code-yeongyu/oh-my-opencode)（現已更名為 oh-my-openagent，npm 套件名不變）
+- [oh-my-opencode GitHub repo](https://github.com/code-yeongyu/oh-my-opencode)（現已更名為 oh-my-openagent，舊 npm 套件名 `oh-my-opencode` 仍保留為相容層）
 - [r/ClaudeCode 上的使用心得討論串](https://www.reddit.com/r/ClaudeCode/comments/1pp2tyw/ohmyopencode_has_been_a_gamechanger/)
 - [OpenCode AGENTS.md 與 /init 說明](https://opencode.ai/docs/rules/)
 - [Context7](https://context7.com)｜[Grep.app](https://grep.app)｜[Exa](https://exa.ai)
