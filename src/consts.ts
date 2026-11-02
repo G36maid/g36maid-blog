@@ -1,5 +1,5 @@
 // site-wide constants — edit here to rebrand every page
-export const SITE_TITLE = 'G36MAID // WIRED ARCHIVE';
+export const SITE_TITLE = 'G36MAID';
 export const SITE_DESCRIPTION =
 	'g36maid 的技術檔案室 — Linux 開源工具、自架伺服器（homelab）、程式開發與技術隨筆，收藏於 Wired 深層。';
 export const SITE_URL = 'https://blog.g36maid.dev';

@@ -1,8 +1,7 @@
 ---
 /**
  * Pagefind search modal — ⌘K / Ctrl+K to open, Esc to close.
- * pagefind indexes are generated post-build (`pagefind --site dist`);
- * in dev the modal shows a hint instead.
+ * pagefind indexes are generated post-build (`pagefind --site dist`).
  */
 const isDev = import.meta.env.DEV;
 ---
@@ -13,19 +12,16 @@ const isDev = import.meta.env.DEV;
 			type="search"
 			class="search-input"
 			id="search-input"
-			placeholder="search the wired…"
 			autocomplete="off"
 		/>
 		<div class="search-results" id="search-results"></div>
-		<div class="search-hint">
-			{
-				isDev ? (
-					<span>DEV MODE // pagefind index available after `pnpm build`</span>
-				) : (
+		{
+			!isDev && (
+				<div class="search-hint">
 					<span>ESC CLOSE · ↑↓ SELECT · ENTER OPEN</span>
-				)
-			}
-		</div>
+				</div>
+			)
+		}
 	</div>
 </div>
 
@@ -42,8 +38,7 @@ const isDev = import.meta.env.DEV;
 			pagefind = await import(/* @vite-ignore */ PAGEFIND_URL);
 			await pagefind.options!({ excerptLength: 18 });
 		} catch {
-			results.innerHTML =
-				'<p class="search-hint">PAGEFIND INDEX NOT FOUND — run `pnpm build` first.</p>';
+			// index not built yet — leave the results empty
 		}
 		return pagefind;
 	}

@@ -4,7 +4,7 @@ import Base from './Base.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import TOC from '../components/TOC.astro';
 import { SITE_TITLE } from '../consts';
-import { categoryLabel, getSeriesNeighbors, getSortedPosts, layerCode, type Post } from '../lib/content';
+import { categoryLabel, getSeriesNeighbors, getSortedPosts, type Post } from '../lib/content';
 
 interface Props {
 	post: CollectionEntry<'post'>;
@@ -15,40 +15,20 @@ const { post, headings = [] } = Astro.props;
 const { title, description, pubDate, updated, category, tags, series } = post.data;
 
 const allPosts = await getSortedPosts();
-const layer = layerCode(allPosts, post);
 const { prev, next } = series ? getSeriesNeighbors(series, post, allPosts) : {};
 ---
 
 <Base title={`${title} — ${SITE_TITLE}`} description={description}>
 	<article class="post-layout" itemscope itemtype="https://schema.org/BlogPosting">
 		<div>
-			<div class="back-row">
-				<a class="btn-back" href="/blog/">← Back to Logs</a>
-			</div>
-
 			<header class="mission-head" itemprop="about">
 				<div class="m-row">
 					<span class="m-cat">{categoryLabel(category)}</span>
-					<span class="label">{layer}</span>
 				</div>
 				<h1 class="mission-title" itemprop="headline">{title}</h1>
 				<div class="mission-meta">
 					<FormattedDate date={pubDate} />
-					{
-						updated && (
-							<span>
-								UPDATED <FormattedDate date={updated} />
-							</span>
-						)
-					}
 					<span>{tags.map((t) => `#${t}`).join(' ')}</span>
-					{
-						series && (
-							<span style="color: var(--blue)">
-								SERIES // {series}
-							</span>
-						)
-					}
 				</div>
 				<p class="mission-desc" itemprop="description">{description}</p>
 			</header>

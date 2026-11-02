@@ -68,11 +68,6 @@ export function getSeriesNeighbors(series: string, current: Post, all: Post[]): 
 	};
 }
 
-/** Layer:XX code for a post — its 1-based position in the chronology */
-export function layerCode(posts: Post[], post: Post): string {
-	const i = posts.findIndex((p) => p.id === post.id);
-	return `Layer:${String(posts.length - i).padStart(2, '0')}`;
-}
 
 /** category display labels (slug → zh/en label) — scripts/classify.py writes these slugs;
 	   unknown slugs fall back to the raw slug */

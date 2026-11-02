@@ -16,7 +16,6 @@ const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 {
 	toc.length > 0 && (
 		<aside class="toc-aside" aria-label="目錄">
-			<p class="toc-title">[ MISSION INDEX ]</p>
 			<ul class="toc-list">
 				{toc.map((h) => (
 					<li class={`toc-${h.depth === 2 ? 'h2' : 'h3'}`}>
