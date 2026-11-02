@@ -109,6 +109,11 @@ no Chromium. CI installs the prebuilt mmdr binary from GitHub releases.
   importing more.
 - `pnpm-workspace.yaml` `allowBuilds` gates postinstall scripts (pnpm 11
   ignores the `pnpm` field in package.json). `workerd: true` is required.
+- Category badge glyphs are vendored 24×24 SVGs in `src/assets/category-icons/`
+  (one per category slug + `category.svg` fallback), downloaded from
+  api.iconify.design — Pictogrammers Material Design Icons (Apache-2.0),
+  simple-icons for the Astro mark (CC0). `src/lib/category-meta.ts` builds the
+  badge (white frame + flat color field + white glyph) from them at build time.
 - Fonts: Google provider via Astro fonts API (declared in `astro.config.mjs`);
   the lain official font LoveLetter is self-hosted at `public/fonts/`
   (referenced by `@font-face` in `src/styles/global.css`). Noto Sans TC is

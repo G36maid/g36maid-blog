@@ -2,7 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import CategoryIcon from '../../components/CategoryIcon.astro';
 import { getCategoryCounts, categoryLabel } from '../../lib/content';
-import { categoryMeta } from '../../lib/category-meta';
 
 const categoryCounts = await getCategoryCounts();
 const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
@@ -19,7 +18,7 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
 	<div class="roster">
 		{
 			categories.map(([category, count]) => (
-				<a class="op" href={`/categories/${category}/`} style={`--op:${categoryMeta(category).color}`}>
+				<a class="op" href={`/categories/${category}/`}>
 					<span class="op-art">
 						<svg class="op-sil" viewBox="0 0 200 240" fill="currentColor" aria-hidden="true">
 							<path d="M100 14c-25 0-42 15-44 38l-2 16c-.5 6 2 10 7 12l3 10h72l3-10c5-2 7.5-6 7-12l-2-16c-2-23-19-38-44-38z" />
@@ -54,12 +53,6 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
 		position: relative;
 		display: block;
 		border: 1px solid var(--border);
-		transition: border-color 0.15s ease, transform 0.15s ease;
-	}
-	.op:hover,
-	.op:focus-visible {
-		border-color: var(--text-bright);
-		transform: translateY(-4px);
 	}
 
 	.op-art {
@@ -85,7 +78,6 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
 		left: 50%;
 		bottom: 12%;
 		transform: translateX(-50%);
-		filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.45));
 	}
 	.op-count {
 		position: absolute;
@@ -113,22 +105,6 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
 		overflow-wrap: break-word;
 	}
 
-	/* selected state: category-colored accent bar, like the game's highlight */
-	.op::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 3px;
-		background: var(--op);
-		opacity: 0;
-		transition: opacity 0.15s ease;
-	}
-	.op:hover::after,
-	.op:focus-visible::after {
-		opacity: 1;
-	}
 
 	@media (max-width: 40rem) {
 		.roster {
