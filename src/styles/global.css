@@ -36,6 +36,9 @@
 	--header-h: 3.5rem;
 	/* identical formula to the menu topbar — header hangs at the same height */
 	--header-top: clamp(18px, 4.6vh, 44px);
+	/* left inset of the game-menu top bar — shared by the home topbar and
+	   the fixed site header so the whole chrome sits in the same spot */
+	--inset: clamp(24px, 8.6vw, 165px);
 
 	/* nav tabs — single source shared by the menu topbar (homepage) and the
 	   site header, so the tab size never drifts between the two */
@@ -55,6 +58,9 @@
 		--tab-gap: 14px;
 		--tab-size: 17px;
 		--tab-pad-b: 8px;
+	}
+	.header-row {
+		padding-inline: 16px;
 	}
 }
 
@@ -301,6 +307,11 @@ main.shell {
 	justify-content: space-between;
 	min-height: var(--header-h);
 	gap: 1rem;
+	/* match the home menu topbar geometry: anchored to the left inset and
+	   viewport right edge, not the centered reading column */
+	max-width: none;
+	margin-inline: 0;
+	padding-inline: var(--inset) clamp(16px, 1.6vw, 32px);
 }
 .tabs {
 	display: flex;
