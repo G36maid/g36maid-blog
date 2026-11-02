@@ -114,6 +114,18 @@ no Chromium. CI installs the prebuilt mmdr binary from GitHub releases.
   api.iconify.design — Pictogrammers Material Design Icons (Apache-2.0),
   simple-icons for the Astro mark (CC0). `src/lib/category-meta.ts` builds the
   badge (white frame + flat color field + white glyph) from them at build time.
+- Icon system: two vendored SVG sets under `src/assets/`, both downloaded
+  from api.iconify.design — category badge glyphs in `src/assets/category-icons/`
+  (one per slug) and UI icons in `src/assets/icons/` (MDI). Loaders:
+  `src/lib/category-meta.ts` (badge construction, geometry derived from the
+  viewBox) and `src/lib/icons.ts` (`icon(name)`, throws on unknown names).
+  Never inline an SVG string in a component — add a file and use the loader.
+- Site chrome is single-source: nav tabs render only via
+  `src/components/Tabs.astro`; corner buttons only via the global `.icon-btn`
+  class; the left inset token `--inset` in global.css anchors both the site
+  header and the home topbar. The home menu is split into
+  `src/components/home/*` (Scene/Topbar/Strip/TileGrid/WideTile/QueueBar);
+  `src/pages/index.astro` is the layout shell only.
 - Fonts: Google provider via Astro fonts API (declared in `astro.config.mjs`);
   the lain official font LoveLetter is self-hosted at `public/fonts/`
   (referenced by `@font-face` in `src/styles/global.css`). Noto Sans TC is

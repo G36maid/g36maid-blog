@@ -178,61 +178,6 @@ main.shell,
 	color: #fff;
 }
 
-/* queue bar — LATEST LOGS voice */
-.queue-bar {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	height: 3.4rem;
-	padding: 0 0.75rem;
-	border-radius: 3px;
-	background: var(--queue-grad);
-	color: #fff;
-	font-family: var(--font-narrow);
-	font-weight: 700;
-	font-size: 1.05rem;
-	letter-spacing: 0.05em;
-	transition: filter 0.15s ease;
-}
-.queue-bar:hover {
-	filter: brightness(1.15);
-	color: #fff;
-}
-.queue-bar .bell {
-	position: relative;
-	flex: none;
-	width: 2.1rem;
-	aspect-ratio: 1;
-	display: grid;
-	place-items: center;
-	background: rgba(255, 255, 255, 0.14);
-	border-radius: 4px;
-}
-.queue-bar .bell svg {
-	width: 68%;
-	height: 68%;
-	fill: none;
-	stroke: #fff;
-	stroke-width: 1.8;
-	stroke-linecap: round;
-}
-.queue-bar .badge {
-	position: absolute;
-	top: -7px;
-	right: -9px;
-	min-width: 1.05rem;
-	height: 1.05rem;
-	padding: 0 0.25rem;
-	display: grid;
-	place-items: center;
-	border-radius: 50%;
-	background: #fff;
-	color: #14202b;
-	font-family: var(--font-body);
-	font-size: 0.68rem;
-	font-weight: 700;
-}
-
 /* amber label — BRIEFING voice */
 .label-amber {
 	font-family: var(--font-narrow);
@@ -250,29 +195,6 @@ main.shell,
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 	color: var(--text-dim);
-}
-
-/* mono date */
-.mono {
-	font-family: var(--font-terminal);
-	font-size: 1.05rem;
-	letter-spacing: 0.04em;
-	color: var(--text-dim);
-}
-
-/* status dot */
-.status-dot {
-	display: inline-block;
-	width: 8px;
-	height: 8px;
-	background: var(--live);
-	box-shadow: 0 0 6px var(--live);
-	margin-right: 0.5em;
-	animation: pulse 2.4s infinite;
-}
-@keyframes pulse {
-	0%, 100% { opacity: 1; }
-	50% { opacity: 0.35; }
 }
 
 /* ── 5. shells ─────────────────────────────────────────────────────────── */
@@ -389,28 +311,6 @@ main.shell {
 	font-size: 1rem;
 	color: var(--text-dim);
 }
-
-/* ── 8. section head ───────────────────────────────────────────────────── */
-.section-head {
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-	margin: 2.6rem 0 1.3rem;
-	padding-bottom: 0.55rem;
-	border-bottom: 1px solid var(--border);
-}
-.section-title {
-	font-size: 1.5rem;
-	font-weight: 700;
-	text-transform: uppercase;
-}
-.section-code {
-	font-family: var(--font-terminal);
-	font-size: 1.05rem;
-	color: var(--text-dim);
-}
-a.section-code { margin-left: auto; }
-a.section-code:hover { color: var(--blue-bright); }
 
 /* ── 9. post tiles ─────────────────────────────────────────────────────── */
 .card-grid {
@@ -745,7 +645,6 @@ a.section-code:hover { color: var(--blue-bright); }
 	border-left-color: var(--blue);
 }
 .toc-list .toc-h3 a { padding-left: 1.7rem; }
-.toc-list .toc-h4 a { padding-left: 2.6rem; }
 
 /* series prev/next — queue bars */
 .series-nav {

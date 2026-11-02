@@ -26,14 +26,22 @@ function glyphPath(slug: string): string {
 }
 
 function badgeSvg(color: string, slug: string): string {
-	/* 24×24 icon grid scaled into the 22×22 color field, centered on the badge */
+	/* all geometry derives from the viewBox — no hand-maintained centers */
+	const VIEW = 30; // square badge canvas
+	const FRAME_MARGIN = 1.5; // white frame inset
+	const FIELD = 22; // flat color field, centered
+	const ICON_GRID = 24; // vendored icon grid
+	const GLYPH_SCALE = 0.58; // glyph ≈ 14px inside the 22px field
+
 	const d = glyphPath(slug);
-	const s = 0.58;
-	const o = (15 - 12 * s).toFixed(2);
+	const fieldX = (VIEW - FIELD) / 2;
+	const s = GLYPH_SCALE;
+	const o = (VIEW / 2 - (ICON_GRID / 2) * s).toFixed(2);
+	const frame = VIEW - FRAME_MARGIN * 2;
 	return (
-		`<svg viewBox="0 0 30 30" aria-hidden="true">` +
-		`<rect x="1.5" y="1.5" width="27" height="27" fill="#fff"/>` +
-		`<rect x="4" y="4" width="22" height="22" fill="${color}"/>` +
+		`<svg viewBox="0 0 ${VIEW} ${VIEW}" aria-hidden="true">` +
+		`<rect x="${FRAME_MARGIN}" y="${FRAME_MARGIN}" width="${frame}" height="${frame}" fill="#fff"/>` +
+		`<rect x="${fieldX}" y="${fieldX}" width="${FIELD}" height="${FIELD}" fill="${color}"/>` +
 		`<g transform="translate(${o},${o}) scale(${s})" fill="#fff"><path d="${d}"/></g>` +
 		`</svg>`
 	);
