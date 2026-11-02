@@ -11,7 +11,6 @@
 import Base from '../layouts/Base.astro';
 import Scene from '../components/home/Scene.astro';
 import Topbar from '../components/home/Topbar.astro';
-import Strip from '../components/home/Strip.astro';
 import TileGrid from '../components/home/TileGrid.astro';
 import WideTile from '../components/home/WideTile.astro';
 import QueueBar from '../components/home/QueueBar.astro';
@@ -22,7 +21,6 @@ import { icon } from '../lib/icons';
 const posts = await getSortedPosts();
 const notes = await getSortedNotes();
 const latest = posts[0];
-const df = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
 <Base title={SITE_TITLE} description={SITE_DESCRIPTION} chrome={false}>
@@ -34,14 +32,10 @@ const df = (d: Date) => d.toISOString().slice(0, 10);
 		<!-- ═ top bar ═ -->
 		<Topbar />
 
-		<!-- status strip -->
-		<Strip href={`/blog/${latest.id}/`} title={latest.data.title} date={df(latest.data.pubDate)} />
-
 		<!-- ═ left column ═ -->
 		<main class="col">
-			<a class="play" href="/blog/">
+			<a class="play" href="/blog/" aria-label="READ">
 				<span class="play-ic" set:html={icon('bars')} />
-				READ
 			</a>
 
 			<TileGrid />
@@ -51,7 +45,6 @@ const df = (d: Date) => d.toISOString().slice(0, 10);
 			<QueueBar count={notes.length} />
 		</main>
 
-		<span class="mini" aria-hidden="true">UI LAYOUT STUDY // ORIGINAL CODE — NO GAME ASSETS · G36MAID</span>
 	</div>
 </Base>
 
@@ -126,18 +119,6 @@ const df = (d: Date) => d.toISOString().slice(0, 10);
 		height: 100%;
 	}
 
-	/* misc */
-	.mini {
-		position: absolute;
-		right: 18px;
-		bottom: 14px;
-		font-family: var(--font-terminal);
-		font-size: 0.64rem;
-		letter-spacing: 0.1em;
-		color: rgba(255, 255, 255, 0.35);
-		z-index: 5;
-	}
-
 	/* ── small / portrait screens: stack in flow ───────────────────────── */
 	@media (max-width: 960px), (max-aspect-ratio: 5/6) {
 		.r6 {
@@ -158,11 +139,6 @@ const df = (d: Date) => d.toISOString().slice(0, 10);
 		.play-ic {
 			width: 26px;
 			height: 26px;
-		}
-		.mini {
-			position: static;
-			margin: 0 16px 14px;
-			font-size: 10px;
 		}
 	}
 </style>

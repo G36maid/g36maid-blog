@@ -18,7 +18,6 @@ import { icon } from '../../lib/icons';
 	</a>
 	<a class="tile secure" href="/about/">
 		<span class="secure-ic" set:html={icon('shield')} />
-		<span class="stxt"><b>BRIEFING</b><i>WHO IS G36</i></span>
 	</a>
 </div>
 
@@ -84,24 +83,6 @@ import { icon } from '../../lib/icons';
 		width: 100%;
 		height: 100%;
 	}
-	.stxt {
-		display: flex;
-		flex-direction: column;
-		line-height: 1.25;
-	}
-	.stxt b {
-		font-weight: 700;
-		font-size: 17px;
-		letter-spacing: 0.04em;
-		color: #fff;
-	}
-	.stxt i {
-		font-style: normal;
-		font-weight: 700;
-		font-size: 13px;
-		letter-spacing: 0.05em;
-		color: #f5c518;
-	}
 	.tile.secure::after {
 		content: '';
 		position: absolute;
@@ -123,12 +104,6 @@ import { icon } from '../../lib/icons';
 		.tile-ic {
 			width: 32px;
 			height: 32px;
-		}
-		.stxt b {
-			font-size: 16px;
-		}
-		.stxt i {
-			font-size: 12px;
 		}
 		.tile.secure::after {
 			border-width: 8px;

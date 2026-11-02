@@ -1,5 +1,5 @@
 ---
-/** featured pack tile — the grid-pattern "View More" panel for the latest post */
+/** featured pack tile — grid-pattern panel linking to the latest post */
 interface Props {
 	href: string;
 	label: string;
@@ -10,7 +10,6 @@ const { href, label } = Astro.props;
 <a class="wide" {href} aria-label={`最新文章：${label}`}>
 	<span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="on"></i></span>
 	<span class="plus-box" aria-hidden="true">+</span>
-	<span class="viewmore" role="presentation">View More</span>
 </a>
 
 <style>
@@ -64,20 +63,6 @@ const { href, label } = Astro.props;
 	.wide:hover .plus-box {
 		background: rgba(255, 255, 255, 0.14);
 	}
-	.viewmore {
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 28px;
-		display: flex;
-		align-items: center;
-		padding-left: 14px;
-		background: rgba(0, 0, 0, 0.82);
-		color: #cfd5da;
-		font-family: var(--font-body);
-		font-size: 13px;
-	}
 
 	@media (max-width: 960px), (max-aspect-ratio: 5/6) {
 		.wide {
@@ -87,10 +72,6 @@ const { href, label } = Astro.props;
 			width: 72px;
 			font-size: 32px;
 			border-width: 2px;
-		}
-		.viewmore {
-			height: 28px;
-			font-size: 12px;
 		}
 	}
 </style>

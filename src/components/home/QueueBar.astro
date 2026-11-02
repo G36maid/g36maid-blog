@@ -1,5 +1,5 @@
 ---
-/** blue queue bar — LATEST LOGS entry with a note-count badge */
+/** blue queue bar — blog entry with a note-count bell badge */
 import { icon } from '../../lib/icons';
 
 interface Props {
@@ -13,7 +13,6 @@ const { count } = Astro.props;
 		<Fragment set:html={icon('bell')} />
 		{count > 0 && <b class="badge">{count}</b>}
 	</span>
-	LATEST LOGS
 </a>
 
 <style>
