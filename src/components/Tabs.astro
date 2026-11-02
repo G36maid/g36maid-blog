@@ -1,0 +1,74 @@
+---
+/**
+ * Main navigation tabs — the single render of NAV_ITEMS, shared by the
+ * site header on inner pages and the home menu topbar. Tab metrics come
+ * from the shared --tab-* tokens in global.css.
+ */
+import { NAV_ITEMS } from '../consts';
+
+const { cur = Astro.url.pathname } = Astro.props as { cur?: string };
+const isActive = (href: string) =>
+	href === '/' ? cur === '/' : cur === href || cur.startsWith(href.replace(/\/$/, '') + '/');
+---
+
+<nav class="tabs" aria-label="主導覽">
+	{
+		NAV_ITEMS.map((item) => (
+			<a
+				class:list={['tab', { active: isActive(item.href) }]}
+				href={item.href}
+				aria-current={isActive(item.href) ? 'page' : undefined}
+			>
+				{item.label}
+				{isActive(item.href) && <i class="dot" />}
+			</a>
+		))
+	}
+</nav>
+
+<style>
+	.tabs {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--tab-gap);
+		/* wrapping only ever happens on stacked phones; harmless on desktop */
+		flex-wrap: wrap;
+	}
+	.tab {
+		position: relative;
+		font-family: var(--font-narrow);
+		font-weight: 700;
+		font-size: var(--tab-size);
+		letter-spacing: 0.05em;
+		color: var(--text-faint);
+		text-transform: uppercase;
+		text-decoration: none;
+		padding-bottom: var(--tab-pad-b);
+		transition: color 0.15s ease;
+	}
+	.tab:hover {
+		color: #a9b1b8;
+	}
+	.tab.active {
+		color: var(--text-bright);
+	}
+	.tab.active::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: var(--tab-underline-b);
+		height: 2px;
+		background: var(--text-bright);
+	}
+	.tab .dot {
+		position: absolute;
+		left: 2px;
+		bottom: var(--tab-dot-b);
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--amber);
+		box-shadow: 0 0 6px rgba(245, 197, 24, 0.8);
+	}
+</style>

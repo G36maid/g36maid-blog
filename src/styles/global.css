@@ -313,42 +313,7 @@ main.shell {
 	margin-inline: 0;
 	padding-inline: var(--inset) clamp(16px, 1.6vw, 32px);
 }
-.tabs {
-	display: flex;
-	align-items: flex-start;
-	gap: var(--tab-gap);
-}
-.tab {
-	margin-top: 0;
-	position: relative;
-	font-family: var(--font-narrow);
-	font-weight: 700;
-	font-size: var(--tab-size);
-	letter-spacing: 0.05em;
-	color: var(--text-faint);
-	text-transform: uppercase;
-	padding-bottom: var(--tab-pad-b);
-	transition: color 0.15s ease;
-}
-.tab:hover { color: #a9b1b8; }
-.tab.active { color: var(--text-bright); }
-.tab.active::after {
-	content: '';
-	position: absolute;
-	left: 0; right: 0; bottom: var(--tab-underline-b);
-	height: 2px;
-	background: var(--text-bright);
-}
-.tab .dot {
-	position: absolute;
-	left: 2px;
-	bottom: var(--tab-dot-b);
-	width: 7px;
-	height: 7px;
-	border-radius: 50%;
-	background: var(--amber);
-	box-shadow: 0 0 6px rgba(245, 197, 24, 0.8);
-}
+/* nav tab markup + styles live in components/Tabs.astro */
 
 .header-tools {
 	display: flex;

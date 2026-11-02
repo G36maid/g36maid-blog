@@ -6,8 +6,9 @@
  * The blog itself plays the squad: playlists = site sections.
  */
 import Base from '../layouts/Base.astro';
+import Tabs from '../components/Tabs.astro';
 import { getSortedPosts, getSortedNotes } from '../lib/content';
-import { SITE_TITLE, SITE_DESCRIPTION, NAV_ITEMS } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { icon } from '../lib/icons';
 
 const posts = await getSortedPosts();
@@ -15,12 +16,6 @@ const notes = await getSortedNotes();
 const latest = posts[0];
 const df = (d: Date) => d.toISOString().slice(0, 10);
 
-/* same nav as the site header — single source in consts.ts */
-const tabs = NAV_ITEMS.map((item) => ({
-	href: item.href,
-	label: item.label,
-	active: item.href === '/',
-}));
 
 const IC: Record<string, string> = {
 	bars: icon('bars'),
@@ -51,16 +46,7 @@ const IC: Record<string, string> = {
 
 		<!-- ═ top bar ═ -->
 		<header class="topbar">
-			<nav class="tabs" aria-label="主導覽">
-				{
-					tabs.map((t) => (
-						<a class:list={['tab', { active: t.active }]} href={t.href} aria-current={t.active ? 'page' : undefined}>
-							{t.label}
-							{t.active && <i class="dot" />}
-						</a>
-					))
-				}
-			</nav>
+			<Tabs />
 			<!-- same .icon-btn format as the site header on every inner page -->
 			<div class="header-tools">
 				<a class="icon-btn" href="/rss.xml" aria-label="RSS" title="RSS" set:html={IC.rss} />
@@ -219,12 +205,8 @@ const IC: Record<string, string> = {
 		padding: clamp(18px, 4.6vh, 44px) clamp(16px, 1.6vw, 32px) 0 var(--inset);
 		background: linear-gradient(180deg, rgba(6, 8, 10, 0.6), transparent);
 	}
-	/* tab metrics come from the shared --tab-* tokens in global.css,
-	   keeping this topbar identical to the site header on every page */
-	.tabs {
-		display: flex;
-		gap: var(--tab-gap);
-	}
+	/* tab metrics come from the shared --tab-* tokens in global.css;
+	   the tab markup/styles live in components/Tabs.astro */
 	.tab {
 		position: relative;
 		font-weight: 700;
@@ -546,9 +528,6 @@ const IC: Record<string, string> = {
 			flex-direction: column;
 			gap: 14px;
 			padding: 18px 16px 0;
-		}
-		.tabs {
-			flex-wrap: wrap;
 		}
 		.strip {
 			height: 36px;
