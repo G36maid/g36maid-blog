@@ -20,7 +20,7 @@ import { icon } from '../../lib/icons';
 		<span class="party" set:html={icon('party')} />
 	</a>
 	<a class="tile secure" href="/about/">
-		<span class="secure-ic" set:html={icon('shield')} />
+		<span class="tile-ic" set:html={icon('shield')} />
 		<span class="tile-label">關於</span>
 	</a>
 </div>
@@ -72,29 +72,14 @@ import { icon } from '../../lib/icons';
 		color: #7f8992;
 	}
 	.tile.secure {
-		flex-direction: row;
-		align-items: center;
-		justify-content: flex-start;
-		gap: 12px;
-		padding: 0 14px;
 		background: rgba(38, 52, 63, 0.9);
+		color: #fff;
 	}
 	.tile-label {
 		font-weight: 700;
 		font-size: 14px;
 		letter-spacing: 0.1em;
 		color: inherit;
-	}
-	.secure-ic {
-		width: 32px;
-		height: 32px;
-		color: #fff;
-		display: inline-grid;
-		place-items: center;
-	}
-	.secure-ic :global(svg) {
-		width: 100%;
-		height: 100%;
 	}
 	.tile.secure::after {
 		content: '';
