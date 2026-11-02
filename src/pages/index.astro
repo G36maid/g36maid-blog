@@ -60,14 +60,11 @@ const IC: Record<string, string> = {
 					))
 				}
 			</nav>
-			<div class="ctrl">
-				<div class="duo">
-					<a href="/rss.xml" aria-label="RSS" title="RSS"><span class="ic" set:html={IC.rss} /></a>
-					<a href="/about/" aria-label="About" title="About"><span class="ic" set:html={IC.person} /></a>
-				</div>
-				<button type="button" class="search" data-search-open aria-label="搜尋" title="Search">
-					<span class="ic" set:html={IC.search} />
-				</button>
+			<!-- same .icon-btn format as the site header on every inner page -->
+			<div class="header-tools">
+				<a class="icon-btn" href="/rss.xml" aria-label="RSS" title="RSS" set:html={IC.rss} />
+				<a class="icon-btn" href="/about/" aria-label="About" title="About" set:html={IC.person} />
+				<button type="button" class="icon-btn" data-search-open aria-label="搜尋" title="Search" set:html={IC.search} />
 			</div>
 		</header>
 
@@ -261,40 +258,6 @@ const IC: Record<string, string> = {
 		border-radius: 50%;
 		background: #f5c518;
 		box-shadow: 0 0 6px rgba(245, 197, 24, 0.8);
-	}
-	.ctrl {
-		display: flex;
-		gap: 10px;
-	}
-	.duo {
-		display: flex;
-	}
-	.duo a,
-	.search {
-		width: clamp(96px, 7.3vw, 140px);
-		height: clamp(40px, 4.6vh, 50px);
-		display: grid;
-		place-items: center;
-		background: rgba(28, 36, 43, 0.85);
-		border: 1px solid #414c55;
-		color: #dfe3e8;
-		cursor: pointer;
-		transition: background 0.15s ease;
-	}
-	.duo a + a {
-		border-left: 0;
-	}
-	.search {
-		width: clamp(40px, 4.6vh, 50px);
-	}
-	.duo a:hover,
-	.search:hover {
-		background: rgba(48, 60, 70, 0.9);
-		color: #fff;
-	}
-	.ctrl :global(.ic) {
-		width: 22px;
-		height: 22px;
 	}
 
 	/* ── status strip ──────────────────────────────────────────────────── */
@@ -585,11 +548,6 @@ const IC: Record<string, string> = {
 		}
 		.tabs {
 			flex-wrap: wrap;
-		}
-		.duo a,
-		.search {
-			width: 64px;
-			height: 40px;
 		}
 		.strip {
 			height: 36px;

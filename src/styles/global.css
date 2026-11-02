@@ -357,6 +357,8 @@ main.shell {
 	padding-top: 0.3rem;
 }
 .icon-btn {
+	appearance: none;
+	border-radius: 0;
 	display: grid;
 	place-items: center;
 	width: 3.4rem;
@@ -364,6 +366,7 @@ main.shell {
 	background: rgba(28, 36, 43, 0.85);
 	border: 1px solid #414c55;
 	color: var(--text);
+	cursor: pointer;
 	transition: background 0.15s ease, color 0.15s ease;
 }
 .icon-btn:hover {
