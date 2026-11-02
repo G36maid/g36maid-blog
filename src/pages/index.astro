@@ -35,7 +35,10 @@ const events = await getCollection('event');
 
 		<!-- ═ left column ═ -->
 		<main class="col">
-			<p class="intro">g36maid 的技術部落格——Linux、自架伺服器、程式開發, 開源新聞與隨筆。</p>
+			<p class="intro">
+				<span>g36maid 的技術部落格——Linux、自架伺服器、程式開發, 開源新聞與隨筆。</span>
+				<span>記錄實作、部署與日常摸索的第一手筆記。</span>
+			</p>
 			<a class="play" href="/blog/">
 				<span class="play-ic" set:html={icon('bars')} />
 				文章
@@ -96,10 +99,12 @@ const events = await getCollection('event');
 	}
 	.intro {
 		margin: 0 0.2rem;
-		font-family: var(--font-terminal);
-		font-size: 0.8rem;
-		letter-spacing: 0.04em;
-		color: rgba(223, 227, 232, 0.55);
+		font-family: var(--font-body);
+		font-size: 0.9rem;
+		color: rgba(223, 227, 232, 0.6);
+	}
+	.intro span {
+		display: block;
 	}
 	.play {
 		display: flex;
