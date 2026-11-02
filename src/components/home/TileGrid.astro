@@ -1,5 +1,5 @@
 ---
-/** the four quick-link tiles: notes, tags, rss feed and the briefing card */
+/** the four quick-link tiles: notes, tags, rss feed and the about card */
 import { icon } from '../../lib/icons';
 ---
 
@@ -10,7 +10,7 @@ import { icon } from '../../lib/icons';
 		<span class="party" set:html={icon('party')} />
 	</a>
 	<a class="tile selected" href="/tags/">
-		<span class="tile-ic" set:html={icon('bolt')} />
+		<span class="tile-ic" set:html={icon('tags')} />
 		<span class="tile-label">標籤</span>
 		<span class="party" set:html={icon('party')} />
 	</a>
@@ -20,7 +20,7 @@ import { icon } from '../../lib/icons';
 		<span class="party" set:html={icon('party')} />
 	</a>
 	<a class="tile secure" href="/about/">
-		<span class="tile-ic" set:html={icon('shield')} />
+		<span class="tile-ic" set:html={icon('person')} />
 		<span class="tile-label">關於</span>
 	</a>
 </div>
@@ -35,10 +35,11 @@ import { icon } from '../../lib/icons';
 		position: relative;
 		height: var(--tile-h);
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		align-items: center;
-		justify-content: center;
-		gap: 10px;
+		justify-content: flex-start;
+		gap: 12px;
+		padding: 0 14px;
 		background: rgba(31, 39, 47, 0.88);
 		border: 1px solid #39434c;
 		color: #c3ccd3;
@@ -56,6 +57,7 @@ import { icon } from '../../lib/icons';
 	.tile-ic {
 		width: 34px;
 		height: 34px;
+		flex: none;
 		display: inline-grid;
 		place-items: center;
 	}
@@ -77,8 +79,8 @@ import { icon } from '../../lib/icons';
 	}
 	.tile-label {
 		font-weight: 700;
-		font-size: 14px;
-		letter-spacing: 0.1em;
+		font-size: 17px;
+		letter-spacing: 0.05em;
 		color: inherit;
 	}
 	.tile.secure::after {
@@ -103,8 +105,8 @@ import { icon } from '../../lib/icons';
 			width: 32px;
 			height: 32px;
 		}
-		.tile.secure::after {
-			border-width: 8px;
+		.tile-label {
+			font-size: 16px;
 		}
 	}
 </style>
