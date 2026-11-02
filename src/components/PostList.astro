@@ -1,0 +1,73 @@
+---
+/**
+ * post list with two user-switchable views — dense rows or card grid.
+ * Both views are server-rendered; [data-view] picks the visible one.
+ * The choice is persisted site-wide by components/ViewToggle.astro.
+ *
+ * Row styles (.year-head/.log-*) come from global.css — the search modal
+ * injects the same classes at runtime.
+ */
+import PostCard from './PostCard.astro';
+import FormattedDate from './FormattedDate.astro';
+import { categoryLabel, type Post } from '../lib/content';
+
+interface Props {
+	posts: Post[];
+	/** initial view until the visitor picks one (stored preference wins) */
+	default?: 'rows' | 'cards';
+	/** group rows under year headings (the /blog/ archive look) */
+	group?: boolean;
+}
+const { posts, default: initial = 'cards', group = false } = Astro.props;
+
+const years = [...new Set(posts.map((p) => p.data.pubDate.getFullYear()))].sort((a, b) => b - a);
+const groups = group
+	? years.map((year) => ({ year, items: posts.filter((p) => p.data.pubDate.getFullYear() === year) }))
+	: [{ year: undefined, items: posts }];
+---
+
+<div class="post-list" data-post-list data-view={initial}>
+	<div class="pl-rows">
+		{
+			groups.map(({ year, items }) => (
+				<section>
+					{year !== undefined && (
+						<div class="year-head">
+							<h2 class="year-title">{year}</h2>
+							<div class="line" aria-hidden="true" />
+							<span class="count">{String(items.length).padStart(3, '0')} OPS</span>
+						</div>
+					)}
+					<ul class="log-list">
+						{items.map((post) => (
+							<li class="log-row">
+								<span class="log-date">
+									<FormattedDate date={post.data.pubDate} />
+								</span>
+								<a class="log-title" href={`/blog/${post.id}/`}>
+									{post.data.title}
+								</a>
+								<span class="log-cat">{categoryLabel(post.data.category)}</span>
+							</li>
+						))}
+					</ul>
+				</section>
+			))
+		}
+	</div>
+
+	<div class="pl-cards">
+		<div class="card-grid">
+			{posts.map((post) => <PostCard post={post} />)}
+		</div>
+	</div>
+</div>
+
+<style>
+	.post-list[data-view='cards'] .pl-rows {
+		display: none;
+	}
+	.post-list[data-view='rows'] .pl-cards {
+		display: none;
+	}
+</style>

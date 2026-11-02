@@ -1,7 +1,7 @@
 ---
 import { getPostsByCategory, getSortedPosts, categoryLabel } from '../../lib/content';
-import PostCard from '../../components/PostCard.astro';
-import CategoryIcon from '../../components/CategoryIcon.astro';
+import PostList from '../../components/PostList.astro';
+import ViewToggle from '../../components/ViewToggle.astro';
 import Base from '../../layouts/Base.astro';
 
 export async function getStaticPaths() {
@@ -17,11 +17,12 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <Base title={`${label} — 分類`} description={`分類「${label}」下的所有文章。`}>
-	<h1 class="page-title">{label}</h1>
-
-	<div class="card-grid" style="margin-top: 1.5rem">
-		{posts.map((post) => <PostCard post={post} />)}
+	<div class="page-head">
+		<h1 class="page-title">{label}</h1>
+		<ViewToggle />
 	</div>
+
+	<PostList posts={posts} default="cards" />
 	<p style="margin-top: 2.5rem">
 		<a href="/categories/" class="label">← 全部分類</a>
 	</p>

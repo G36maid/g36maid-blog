@@ -282,6 +282,16 @@ main.shell {
 	font-size: 1.5rem;
 	font-weight: 700;
 }
+.page-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 1.3rem;
+}
+.page-head .page-title {
+	margin-bottom: 0;
+}
 
 /* ── 9. post tiles ─────────────────────────────────────────────────────── */
 .card-grid {

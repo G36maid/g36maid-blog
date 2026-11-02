@@ -1,43 +1,17 @@
 ---
 import Base from '../../layouts/Base.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import { categoryLabel, getSortedPosts } from '../../lib/content';
+import PostList from '../../components/PostList.astro';
+import ViewToggle from '../../components/ViewToggle.astro';
+import { getSortedPosts } from '../../lib/content';
 
 const posts = await getSortedPosts();
-
-/** group by year, newest first */
-const byYear = new Map<number, typeof posts>();
-for (const post of posts) {
-	const y = post.data.pubDate.getFullYear();
-	if (!byYear.has(y)) byYear.set(y, []);
-	byYear.get(y)!.push(post);
-}
-const years = [...byYear.keys()].sort((a, b) => b - a);
 ---
 
 <Base title="LOGS — 全部文章" description="g36maid 的全部技術文章存檔，按年份排列。">
-	<h1 class="page-title">文章</h1>
+	<div class="page-head">
+		<h1 class="page-title">文章</h1>
+		<ViewToggle />
+	</div>
 
-	{
-		years.map((year) => (
-			<section>
-				<div class="year-head">
-					<h2 class="year-title">{year}</h2>
-					<div class="line" aria-hidden="true" />
-					<span class="count">{String(byYear.get(year)!.length).padStart(3, '0')} OPS</span>
-				</div>
-				<ul class="log-list">
-					{byYear.get(year)!.map((post) => (
-						<li class="log-row">
-							<span class="log-date"><FormattedDate date={post.data.pubDate} /></span>
-							<a class="log-title" href={`/blog/${post.id}/`}>
-								{post.data.title}
-							</a>
-							<span class="log-cat">{categoryLabel(post.data.category)}</span>
-						</li>
-					))}
-				</ul>
-			</section>
-		))
-	}
+	<PostList posts={posts} default="rows" group />
 </Base>

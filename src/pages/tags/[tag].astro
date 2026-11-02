@@ -1,6 +1,7 @@
 ---
 import { getPostsByTag, getSortedPosts } from '../../lib/content';
-import PostCard from '../../components/PostCard.astro';
+import PostList from '../../components/PostList.astro';
+import ViewToggle from '../../components/ViewToggle.astro';
 import Base from '../../layouts/Base.astro';
 
 export async function getStaticPaths() {
@@ -15,11 +16,10 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <Base title={`#${tag} — 標籤`} description={`標籤 #${tag} 下的所有文章。`}>
-	<h1 class="page-title">#{tag}</h1>
-
-	<div class="card-grid" style="margin-top: 1.5rem">
-		{posts.map((post) => <PostCard post={post} />)}
+	<div class="page-head">
+		<h1 class="page-title">#{tag}</h1>
+		<ViewToggle />
 	</div>
-	<p style="margin-top: 2.5rem">
-	</p>
+
+	<PostList posts={posts} default="cards" />
 </Base>
