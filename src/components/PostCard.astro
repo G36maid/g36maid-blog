@@ -1,15 +1,23 @@
 ---
 import type { Post } from '../lib/content';
-import { categoryLabel } from '../lib/content';
+import { categoryLabel, postCover } from '../lib/content';
 import FormattedDate from './FormattedDate.astro';
 
 interface Props {
 	post: Post;
 }
 const { post } = Astro.props;
+const cover = postCover(post);
 ---
 
 <article class="tile-card">
+	{
+		cover && (
+			<a class="tc-cover" href={`/blog/${post.id}/`} tabindex="-1" aria-hidden="true">
+				<img src={cover} alt="" loading="lazy" decoding="async" />
+			</a>
+		)
+	}
 	<div class="tc-top">
 		<a class="tc-cat" href={`/categories/${post.data.category}/`}>{categoryLabel(post.data.category)}</a>
 		<span class="tc-date"><FormattedDate date={post.data.pubDate} /></span>
@@ -20,6 +28,5 @@ const { post } = Astro.props;
 	<p class="tc-desc">{post.data.description}</p>
 	<div class="tc-meta">
 		<span>{post.data.tags.map((t) => `#${t}`).join(' ')}</span>
-		<span class="tc-go" aria-hidden="true">▸ READ</span>
 	</div>
 </article>

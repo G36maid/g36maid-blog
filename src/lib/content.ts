@@ -92,3 +92,20 @@ export const CATEGORY_LABELS: Record<string, string> = {
 export function categoryLabel(category: string): string {
 	return CATEGORY_LABELS[category] ?? category;
 }
+
+/** first image in the post body — used as the list thumbnail (videos skipped,
+ *  relative media paths normalized to the site root) */
+const COVER_RE = /!\[[^\]]*\]\(([^)\s]+)|<img[^>]*?src=["']([^"']+)["']/gi;
+const VIDEO_EXT = /\.(mp4|webm|mov|m4v|ogv)(?=$|[)"\s])/i;
+const IMAGE_EXT = /\.(jpe?g|png|webp|gif|avif)(?=$|[")?#])/i;
+
+export function postCover(post: Post): string | undefined {
+	for (const m of (post.body ?? '').matchAll(COVER_RE)) {
+		const raw = (m[1] ?? m[2]).trim();
+		if (VIDEO_EXT.test(raw) || !IMAGE_EXT.test(raw)) continue;
+		return /^(https?:)?\/\//.test(raw) || raw.startsWith('/')
+			? raw
+			: '/' + raw.replace(/^(?:\.\.\/|\.\/)+/, '');
+	}
+	return undefined;
+}
