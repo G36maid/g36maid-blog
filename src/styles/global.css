@@ -462,23 +462,6 @@ main.shell {
 	font-size: 1rem;
 	color: var(--text-dim);
 }
-.log-row.has-thumb {
-	grid-template-columns: auto auto 1fr auto;
-}
-.log-thumb {
-	display: block;
-	width: 84px;
-	aspect-ratio: 16 / 9;
-	overflow: hidden;
-	border: 1px solid var(--border);
-	align-self: center;
-}
-.log-thumb img {
-	display: block;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
 .log-list {
 	list-style: none;
 	margin: 0 0 1rem;
@@ -522,7 +505,6 @@ main.shell {
 	.log-row { grid-template-columns: 1fr auto; gap: 0.2rem 0.6rem; }
 	.log-row .log-date { order: 3; }
 	.log-row .log-title { grid-column: 1 / -1; }
-	.log-thumb { display: none; }
 }
 
 /* ── 13. post page ─────────────────────────────────────────────────────── */

@@ -9,7 +9,7 @@
  */
 import PostCard from './PostCard.astro';
 import FormattedDate from './FormattedDate.astro';
-import { categoryLabel, postCover, type Post } from '../lib/content';
+import { categoryLabel, type Post } from '../lib/content';
 
 interface Props {
 	posts: Post[];
@@ -39,15 +39,8 @@ const groups = group
 						</div>
 					)}
 					<ul class="log-list">
-						{items.map((post) => {
-							const cover = postCover(post);
-							return (
-							<li class:list={['log-row', { 'has-thumb': !!cover }]}>
-								{cover && (
-									<a class="log-thumb" href={`/blog/${post.id}/`} tabindex="-1" aria-hidden="true">
-										<img src={cover} alt="" loading="lazy" decoding="async" />
-									</a>
-								)}
+						{items.map((post) => (
+							<li class="log-row">
 								<span class="log-date">
 									<FormattedDate date={post.data.pubDate} />
 								</span>
@@ -56,8 +49,7 @@ const groups = group
 								</a>
 								<span class="log-cat">{categoryLabel(post.data.category)}</span>
 							</li>
-							);
-						})}
+						))}
 					</ul>
 				</section>
 			))
