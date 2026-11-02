@@ -12,15 +12,16 @@ import Base from '../layouts/Base.astro';
 import Scene from '../components/home/Scene.astro';
 import Topbar from '../components/home/Topbar.astro';
 import TileGrid from '../components/home/TileGrid.astro';
-import WideTile from '../components/home/WideTile.astro';
+import Carousel from '../components/home/Carousel.astro';
 import QueueBar from '../components/home/QueueBar.astro';
+import { getCollection } from 'astro:content';
 import { getSortedPosts, getSortedNotes } from '../lib/content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { icon } from '../lib/icons';
 
 const posts = await getSortedPosts();
 const notes = await getSortedNotes();
-const latest = posts[0];
+const events = await getCollection('event');
 ---
 
 <Base title={SITE_TITLE} description={SITE_DESCRIPTION} chrome={false}>
@@ -41,7 +42,7 @@ const latest = posts[0];
 
 			<TileGrid />
 
-			<WideTile href={`/blog/${latest.id}/`} label={latest.data.title} />
+			<Carousel events={events} posts={posts} />
 
 			<QueueBar count={notes.length} />
 		</main>

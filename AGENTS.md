@@ -97,9 +97,13 @@ no Chromium. CI installs the prebuilt mmdr binary from GitHub releases.
   (public dir, no astro:assets processing).
 - `src/content/post/about.md` is special: it renders on `/about/` and is
   excluded from the blog list/archive (see `src/lib/content.ts`).
-- Blogroll lives in `src/data/friends.json` (file-loader collection
-  `friend`, rendered on `/friends/`): add an object per friend with a
+- `src/data/friends.json` (file-loader collection `friend`, rendered on `/friends/`): add an object per friend with a
   unique `id` plus `name` / `url` / optional `description` / `avatar`.
+- `src/data/events.json` (file-loader collection `event`, rendered by the home
+  carousel `src/components/home/Carousel.astro`): each object pins one slide —
+  unique `id` plus either `post` (a post id; title/cover auto-filled) or a
+  custom `href` with `title`, optional `image`. Unfilled slots auto-fill with
+  the latest posts, capped at five slides.
 
 ## Conventions
 

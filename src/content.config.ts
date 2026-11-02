@@ -48,4 +48,21 @@ const friend = defineCollection({
 	}),
 });
 
-export const collections = { post, note, friend };
+/**
+ * event — home carousel slides in a single JSON file. Each entry pins one
+ * slide: either a post by id (title/cover auto-filled) or a custom link
+ * with title + image. Unpinned slots auto-fill with the latest posts.
+ */
+const event = defineCollection({
+	loader: file('./src/data/events.json'),
+	schema: z
+		.object({
+			post: z.string().optional(),
+			href: z.string().optional(),
+			title: z.string().optional(),
+			image: z.string().optional(),
+		})
+		.refine((e) => e.post || e.href, { message: 'event slide needs a post id or an href' }),
+});
+
+export const collections = { post, note, friend, event };
