@@ -29,7 +29,7 @@ function badgeSvg(color: string, slug: string): string {
 	/* 24×24 icon grid scaled into the 22×22 color field, centered on the badge */
 	const d = glyphPath(slug);
 	const s = 0.58;
-	const o = (16 - 12 * s).toFixed(2);
+	const o = (15 - 12 * s).toFixed(2);
 	return (
 		`<svg viewBox="0 0 30 30" aria-hidden="true">` +
 		`<rect x="1.5" y="1.5" width="27" height="27" fill="#fff"/>` +
