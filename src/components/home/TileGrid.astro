@@ -6,18 +6,22 @@ import { icon } from '../../lib/icons';
 <div class="grid">
 	<a class="tile" href="/notes/">
 		<span class="tile-ic" set:html={icon('doc')} />
+		<span class="tile-label">筆記</span>
 		<span class="party" set:html={icon('party')} />
 	</a>
 	<a class="tile selected" href="/tags/">
 		<span class="tile-ic" set:html={icon('bolt')} />
+		<span class="tile-label">標籤</span>
 		<span class="party" set:html={icon('party')} />
 	</a>
 	<a class="tile" href="/rss.xml">
 		<span class="tile-ic" set:html={icon('rss')} />
+		<span class="tile-label">RSS 訂閱</span>
 		<span class="party" set:html={icon('party')} />
 	</a>
 	<a class="tile secure" href="/about/">
 		<span class="secure-ic" set:html={icon('shield')} />
+		<span class="tile-label">關於</span>
 	</a>
 </div>
 
@@ -30,8 +34,11 @@ import { icon } from '../../lib/icons';
 	.tile {
 		position: relative;
 		height: var(--tile-h);
-		display: grid;
-		place-items: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
 		background: rgba(31, 39, 47, 0.88);
 		border: 1px solid #39434c;
 		color: #c3ccd3;
@@ -65,12 +72,18 @@ import { icon } from '../../lib/icons';
 		color: #7f8992;
 	}
 	.tile.secure {
-		display: flex;
+		flex-direction: row;
 		align-items: center;
 		justify-content: flex-start;
 		gap: 12px;
 		padding: 0 14px;
 		background: rgba(38, 52, 63, 0.9);
+	}
+	.tile-label {
+		font-weight: 700;
+		font-size: 14px;
+		letter-spacing: 0.1em;
+		color: inherit;
 	}
 	.secure-ic {
 		width: 32px;
