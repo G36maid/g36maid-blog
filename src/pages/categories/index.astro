@@ -8,12 +8,6 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
 <Base title="CATEGORIES — 分類索引" description="所有文章分類，依文章數排序。">
-	<div class="strip">
-		<span class="s-tag">Operators</span>
-		<span class="s-title">全部分類，依文章數排序</span>
-		<span class="s-end">{String(categories.length).padStart(3, '0')} CATS</span>
-	</div>
-
 	<!-- r6 operator roster: portrait art with centered badge, light name plate below -->
 	<div class="roster">
 		{

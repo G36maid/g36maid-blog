@@ -15,15 +15,9 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <Base title={`#${tag} — 標籤`} description={`標籤 #${tag} 下的所有文章。`}>
-	<div class="strip">
-		<span class="s-tag">Signal Node</span>
-		<span class="s-title">#{tag}</span>
-		<span class="s-end">{String(posts.length).padStart(3, '0')} FILES</span>
-	</div>
 	<div class="card-grid" style="margin-top: 1.5rem">
 		{posts.map((post) => <PostCard post={post} />)}
 	</div>
 	<p style="margin-top: 2.5rem">
-		<a href="/tags/" class="label">← BACK TO SIGNAL INDEX</a>
 	</p>
 </Base>

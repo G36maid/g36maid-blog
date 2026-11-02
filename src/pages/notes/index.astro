@@ -7,12 +7,6 @@ const notes = await getSortedNotes();
 ---
 
 <Base title="NOTES — 隨手筆記" description="短篇技術筆記與快速紀錄（TIL）。">
-	<div class="strip">
-		<span class="s-tag">Field Notes</span>
-		<span class="s-title">偵察回報，隨手歸檔</span>
-		<span class="s-end">{String(notes.length).padStart(3, '0')} MEMOS</span>
-	</div>
-
 	<div class="notes-grid" style="margin-top: 1.5rem">
 		{
 			notes.map((note) => (
