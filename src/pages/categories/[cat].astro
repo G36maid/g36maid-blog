@@ -17,6 +17,8 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <Base title={`${label} — 分類`} description={`分類「${label}」下的所有文章。`}>
+	<h1 class="page-title">{label}</h1>
+
 	<div class="card-grid" style="margin-top: 1.5rem">
 		{posts.map((post) => <PostCard post={post} />)}
 	</div>

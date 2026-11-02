@@ -276,40 +276,11 @@ main.shell {
 	.icon-btn { width: 2.6rem; }
 }
 
-/* ── 7. strip — LATEST OPERATION voice, as page head ───────────────────── */
-.strip {
-	display: flex;
-	align-items: center;
-	gap: 0.9em;
-	height: 2.6rem;
-	padding: 0 0.9rem;
-	background: var(--panel-deep);
-	border-block: 1px solid rgba(255, 255, 255, 0.05);
-	color: var(--text);
-	white-space: nowrap;
-	overflow: hidden;
-}
-.strip .s-tag {
-	flex: none;
-	font-family: var(--font-narrow);
+/* ── 7. page head — one plain title per index page ─────────────────────── */
+.page-title {
+	margin: 0 0 1.3rem;
+	font-size: 1.5rem;
 	font-weight: 700;
-	font-size: 0.85rem;
-	letter-spacing: 0.14em;
-	text-transform: uppercase;
-	color: var(--amber);
-}
-.strip .s-title {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	color: var(--text);
-	font-weight: 600;
-}
-.strip .s-end {
-	flex: none;
-	margin-left: auto;
-	font-family: var(--font-terminal);
-	font-size: 1rem;
-	color: var(--text-dim);
 }
 
 /* ── 9. post tiles ─────────────────────────────────────────────────────── */

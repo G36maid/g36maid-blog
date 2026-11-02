@@ -7,6 +7,8 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
 <Base title="TAGS — 標籤索引" description="所有標籤索引。">
+	<h1 class="page-title">標籤</h1>
+
 	<div class="tag-cloud" style="margin-top: 1.5rem">
 		{
 			tags.map(([tag, count]) => (
