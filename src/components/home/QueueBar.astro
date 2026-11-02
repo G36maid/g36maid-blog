@@ -1,0 +1,82 @@
+---
+/** blue queue bar — LATEST LOGS entry with a note-count badge */
+import { icon } from '../../lib/icons';
+
+interface Props {
+	count: number;
+}
+const { count } = Astro.props;
+---
+
+<a class="queue" href="/blog/">
+	<span class="bell">
+		<Fragment set:html={icon('bell')} />
+		{count > 0 && <b class="badge">{count}</b>}
+	</span>
+	LATEST LOGS
+</a>
+
+<style>
+	.queue {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		height: var(--queue-h);
+		padding: 0 12px;
+		border-radius: 3px;
+		background: linear-gradient(180deg, #2f74ad, #1c4a75);
+		color: #fff;
+		font-weight: 700;
+		font-size: 17px;
+		letter-spacing: 0.05em;
+		text-decoration: none;
+		transition: filter 0.15s ease;
+	}
+	.queue:hover {
+		filter: brightness(1.15);
+	}
+	.bell {
+		position: relative;
+		width: 30px;
+		aspect-ratio: 1;
+		display: grid;
+		place-items: center;
+		background: rgba(255, 255, 255, 0.14);
+		border-radius: 4px;
+	}
+	.bell :global(svg) {
+		width: 68%;
+		height: 68%;
+	}
+	.badge {
+		position: absolute;
+		top: -7px;
+		right: -9px;
+		min-width: 17px;
+		height: 17px;
+		padding: 0 4px;
+		display: grid;
+		place-items: center;
+		border-radius: 50%;
+		background: #fff;
+		color: #14202b;
+		font-family: var(--font-body);
+		font-size: 11px;
+		font-weight: 700;
+	}
+
+	@media (max-width: 960px), (max-aspect-ratio: 5/6) {
+		.queue {
+			height: 52px;
+			font-size: 16px;
+		}
+		.bell {
+			width: 30px;
+		}
+		.badge {
+			min-width: 17px;
+			height: 17px;
+			font-size: 11px;
+		}
+	}
+</style>

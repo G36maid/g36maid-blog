@@ -1,0 +1,37 @@
+---
+/**
+ * home menu top bar — same tabs and corner tools as the site header,
+ * but anchored to the game-menu inset instead of the fixed header bar.
+ */
+import Tabs from '../Tabs.astro';
+import { icon } from '../../lib/icons';
+---
+
+<header class="topbar">
+	<Tabs />
+	<!-- same .icon-btn format as the site header on every inner page -->
+	<div class="header-tools">
+		<a class="icon-btn" href="/rss.xml" aria-label="RSS" title="RSS" set:html={icon('rss')} />
+		<a class="icon-btn" href="/about/" aria-label="About" title="About" set:html={icon('person')} />
+		<button type="button" class="icon-btn" data-search-open aria-label="搜尋" title="Search" set:html={icon('search')} />
+	</div>
+</header>
+
+<style>
+	.topbar {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		padding: clamp(18px, 4.6vh, 44px) clamp(16px, 1.6vw, 32px) 0 var(--inset);
+		background: linear-gradient(180deg, rgba(6, 8, 10, 0.6), transparent);
+	}
+
+	@media (max-width: 960px), (max-aspect-ratio: 5/6) {
+		.topbar {
+			flex-direction: column;
+			gap: 14px;
+			padding: 18px 16px 0;
+		}
+	}
+</style>

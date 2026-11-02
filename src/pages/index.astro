@@ -4,9 +4,17 @@
  * Original CSS/SVG recreation of the menu structure; no game assets —
  * the "operator art" is replaced by pure-CSS light / smoke atmosphere.
  * The blog itself plays the squad: playlists = site sections.
+ *
+ * This file is the layout shell only: atmosphere, top bar, strip and
+ * the left-column widgets each live in components/home/*.
  */
 import Base from '../layouts/Base.astro';
-import Tabs from '../components/Tabs.astro';
+import Scene from '../components/home/Scene.astro';
+import Topbar from '../components/home/Topbar.astro';
+import Strip from '../components/home/Strip.astro';
+import TileGrid from '../components/home/TileGrid.astro';
+import WideTile from '../components/home/WideTile.astro';
+import QueueBar from '../components/home/QueueBar.astro';
 import { getSortedPosts, getSortedNotes } from '../lib/content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { icon } from '../lib/icons';
@@ -15,91 +23,32 @@ const posts = await getSortedPosts();
 const notes = await getSortedNotes();
 const latest = posts[0];
 const df = (d: Date) => d.toISOString().slice(0, 10);
-
-
-const IC: Record<string, string> = {
-	bars: icon('bars'),
-	doc: icon('doc'),
-	bolt: icon('bolt'),
-	feed: icon('rss'),
-	shield: icon('shield'),
-	bell: icon('bell'),
-	rss: icon('rss'),
-	person: icon('person'),
-	search: icon('search'),
-	party: icon('party'),
-};
 ---
 
 <Base title={SITE_TITLE} description={SITE_DESCRIPTION} chrome={false}>
 	<div class="r6">
 		<h1 class="sr-only">{SITE_TITLE}</h1>
 
-		<!-- atmosphere: light shafts + slanted panels (pure CSS, no artwork) -->
-		<div class="scene" aria-hidden="true">
-			<i class="shard s1"></i>
-			<i class="shard s2"></i>
-			<i class="shard s3"></i>
-			<i class="shaft f1"></i>
-			<i class="shaft f2"></i>
-		</div>
+		<Scene />
 
 		<!-- ═ top bar ═ -->
-		<header class="topbar">
-			<Tabs />
-			<!-- same .icon-btn format as the site header on every inner page -->
-			<div class="header-tools">
-				<a class="icon-btn" href="/rss.xml" aria-label="RSS" title="RSS" set:html={IC.rss} />
-				<a class="icon-btn" href="/about/" aria-label="About" title="About" set:html={IC.person} />
-				<button type="button" class="icon-btn" data-search-open aria-label="搜尋" title="Search" set:html={IC.search} />
-			</div>
-		</header>
+		<Topbar />
 
 		<!-- status strip -->
-		<a class="strip" href={`/blog/${latest.id}/`}>
-			<span class="strip-tag">LATEST OPERATION</span>
-			{latest.data.title} <time>— {df(latest.data.pubDate)}</time>
-		</a>
+		<Strip href={`/blog/${latest.id}/`} title={latest.data.title} date={df(latest.data.pubDate)} />
 
 		<!-- ═ left column ═ -->
 		<main class="col">
 			<a class="play" href="/blog/">
-				<span class="ic" set:html={IC.bars} />
+				<span class="play-ic" set:html={icon('bars')} />
 				READ
 			</a>
 
-			<div class="grid">
-				<a class="tile" href="/notes/">
-					<span class="tic" set:html={IC.doc} />
-					<span class="party" set:html={IC.party} />
-				</a>
-				<a class="tile selected" href="/tags/">
-					<span class="tic" set:html={IC.bolt} />
-					<span class="party" set:html={IC.party} />
-				</a>
-				<a class="tile" href="/rss.xml">
-					<span class="tic" set:html={IC.feed} />
-					<span class="party" set:html={IC.party} />
-				</a>
-				<a class="tile secure" href="/about/">
-					<span class="sic" set:html={IC.shield} />
-					<span class="stxt"><b>BRIEFING</b><i>WHO IS G36</i></span>
-				</a>
-			</div>
+			<TileGrid />
 
-			<a class="wide" href={`/blog/${latest.id}/`} aria-label={`最新文章：${latest.data.title}`}>
-				<span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="on"></i></span>
-				<span class="plus-box" aria-hidden="true">+</span>
-				<span class="viewmore" role="presentation">View More</span>
-			</a>
+			<WideTile href={`/blog/${latest.id}/`} label={latest.data.title} />
 
-			<a class="queue" href="/blog/">
-				<span class="bell">
-					<span class="ic" set:html={IC.bell} />
-					{notes.length > 0 && <b class="badge">{notes.length}</b>}
-				</span>
-				LATEST LOGS
-			</a>
+			<QueueBar count={notes.length} />
 		</main>
 
 		<span class="mini" aria-hidden="true">UI LAYOUT STUDY // ORIGINAL CODE — NO GAME ASSETS · G36MAID</span>
@@ -113,6 +62,9 @@ const IC: Record<string, string> = {
 	 * windows squeeze heights gently; the column width only shrinks
 	 * when the viewport edge pushes in. Below 960px width or 5/6
 	 * aspect a stacked flow layout takes over.
+	 *
+	 * --gap/--tile-h/--wide-h/--queue-h are set here and inherited by
+	 * the home/* child components through the DOM.
 	 */
 	.r6 {
 		--gap: 12px;
@@ -132,148 +84,6 @@ const IC: Record<string, string> = {
 		height: 1px;
 		overflow: hidden;
 		clip-path: inset(50%);
-	}
-	.r6 :global(.ic),
-	.r6 :global(.tic),
-	.r6 :global(.sic) {
-		display: inline-grid;
-		place-items: center;
-	}
-	.r6 :global(.ic svg),
-	.r6 :global(.tic svg),
-	.r6 :global(.sic svg) {
-		width: 100%;
-		height: 100%;
-	}
-
-	/* ── atmosphere ────────────────────────────────────────────────────── */
-	.scene {
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		background:
-			/* orange glow, top-right */
-			radial-gradient(85% 120% at 88% -4%, rgba(217, 116, 30, 0.5), rgba(217, 116, 30, 0.12) 42%, transparent 66%),
-			/* blue smoke, bottom-left */
-			radial-gradient(58% 68% at 6% 104%, rgba(33, 112, 210, 0.5), transparent 62%),
-			radial-gradient(46% 56% at 30% 112%, rgba(70, 145, 232, 0.3), transparent 60%),
-			#0a0c0f;
-	}
-	.shard {
-		position: absolute;
-		top: -10%;
-		height: 130%;
-		transform: skewX(-7deg);
-		background: linear-gradient(180deg, rgba(24, 29, 34, 0.72), rgba(12, 15, 18, 0.9));
-		border-inline: 1px solid rgba(255, 255, 255, 0.04);
-	}
-	.s1 {
-		left: 52%;
-		width: 11%;
-	}
-	.s2 {
-		left: 66%;
-		width: 13%;
-	}
-	.s3 {
-		left: 82%;
-		width: 15%;
-	}
-	.shaft {
-		position: absolute;
-		top: -25%;
-		height: 160%;
-		transform: rotate(13deg);
-		background: linear-gradient(90deg, transparent, rgba(255, 196, 130, 0.07) 45%, rgba(255, 196, 130, 0.13) 55%, transparent);
-	}
-	.f1 {
-		left: 46%;
-		width: 250px;
-	}
-	.f2 {
-		left: 70%;
-		width: 134px;
-		opacity: 0.7;
-	}
-
-	/* ── top bar ───────────────────────────────────────────────────────── */
-	.topbar {
-		position: relative;
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		padding: clamp(18px, 4.6vh, 44px) clamp(16px, 1.6vw, 32px) 0 var(--inset);
-		background: linear-gradient(180deg, rgba(6, 8, 10, 0.6), transparent);
-	}
-	/* tab metrics come from the shared --tab-* tokens in global.css;
-	   the tab markup/styles live in components/Tabs.astro */
-	.tab {
-		position: relative;
-		font-weight: 700;
-		font-size: var(--tab-size);
-		letter-spacing: 0.05em;
-		color: var(--text-faint);
-		text-decoration: none;
-		padding-bottom: var(--tab-pad-b);
-		transition: color 0.15s ease;
-	}
-	.tab:hover {
-		color: #a9b1b8;
-	}
-	.tab.active {
-		color: var(--text-bright);
-	}
-	.tab.active::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: var(--tab-underline-b);
-		height: 2px;
-		background: var(--text-bright);
-	}
-	.tab .dot {
-		position: absolute;
-		left: 2px;
-		bottom: var(--tab-dot-b);
-		width: 7px;
-		height: 7px;
-		border-radius: 50%;
-		background: #f5c518;
-		box-shadow: 0 0 6px rgba(245, 197, 24, 0.8);
-	}
-
-	/* ── status strip ──────────────────────────────────────────────────── */
-	.strip {
-		position: relative;
-		display: flex;
-		align-items: center;
-		gap: 0.6em;
-		height: 40px;
-		padding: 0 12px 0 var(--inset);
-		background: rgba(11, 13, 16, 0.82);
-		border-block: 1px solid rgba(255, 255, 255, 0.05);
-		color: #d8dde1;
-		font-family: var(--font-body);
-		font-size: 14px;
-		text-decoration: none;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.strip:hover {
-		color: #fff;
-	}
-	.strip-tag {
-		flex: none;
-		font-family: var(--font-narrow);
-		font-weight: 700;
-		letter-spacing: 0.18em;
-		font-size: 0.82em;
-		color: #f5c518;
-	}
-	.strip time {
-		color: #8b949c;
 	}
 
 	/* ── left column ───────────────────────────────────────────────────── */
@@ -305,201 +115,15 @@ const IC: Record<string, string> = {
 	.play:hover {
 		background: #63c6ec;
 	}
-	.play :global(.ic) {
+	.play-ic {
 		width: 28px;
 		height: 28px;
-	}
-
-	.grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: var(--gap);
-	}
-	.tile {
-		position: relative;
-		height: var(--tile-h);
-		display: grid;
+		display: inline-grid;
 		place-items: center;
-		background: rgba(31, 39, 47, 0.88);
-		border: 1px solid #39434c;
-		color: #c3ccd3;
-		text-decoration: none;
-		transition: border-color 0.15s ease, background 0.15s ease;
 	}
-	.tile:hover {
-		border-color: #8f9ba4;
-		background: rgba(40, 50, 60, 0.92);
-	}
-	.tile.selected {
-		border: 2px solid #fff;
-		color: #fff;
-	}
-	.tic {
-		width: 34px;
-		height: 34px;
-	}
-	.party {
-		position: absolute;
-		top: 7px;
-		right: 8px;
-		width: 14px;
-		height: 14px;
-		color: #7f8992;
-	}
-	.tile.secure {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		gap: 12px;
-		padding: 0 14px;
-		background: rgba(38, 52, 63, 0.9);
-	}
-	.sic {
-		width: 32px;
-		height: 32px;
-		color: #fff;
-	}
-	.stxt {
-		display: flex;
-		flex-direction: column;
-		line-height: 1.25;
-	}
-	.stxt b {
-		font-weight: 700;
-		font-size: 17px;
-		letter-spacing: 0.04em;
-		color: #fff;
-	}
-	.stxt i {
-		font-style: normal;
-		font-weight: 700;
-		font-size: 13px;
-		letter-spacing: 0.05em;
-		color: #f5c518;
-	}
-	.tile.secure::after {
-		content: '';
-		position: absolute;
-		top: 0;
-		right: 0;
-		border: 8px solid transparent;
-		border-top-color: #45525c;
-		border-right-color: #45525c;
-	}
-
-	/* featured pack tile */
-	.wide {
-		position: relative;
-		display: block;
-		height: var(--wide-h);
-		background:
-			repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 56px, transparent 56px 64px),
-			repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 24px, transparent 24px 32px),
-			#0b0d10;
-		border: 1px solid #222a31;
-		text-decoration: none;
-		overflow: hidden;
-	}
-	.wide:hover {
-		border-color: #39434c;
-	}
-	.dots {
-		position: absolute;
-		top: 10px;
-		right: 12px;
-		display: flex;
-		gap: 5px;
-	}
-	.dots i {
-		width: 9px;
-		height: 9px;
-		border-radius: 50%;
-		background: #4a545c;
-	}
-	.dots i.on {
-		background: #fff;
-	}
-	.plus-box {
-		position: absolute;
-		left: 50%;
-		top: 46%;
-		transform: translate(-50%, -50%);
-		width: 84px;
-		aspect-ratio: 1;
-		border: 2px solid #fff;
-		display: grid;
-		place-items: center;
-		font-family: var(--font-body);
-		font-weight: 300;
-		font-size: 36px;
-		color: #fff;
-		transition: background 0.15s ease;
-	}
-	.wide:hover .plus-box {
-		background: rgba(255, 255, 255, 0.14);
-	}
-	.viewmore {
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 28px;
-		display: flex;
-		align-items: center;
-		padding-left: 14px;
-		background: rgba(0, 0, 0, 0.82);
-		color: #cfd5da;
-		font-family: var(--font-body);
-		font-size: 13px;
-	}
-
-	/* blue queue bar */
-	.queue {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		height: var(--queue-h);
-		padding: 0 12px;
-		border-radius: 3px;
-		background: linear-gradient(180deg, #2f74ad, #1c4a75);
-		color: #fff;
-		font-weight: 700;
-		font-size: 17px;
-		letter-spacing: 0.05em;
-		text-decoration: none;
-		transition: filter 0.15s ease;
-	}
-	.queue:hover {
-		filter: brightness(1.15);
-	}
-	.bell {
-		position: relative;
-		width: 30px;
-		aspect-ratio: 1;
-		display: grid;
-		place-items: center;
-		background: rgba(255, 255, 255, 0.14);
-		border-radius: 4px;
-	}
-	.bell :global(.ic) {
-		width: 68%;
-		height: 68%;
-	}
-	.badge {
-		position: absolute;
-		top: -7px;
-		right: -9px;
-		min-width: 17px;
-		height: 17px;
-		padding: 0 4px;
-		display: grid;
-		place-items: center;
-		border-radius: 50%;
-		background: #fff;
-		color: #14202b;
-		font-family: var(--font-body);
-		font-size: 11px;
-		font-weight: 700;
+	.play-ic :global(svg) {
+		width: 100%;
+		height: 100%;
 	}
 
 	/* misc */
@@ -520,20 +144,6 @@ const IC: Record<string, string> = {
 			display: flex;
 			flex-direction: column;
 		}
-		.scene .shard,
-		.scene .shaft {
-			display: none;
-		}
-		.topbar {
-			flex-direction: column;
-			gap: 14px;
-			padding: 18px 16px 0;
-		}
-		.strip {
-			height: 36px;
-			padding: 0 16px;
-			font-size: 13px;
-		}
 		.col {
 			position: static;
 			width: auto;
@@ -545,53 +155,9 @@ const IC: Record<string, string> = {
 			height: 84px;
 			font-size: 22px;
 		}
-		.play :global(.ic) {
+		.play-ic {
 			width: 26px;
 			height: 26px;
-		}
-		.grid {
-			grid-template-columns: 1fr 1fr;
-			gap: 12px;
-		}
-		.tile {
-			height: 84px;
-		}
-		.tic {
-			width: 32px;
-			height: 32px;
-		}
-		.stxt b {
-			font-size: 16px;
-		}
-		.stxt i {
-			font-size: 12px;
-		}
-		.tile.secure::after {
-			border-width: 8px;
-		}
-		.wide {
-			height: 140px;
-		}
-		.plus-box {
-			width: 72px;
-			font-size: 32px;
-			border-width: 2px;
-		}
-		.viewmore {
-			height: 28px;
-			font-size: 12px;
-		}
-		.queue {
-			height: 52px;
-			font-size: 16px;
-		}
-		.bell {
-			width: 30px;
-		}
-		.badge {
-			min-width: 17px;
-			height: 17px;
-			font-size: 11px;
 		}
 		.mini {
 			position: static;

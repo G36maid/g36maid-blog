@@ -1,0 +1,96 @@
+---
+/** featured pack tile — the grid-pattern "View More" panel for the latest post */
+interface Props {
+	href: string;
+	label: string;
+}
+const { href, label } = Astro.props;
+---
+
+<a class="wide" {href} aria-label={`最新文章：${label}`}>
+	<span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="on"></i></span>
+	<span class="plus-box" aria-hidden="true">+</span>
+	<span class="viewmore" role="presentation">View More</span>
+</a>
+
+<style>
+	.wide {
+		position: relative;
+		display: block;
+		height: var(--wide-h);
+		background:
+			repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 56px, transparent 56px 64px),
+			repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 24px, transparent 24px 32px),
+			#0b0d10;
+		border: 1px solid #222a31;
+		text-decoration: none;
+		overflow: hidden;
+	}
+	.wide:hover {
+		border-color: #39434c;
+	}
+	.dots {
+		position: absolute;
+		top: 10px;
+		right: 12px;
+		display: flex;
+		gap: 5px;
+	}
+	.dots i {
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: #4a545c;
+	}
+	.dots i.on {
+		background: #fff;
+	}
+	.plus-box {
+		position: absolute;
+		left: 50%;
+		top: 46%;
+		transform: translate(-50%, -50%);
+		width: 84px;
+		aspect-ratio: 1;
+		border: 2px solid #fff;
+		display: grid;
+		place-items: center;
+		font-family: var(--font-body);
+		font-weight: 300;
+		font-size: 36px;
+		color: #fff;
+		transition: background 0.15s ease;
+	}
+	.wide:hover .plus-box {
+		background: rgba(255, 255, 255, 0.14);
+	}
+	.viewmore {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 28px;
+		display: flex;
+		align-items: center;
+		padding-left: 14px;
+		background: rgba(0, 0, 0, 0.82);
+		color: #cfd5da;
+		font-family: var(--font-body);
+		font-size: 13px;
+	}
+
+	@media (max-width: 960px), (max-aspect-ratio: 5/6) {
+		.wide {
+			height: 140px;
+		}
+		.plus-box {
+			width: 72px;
+			font-size: 32px;
+			border-width: 2px;
+		}
+		.viewmore {
+			height: 28px;
+			font-size: 12px;
+		}
+	}
+</style>
