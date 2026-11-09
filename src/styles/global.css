@@ -206,6 +206,33 @@ main.shell {
 	min-height: calc(100vh - var(--header-h) - 8rem);
 }
 
+/* the page body scrolls inside this fixed viewport-sized column instead of
+   the document; clip-path cuts it exactly at the header's top edge, so inner
+   content may pass behind the translucent menu bar but nothing ever shows in
+   the strip between that edge and the screen border */
+.page-scroll {
+	position: fixed;
+	inset: 0;
+	z-index: 1;
+	overflow-x: clip;
+	overflow-y: auto;
+	clip-path: inset(var(--header-top) 0 0 0);
+	scroll-behavior: smooth;
+	scroll-padding-top: calc(var(--header-top) + var(--header-h) + 1.5rem);
+}
+body.page-fixed {
+	/* the container owns all scrolling */
+	overflow: hidden;
+}
+@media print {
+	body.page-fixed,
+	.page-scroll {
+		position: static;
+		overflow: visible;
+		clip-path: none;
+	}
+}
+
 /* ── 6. header — the menu top bar, site-wide ───────────────────────────── */
 .site-header {
 	position: fixed;
@@ -270,9 +297,9 @@ main.shell {
 }
 
 /* stacked phones: the header stays fixed like desktop — only the tab inset
-   changes. (this rule used to live in the top media block, where the later
-   same-specificity .shell and .header-row base rules won on source order and
-   phones kept the desktop --inset) */
+   changes. (an earlier attempt put this rule in the top media block, where
+   the later same-specificity .shell and .header-row base rules won on source
+   order and phones kept the desktop --inset) */
 @media (max-width: 960px), (max-aspect-ratio: 5/6) {
 	.header-row {
 		padding-inline: 16px;

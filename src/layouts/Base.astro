@@ -24,7 +24,7 @@ const {
 	<head>
 		<BaseHead title={title} description={description} />
 	</head>
-	<body>
+	<body class:list={[{ 'page-fixed': chrome }]}>
 		{
 			chrome && (
 				<div class="scene" aria-hidden="true">
@@ -37,10 +37,22 @@ const {
 			)
 		}
 		{chrome && <Header />}
-		<main class:list={['shell', { 'shell--bleed': !chrome }]}>
-			<slot />
-		</main>
-		{chrome && <Footer />}
+		{
+			chrome ? (
+				/* inner pages scroll inside a fixed, viewport-sized column that is
+				   clipped at the header's top edge — see .page-scroll in global.css */
+				<div class="page-scroll">
+					<main class="shell">
+						<slot />
+					</main>
+					<Footer />
+				</div>
+			) : (
+				<main class="shell shell--bleed">
+					<slot />
+				</main>
+			)
+		}
 		<SearchModal />
 	</body>
 </html>
