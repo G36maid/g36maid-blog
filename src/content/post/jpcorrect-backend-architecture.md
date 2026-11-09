@@ -10,9 +10,9 @@ sourceType: "note"
 sourceTimestamp: 1773210156
 ---
 
-> 本文擴寫自 2026-03-11 的 HackMD 架構筆記(擴寫日期:2026-11-02)。原稿是當時整理 jpcorrect-backend 的技術文件,擴寫時保留原有架構脈絡,補上事後的檢驗與評價。
+> 本文擴寫自 2026-03-11 的 HackMD 架構筆記(擴寫日期:2026-11-02)。原稿是當時整理 jpcorrect-backend 的技術文件,擴寫時保留原有架構脈絡,補上事後的檢驗與評價。完整程式碼在 [G36maid/jpcorrect-backend](https://github.com/G36maid/jpcorrect-backend)（MIT 授權的日語矯正平台 Go REST API）。
 
-jpcorrect-backend 是一個日語矯正平台的 Go REST API。專案初期採用 pgx + sqlc 的組合:手寫 SQL、由 sqlc 產生型別安全的查詢程式碼。聽起來很理想——直到 schema 開始頻繁變動。
+[jpcorrect-backend](https://github.com/G36maid/jpcorrect-backend) 是一個日語矯正平台的 Go REST API。專案初期採用 pgx + sqlc 的組合:手寫 SQL、由 sqlc 產生型別安全的查詢程式碼。聽起來很理想——直到 schema 開始頻繁變動。
 
 痛點很實際:每改一次欄位就要重寫 SQL、重跑 sqlc codegen、改 domain model、再手動補軟刪除與時間戳欄位。對一個單人開發、schema 還在劇烈演進的專案來說,sqlc 的型別安全優勢被迭代成本吃掉了。一月底的 refactor commit(`ce929a6`)把整個資料層換成 GORM,二月底(`41f63b5`)再補上 WebRTC 即時通訊。這篇記錄遷移後的架構、 trade-off 與踩過的雷。
 
