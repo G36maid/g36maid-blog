@@ -10,7 +10,7 @@ sourceType: "note"
 sourceTimestamp: 1781133510
 ---
 
-> 本文由 2026-06-11 的演講講稿〈編輯器的歷史，現況與未來〉（HackMD note）於 2026-10-27 擴寫而成。講稿中的現場互動（開場調查、迷因投影片）改寫為敘述；Atom／Zed 影片的章節時間戳與統計引用為演講當下資料，出處列於文末。原稿附圖為外連圖床，本文一概不引用，純文字呈現。
+> 本文由 2026-06-11 的演講講稿〈編輯器的歷史，現況與未來〉於 2026-10-27 擴寫、2026-11 依現場與簡報連結重寫而成。這場演講在 COSCUP x UbuCon Asia 2026 實際發表（2026-08-08，台科大 RB105），講稿、簡報與錄影連結見文末；講稿中的現場互動（開場調查、迷因投影片）改寫為敘述，統計引用為演講當下資料。
 
 你主力用的編輯器是哪一款？這是任何一場編輯器主題演講最好的開場白——VS Code／VSCodium、vi/vim/neovim、JetBrains IntelliJ、Helix、Emacs（Doom、Spacemacs 一脈）、Sublime Text、Notepad++、Visual Studio，以及近兩年竄起的 Cursor／Windsurf／Antigravity，幾乎每一次現場統計都是這張名單的重新洗牌。
 
@@ -119,6 +119,15 @@ Zed 不是沒有弱點，誠實列出來：
 歷史的弔詭在於：Atom 建立的框架殺死了 Atom 自己，而殺死 Atom 的團隊成員又回頭用另一套技術棧挑戰 VS Code。在開源世界裡，死亡從來不是終點，只是 fork 的另一種形式。至於未來，AI 代理協議（MCP/ACP）正在成為新的「編輯器之戰」戰場——這次比的不是渲染引擎或擴充套件數量，而是誰能讓 agent 與人類在同一個緩衝區裡合作得最順。
 
 最後是講者自己的實務心得：參與 Zed 這類解決底層瓶頸的開源專案，是推動現代工具鏈演進最直接的方式。社群的成長靠的不是大公司的路線圖，而是一個個願意讀 GPUI source code、回報 issue、送 PR 的人。如果你對編輯器的下一個十年有興趣，這正是最好的進場時機。
+
+## 這場演講的資料
+
+演講在 **COSCUP x UbuCon Asia 2026** 發表：2026-08-08 14:45–15:15，國立臺灣科技大學 RB105，議程編號 T37ECE。
+
+- 議程頁（含摘要與時間地點）：[coscup.org/2026/session/T37ECE](https://coscup.org/2026/session/T37ECE/)
+- 簡報 repo：[G36maid/coscup26-editor-history](https://github.com/G36maid/coscup26-editor-history)——用 [presenterm](https://github.com/mfontanini/presenterm) 打造的終端簡報（需要支援 Kitty graphics protocol 的終端如 Kitty/WezTerm/Ghostty 才能完整渲染圖片；`-x` 參數啟用 code snippet 執行，放映時可對 executable code block 按 Ctrl+e 現場跑 GPUI vs Electron 的 benchmark demo）。
+- 現場錄影：[編輯器的歷史、現況與未來：從 Electron 到 Rust 與 GPU 驅動的現代化架構（以 Zed 為例）— YouTube（COSCUP 官方頻道）](https://www.youtube.com/watch?v=xTbANsB2qUo)
+- 大會共筆：[hackmd.io/Hkvk0Qg8Ml](https://hackmd.io/Hkvk0Qg8Ml)
 
 ## 參考資料
 
