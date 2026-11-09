@@ -16,13 +16,11 @@ sourceTimestamp: 1768931557
 
 ## 現象
 
-一句話版本，也就是原文全文：
+原文全文：
 
 > 發現開源 nvidia-open 驅動在 hyprland 的場景下 suspend 後喚醒會出現臨時的無危害雪花，想看看為何會這樣。
 
-拆開來有三個關鍵詞：「開源 nvidia-open 驅動」、「Hyprland（Wayland compositor）」、「臨時的、無危害的雪花」。
-
-臨時跟無危害是這個 bug 最有趣的地方。它不是黑屏（黑屏要切 VT 或重開機才救得回來）、不是凍結（凍結連滑鼠都不動），而是螢幕喚醒的瞬間先噴出滿螢幕的雜訊——像電視沒訊號的雪花，或像 framebuffer 裡殘留的舊像素被隨機重組——然後 compositor 畫出下一幀就恢復正常，之後系統一切功能無恙。也就是說：壞掉的只有「喚醒後第一個被掃出的畫面」。
+這個 bug 最有趣的地方是它臨時而且無危害。喚醒的瞬間螢幕先噴出滿螢幕雜訊——像電視沒訊號的雪花——compositor 畫出下一幀就恢復正常，之後系統一切功能無恙。壞掉的只有「喚醒後第一個被掃出的畫面」。
 
 ## 背景：nvidia-open 跟 proprietary 差在哪
 
@@ -36,9 +34,9 @@ sourceTimestamp: 1768931557
 
 配套機制是那組 systemd units：`nvidia-suspend.service`、`nvidia-resume.service`、`nvidia-hibernate.service`，透過 `/proc/driver/nvidia/suspend` 介面在睡眠前後通知驅動，搭配 `NVreg_PreserveVideoMemoryAllocations=1`（把 VRAM 內容完整存到 `/var/tmp` 之類的地方）。[Hyprland wiki 的 Nvidia 頁](https://wiki.hypr.land/Nvidia/) 也把「enable 這三個 service」列為 suspend/wakeup 問題的標準解法。
 
-值得注意的歷史：Hyprland wiki 的舊版（0.42/0.47 時期）曾直接寫「suspend 目前在 nvidia-open-dkms 上壞掉，請用 nvidia-dkms」；後來語氣整個反轉，現在的 wiki 引 NVIDIA 的說法「suspend/wakeup 問題應該在 open 驅動上被解決」，甚至建議遇到問題可以從 proprietary 換到 open 試試。也就是說在我發文的那個時間點附近，官方態度正是「open 驅動是 suspend 問題的解法」——而我的雪花就發生在這個「解法」上。挺好笑的。
+值得注意的歷史：Hyprland wiki 的舊版（0.42/0.47 時期）曾直接寫「suspend 目前在 nvidia-open-dkms 上壞掉，請用 nvidia-dkms」；後來語氣整個反轉，現在的 wiki 引 NVIDIA 的說法「suspend/wakeup 問題應該在 open 驅動上被解決」，甚至建議遇到問題可以從 proprietary 換到 open 試試。也就是說在我發文的那個時間點附近，官方態度正是「open 驅動是 suspend 問題的解法」——而我的雪花就發生在這個「解法」上。
 
-## 雪花的技術解釋（標註：這段是推測）
+## 雪花的技術解釋（這段是推測）
 
 最合理的候選解釋是 **garbage framebuffer**：睡眠期間 framebuffer 的內容不被保證保存（跟上面的 VRAM allocation 同一個問題），喚醒後掃描引擎第一次從這塊記憶體抓資料時，裡面是上個 session 殘留的像素、未清零的記憶體，或兩者的混合。只要 compositor 的下一幀正常提交，畫面就乾淨了——這完全符合「臨時、無危害」的觀察。
 
@@ -63,4 +61,4 @@ sourceTimestamp: 1768931557
 
 查證到的事實：nvidia-open 的 suspend/resume 顯示問題在 upstream issue tracker 上大量存在，官方文件承認睡眠週期可能造成 rendering corruption，Hyprland wiki 建議的標準解法是 systemd sleep services 加 PreserveVideoMemoryAllocations。
 
-推測的部分：我的雪花最可能是喚醒後第一幀掃到未被清掉的 framebuffer 內容，屬於這條脆弱恢復路徑上最輕微的失敗模式。原稿只是觀察筆記，我沒有實際做對照實驗驗證這個假設，所以停留在假設。如果你也看到喚醒雪花而且它會自己消失——恭喜，你的 GPU 大概率沒事，只是驅動忘了先擦黑板。
+推測：我的雪花最可能是喚醒後第一幀掃到未被清掉的 framebuffer 內容。我沒有做對照實驗驗證這個假設，所以它停留在假設。如果你也看到喚醒雪花而且它會自己消失，GPU 大概率沒事，只是驅動沒先清 framebuffer。
