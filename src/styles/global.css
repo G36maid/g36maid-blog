@@ -59,9 +59,6 @@
 		--tab-size: 17px;
 		--tab-pad-b: 8px;
 	}
-	.header-row {
-		padding-inline: 16px;
-	}
 }
 
 /* ── 2. base ───────────────────────────────────────────────────────────── */
@@ -270,6 +267,16 @@ main.shell {
 	/* tab metrics follow the shared --tab-* tokens, which switch at the
 	   menu topbar's own 960px breakpoint — no per-header override here */
 	.icon-btn { width: 2.6rem; }
+}
+
+/* stacked phones: the header stays fixed like desktop — only the tab inset
+   changes. (this rule used to live in the top media block, where the later
+   same-specificity .shell and .header-row base rules won on source order and
+   phones kept the desktop --inset) */
+@media (max-width: 960px), (max-aspect-ratio: 5/6) {
+	.header-row {
+		padding-inline: 16px;
+	}
 }
 
 /* ── 7. page head — one plain title per index page ─────────────────────── */
