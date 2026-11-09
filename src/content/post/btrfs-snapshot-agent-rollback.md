@@ -15,7 +15,7 @@ sourceTimestamp: 1780400629
 
 AI coding agent 的工作模式是：大量自主寫檔、改檔、跑 shell 指令，而且速度遠超過人類 review 的速度。這代表系統需要一種過去不太被強調的 primitive——**廉價、瞬時、涵蓋整個檔案系統層級的 undo**。不是「某個目錄裡某幾個文字檔的 undo」，而是「整台機器剛才那一步之前的樣子」。
 
-這不是杞人憂天。2025 年 7 月 Replit 的 agent 在 code freeze 期間刪掉了 SaaStr 創辦人的 live production database，事後自稱「catastrophic failure on my part」[1]；2026 年 4 月 PocketOS 的 Cursor agent 更誇張，九秒內刪掉 production database 連同備份，創辦人事後拿到的最新備份是三個月前的，恢復花了兩天以上[2]。兩個案例的共同點：agent 用合法憑證、做它認為正確的事，而系統裡沒有任何一層能在事後廉價地回到「一分鐘前」。
+2025 年 7 月 Replit 的 agent 在 code freeze 期間刪掉了 SaaStr 創辦人的 live production database，事後自稱「catastrophic failure on my part」[1]；2026 年 4 月 PocketOS 的 Cursor agent 更誇張，九秒內刪掉 production database 連同備份，創辦人事後拿到的最新備份是三個月前的，恢復花了兩天以上[2]。兩個案例的共同點：agent 用合法憑證、做它認為正確的事，而系統裡沒有任何一層能在事後廉價地回到「一分鐘前」。
 
 ## 先看現有工具的 checkpoint 縫隙
 
@@ -53,9 +53,9 @@ sudo snapper rollback 42
 - **tmpfs / overlayfs**：重開機就沒了，不持久；overlay 的 lower/upper 結構也不適合多時間點回溯。
 - **ZFS**：快照語義同樣優秀甚至更成熟，技術上完全可行。但在 Linux 生態裡它是 CDDL 授權、與 GPL 不相容的 out-of-tree 模組，發行版整合永遠矮人一截[13]；Btrfs 則是 mainline 核心、根檔案系統開箱即用。單就「Linux 桌機上給 agent 裝保險」這個場景，Btrfs 的整合成本最低。
 
-## 誠實列限制
+## 限制
 
-替 Btrfs 講話不等於無腦吹，這幾條都該寫清楚：
+這幾條該寫清楚：
 
 - **快照不是備份**。官方文件明寫：快照與原卷共享資料塊，磁碟壞了、`dd` 手滑了，快照跟著一起死；它不讓你的資料更安全，真正的備份要用 `btrfs send` 送到外部儲存[7]。
 - **RAID5/6 至今 unstable**。官方 status table 目前仍標 RAID56 為不建議正式使用，write hole 問題懸而未決[14]。要 redundancy 請用 RAID1/RAID10 系列——好消息是這些是 OK 狀態，而且**子卷與快照本身在 status table 上就是 OK**[14]，本文主張的功能不踩雷區。
@@ -65,7 +65,7 @@ sudo snapper rollback 42
 
 ## 結論
 
-我仍然認為原稿那句話：Btrfs 在 agent 時代很有價值。agent 工具的應用層 checkpoint 是「盡力而為的請求過濾」，Btrfs 快照是「檔案系統層的事實記錄」——不管 agent 跑了什麼指令、碰了哪些它沒申報的檔案，一分鐘前的整個系統狀態就在那裡，diff 得到、回滾得回去。它不是取代 git、更不是取代備份，而是把「undo 的最低成本邊界」從文字檔擴大到整個檔案系統。對一群不知疲勞、偶爾自信過頭的自主寫檔機器來說，這層便宜保險遲早會變成標配——就像今天沒人會在沒有 git 的 repo 裡寫程式一樣。
+我仍然認為 Btrfs 在 agent 時代很有價值。agent 工具的應用層 checkpoint 追蹤的是 agent 申報過的修改，Btrfs 快照記錄的是檔案系統的實際狀態——不管 agent 跑了什麼指令、碰了哪些它沒申報的檔案，一分鐘前的整個系統狀態就在那裡，diff 得到、回滾得回去。它不取代 git、也不取代備份，只是把 undo 的最低成本邊界從文字檔擴大到整個檔案系統。對不知疲勞、偶爾自信過頭的自主寫檔機器來說，這層便宜保險遲早會變成標配——就像今天沒人會在沒有 git 的 repo 裡寫程式一樣。
 
 （延伸閱讀：關於 agent 自主行為失控的另一個案例，見[我把 OpenAI agent 放進 HF 環境那篇文章](/blog/openai-agent-hf-escape/)。）
 
