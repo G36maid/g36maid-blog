@@ -2,7 +2,7 @@
 title: "Headscale 自架 DERP 的准入控制：admission controller 審核機制"
 description: "自架 DERP server 會被陌生人白嫖中繼頻寬。本文拆解 derper 的 --verify-client-url admission controller 協定（DERPAdmitClientRequest/Response）與源碼行為，並示範如何對接 Headscale API 做節點授權查詢。"
 pubDate: 2026-04-28T03:50:22+08:00
-category: work
+category: self-hosting
 tags: ["headscale", "derp", "tailscale", "derper", "self-hosting"]
 draft: false
 source: "hackmd"
@@ -10,9 +10,9 @@ sourceType: "note"
 sourceTimestamp: 1777319422
 ---
 
-去年實習期間我接到的其中一個任務，是替公司自建的 Headscale 網路補上 DERP 中繼。DERP server 架起來其實很快，`derper` 一行指令就跑起來了——但跑起來之後我才意識到一個尷尬的問題：**任何知道我這台 DERP IP 位址的人，都可以把我的 server 加進他自己的 DERP map，把他們的流量倒進來。** 這不是開玩笑，Tailscale 官方文件在 Custom DERP Servers 那頁就明白寫著這個警告。等於我免費幫陌生人營運中繼站，頻寬帳單倒是記在我頭上。
+自架 Headscale 網路之後，第一個要補的是 DERP 中繼。DERP server 架起來其實很快，`derper` 一行指令就跑起來了——但跑起來之後我才意識到一個尷尬的問題：**任何知道我這台 DERP IP 位址的人，都可以把我的 server 加進他自己的 DERP map，把他們的流量倒進來。** 這不是開玩笑，Tailscale 官方文件在 Custom DERP Servers 那頁就明白寫著這個警告。等於我免費幫陌生人營運中繼站，頻寬帳單倒是記在我頭上。
 
-這篇就來整理當時研究出來的解法：derper 內建的 admission controller 機制，以及怎麼把它對接到 Headscale 的節點資料上。文末那張 sequenceDiagram 是當時的原始筆記，這裡逐段把它拆開講清楚。
+這篇整理我研究出來的解法：derper 內建的 admission controller 機制，以及怎麼把它對接到 Headscale 的節點資料上。文末那張 sequenceDiagram 是當時的原始筆記，這裡逐段把它拆開講清楚。
 
 ## 1. 先立名詞：DERP 與 admission controller
 
