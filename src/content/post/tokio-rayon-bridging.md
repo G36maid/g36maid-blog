@@ -17,13 +17,11 @@ Tokio 處理非同步 I/O，Rayon 處理 CPU 平行運算，兩套 runtime 各�
 
 ## 先搞清楚你在阻塞什麼
 
-你覺得你的程式裡大多數工作大概有多久？先猜再往下讀。
-
-async runtime 的全部本質，是「在 `.await` 點把執行緒讓出去換別的任務跑」。所以「阻塞」的定義不是系統呼叫，而是：**這段程式碼在兩個 await 點之間待了多久**。一個 10 毫秒的 `par_iter()` 不是 I/O，但它和一個 10 毫秒的同步磁碟讀取在 Tokio 眼裡是一樣的東西——都是把 worker thread 抓著不放 10 毫秒。
+async runtime 的本質，是在 `.await` 點把執行緒讓出去換別的任務跑。所以「阻塞」的定義不是系統呼叫，而是：這段程式碼在兩個 await 點之間待了多久。一個 10 毫秒的 `par_iter()` 不是 I/O，但它和一個 10 毫秒的同步磁碟讀取在 Tokio 眼裡是一樣的東西——都是把 worker thread 抓著不放 10 毫秒。
 
 Rayon 則是完全相反的設計：固定大小的 worker pool（預設等於邏輯核心數）、work-stealing 排程、任務要求是純計算、絕不等待。它的世界裡沒有「讓出」這個概念——`rayon::join()` 的語意是「兩個閉包**都**會跑完才返回」，這是阻塞式 fork-join，不是 future。
 
-所以橋接問題的真正形狀是：**把「會跑很久的純計算」從「靠讓出生存的排程器」手上，搬到「天生就該吃滿 CPU 的 pool」上，再讓結果以 future 的形式流回來。**
+橋接問題因此是：把跑得久的純計算從 Tokio 的 worker pool 搬到 Rayon，讓結果以 future 的形式流回來。
 
 ## Tokio 的兩種執行緒：core 與 blocking
 
@@ -120,7 +118,7 @@ async fn execute_on_rayon<R: Send + 'static>(
 
 ## 反模式：async 跑進 Rayon 裡面等
 
-最誘人也最錯的做法，是想讓 Rayon 的閉包裡 `.await` 東西：
+另一個錯誤方向，是想讓 Rayon 的閉包裡 `.await` 東西：
 
 ```rust
 // 這個方向走不通：rayon 的閉包不能是 async
@@ -130,7 +128,7 @@ rayon::spawn(move || {
 });
 ```
 
-閉包要能進 Rayon 就必須是普通 `FnOnce`，不是 future；就算你硬用 `block_on` 把 future 跑成同步，也是在 Rayon 的 worker 上**阻塞等待**——這直接違反 Rayon 的設計前提，work-stealing pool 的 thread 被你抓去等 I/O，整個 pool 的計算容量就縮水了。
+閉包要能進 Rayon 就必須是普通 `FnOnce`，不是 future；就算硬用 `block_on` 把 future 跑成同步，也是在 Rayon 的 worker 上阻塞等待 I/O，work-stealing pool 的計算容量就縮水了。
 
 正確的形狀是反過來：**Rayon 裡只放純計算，計算完了把結果用 channel 丟回來**，等待一律發生在 async 端。論壇上另一個案例（「Tokio and Rayon. Asynchrony and parallelism」）就是在問 `rayon::scope()` 和 `oneshot::channel()` 哪個快，回答一針見血：`rayon::scope()` 是阻塞呼叫，會把 Tokio worker thread 抓住不放，`oneshot::channel()` 是非阻塞的 async channel——兩者根本不是同一層的東西，不該拿來比速度。那位原 Po 進一步想「在 Rayon thread 裡 loop 等資料進來再算」，也被點醒這完全違反 Rayon 的模型：**Rayon 裡不該有等待，只有計算；要等的話，等的事情屬於 async 端或專屬 thread**。
 
@@ -170,7 +168,7 @@ Rayon 本身對 async 的態度值得知道。歷史脈絡：
 
 ## 這張圖的答案
 
-回到原稿那張圖的提問——「如何在不阻塞執行器的情況下連接它們」——完整答案是一句話：**讓 Tokio 只做等待、Rayon 只做計算，兩者之間用一個「會結束的阻塞呼叫 + channel」當橋**。具體選模式一/二/三取決於你的計算形狀，但原則只有一條：任何一邊都不要去等另一邊會「等」的東西。
+回到原稿那張圖的提問——「如何在不阻塞執行器的情況下連接它們」——答案是：讓 Tokio 只做等待、Rayon 只做計算，兩者之間用一個會結束的阻塞呼叫加 channel 當橋。選模式一/二/三取決於計算形狀，原則只有一條：任何一邊都不要去等另一邊會「等」的東西。
 
 寫這篇的當下（2026 年 11 月擴寫），這個題目的生態比我原稿提問時清晰了一些——tokio-rayon 這類小 adapter 已經可用，Rayon 官方的 async PR 仍然沉睡，但社群對「橋的正確形狀」已經有穩定共識。如果你的工作負載真的又重 I/O 又重 CPU，值得把 pool 的大小當成一等參數來調，而不是事後補救。
 
