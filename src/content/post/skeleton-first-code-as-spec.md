@@ -1,6 +1,6 @@
 ---
 title: "先寫空函數，別急著寫 Spec：LLM 時代的 code-as-spec"
-description: "已存在的程式碼風格比規格文件更能左右 LLM 的產出——所以先手寫空函數與空資料結構，可能比寫一份 spec 更穩定。從 type-driven development、compiler-driven development 講到 spec 漂移問題，附 Rust todo!() 實作流程與誠實列出的缺點。"
+description: "已存在的程式碼風格比規格文件更能左右 LLM 的產出——所以先手寫空函數與空資料結構，可能比寫一份 spec 更穩定。從 type-driven development、compiler-driven development 講到 spec 漂移問題，附 Rust todo!() 實作流程與這條路的限制。"
 pubDate: 2026-02-05T00:52:52+08:00
 category: programming
 tags: [llm, type-driven-development, rust, spec, 程式, 程式設計]
@@ -73,7 +73,7 @@ impl ConfigSource for FileConfigSource {
 
 這樣 agent 拿到的上下文裡，規格不再是「請遵守的指示」，而是「必須成立的現狀」。實際用下來，它偷換設計、自由發揮命名空間的次數明顯變少。
 
-## 誠實列缺點
+## 這條路的限制
 
 這招不是萬能，幾個我親自踩過或可以預見的坑：
 
