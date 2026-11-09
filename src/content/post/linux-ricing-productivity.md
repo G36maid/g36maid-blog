@@ -3,14 +3,14 @@ title: "Linux Ricing 不是浪費時間：看得開心，用得順手"
 description: "買新手機會調設定、換桌布、排 App；裝 Linux 折騰桌布、終端機、編輯器本質上是同一件事。從 r/unixporn 與 NvChad 談起：為什麼「看得開心」是最直接的生產力投資。"
 pubDate: 2025-11-30T01:20:32+08:00
 category: linux
-tags: ["linux", "ricing", "neovim", "生產力"]
+tags: ["linux", "ricing", "neovim", "生產力", "dotfiles"]
 source: "facebook"
 sourceType: "相片"
 sourceTimestamp: 1764436832
 draft: false
 ---
 
-> 本文擴寫自 2025-11-30 的 Facebook 相片短文（2026-10-26 潤飾重寫）。原稿是貼圖隨筆，附圖為 NvChad v2.0 的截圖拼貼，原始語氣照舊保留。
+> 本文擴寫自 2025-11-30 的 Facebook 相片短文。原稿是貼圖隨筆，附圖為 NvChad v2.0 的截圖拼貼，原始語氣照舊保留。
 
 常聽到有人說 Linux Ricing 是浪費時間。
 
@@ -28,11 +28,19 @@ draft: false
 
 Neovim 之所以需要「發行版」，是因為它本體只是一個可深度客製化的編輯器核心：LSP、補全、檔案樹、statusline，全都要自己裝。生態系因此長出一整排現成品——NvChad、LazyVim、AstroNvim、kickstart.nvim——性質就像 Linux 發行版：核心同一個，預設體驗天差地遠。裝一個發行版，等於直接繼承別人調好的配色、鍵位與 UI，把「調到順手」的起點往前挪一大步。
 
+## 我的 ricing 落在 dotfiles 裡
+
+說「我的環境是我自己拼的」當然要拿出證據。我的 Arch Linux + Hyprland 配置整包收在 [G36maid/dotfiles](https://github.com/G36maid/dotfiles)，用 [GNU Stow](https://www.gnu.org/software/stow/) 管理：Hyprland 0.55+、zsh（zim framework）、kitty、vim + zed、fcitx5，一條 `pacman` 清單加上 stow symlink 就能在新機器上還原整個環境。截圖就在 repo 的 README 裡——waybar、wofi、tmux、zellij、yazi 這些每天都在盯的東西，配色和鍵位都是一次一次調出來的。
+
+ricing 這件事會傳染。朋友看了之後也掉進坑裡：[Koios1143/dotfiles](https://github.com/Koios1143/dotfiles) 做了一整套 **NieR 風格**的主題——同樣是 Arch + Hyprland，但走 GNU Stow + quickshell 路線，狀態列、app launcher、剪貼簿歷史、電源選單全部用 quickshell 自己畫，連 SDDM 登入畫面和鎖屏都是改自 qylock 的 nier theme，輸入法掛的是他自己 fork 的 0c-ime（靈犀注音）。README 裡附了電源選單、鎖屏、剪貼簿的示範影片，看完真的很難不想重灌。他 repo 的自我介紹寫著「A Nier-style Arch Linux with Hyprland configured by GNU Stow」——這就是 r/unixporn 精神的具體呈現：同一套軟體，每個人的長相都不一樣。
+
 ## 看得開心是合法的生產力投資
 
 反正「看得開心」加上「用得順手」，心情好了，阻力小了，就是最直接的生產力提升。
 
 這句話可以認真拆。工程師的一天其實是一連串的啟動摩擦：打開終端機、進專案、開編輯器、跑測試。每一層如果讓人皺眉，就多一分拖延的理由；反過來，一個看得舒服、反應飛快、鍵位長在自己手上的環境，會讓你「更想打開它」。打開的次數多了，肌肉記憶與熟練度自然累積——阻力變小不是玄學，是行為學。手機桌布換了只能自己爽，編輯器的每一分順眼都直接攤在你每天的工作裡。
+
+dotfiles 還有一層額外的回報：**它是可遷移的**。換機器、重灌、SSH 到伺服器，環境跟著 repo 走。折騰的時間沒有消失，它被資本化成了可以無限次複用的資產。
 
 ## 誠實的反面
 
@@ -42,4 +50,6 @@ Neovim 之所以需要「發行版」，是因為它本體只是一個可深度�
 
 ## 延伸閱讀
 
+- [G36maid/dotfiles](https://github.com/G36maid/dotfiles)——我的 Arch + Hyprland 配置（GNU Stow）
+- [Koios1143/dotfiles](https://github.com/Koios1143/dotfiles)——被我推坑的朋友做的 NieR 主題，quickshell + SDDM nier theme，非常棒
 - [用 AUR 思維替 Zed Editor 做非官方 FreeBSD port](/blog/zed-freebsd-port/)——另一場為了「順手」而起的折騰。
