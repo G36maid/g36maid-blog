@@ -17,7 +17,7 @@ sourceTimestamp: 1759310470
 
 ## 第一步：先確認「誰」在漏
 
-排查的第一件事永遠不是猜，是看曲線：
+先看曲線：
 
 ```bash
 # 全域看一下：哪個容器在漲
@@ -34,7 +34,7 @@ watch -n 2 "docker stats --no-stream --format \
 
 ## 第二步：二分法——只有縮圖 job 在跑
 
-immich 的 job 頁面可以單獨暫停每種背景工作，這是天賜的除錯工具。把所有 job 暫停、只開 Generate Thumbnails，曲線照樣爬；把縮圖 job 一暫停，曲線立刻不漲了。（同樣的手法在 issue #22515 裡另一位回報者 droopanu 也做了：facial recognition 觸發縮圖重生，暫停縮圖 job 之後洩漏停止。）
+immich 的 job 頁面可以單獨暫停每種背景工作。把所有 job 暫停、只開 Generate Thumbnails，曲線照樣爬；把縮圖 job 一暫停，曲線立刻不漲了。（同樣的手法在 issue #22515 裡另一位回報者 droopanu 也做了：facial recognition 觸發縮圖重生，暫停縮圖 job 之後洩漏停止。）
 
 所以範圍收斂到：**v1.144.1 的 immich-server 在執行 thumbnail generation 時漏記憶體**。
 
@@ -61,7 +61,7 @@ immich 的 job 頁面可以單獨暫停每種背景工作，這是天賜的除�
 1. **先止血**：[PR #22526](https://github.com/immich-app/immich/pull/22526)——revert [PR #22345](https://github.com/immich-app/immich/pull/22345)（#22345 是 09-23 才合併的「update libmimalloc path」，改完反而讓 LD_PRELOAD 正確載入了壞掉的 alpha 版；revert 等於退回不使用 mimalloc 的行為），由 alextran1502 在 2025-10-01 13:58 合併，同時關閉 #22515 與 #22541。
 2. **再根治**：基底映像檔倉庫 immich-app/base-images 的 [PR #277「fix(server): memory leak in allocator」](https://github.com/immich-app/base-images/pull/277)——mertalev 把 build 改成安裝新版 mimalloc（3.15），並確認「thumbnail 生成的記憶體用量恢復正常，明顯低於 alpha 版或完全不用 mimalloc 的情況」。
 
-這個 revert 正好搭上 immich 第一個 stable release 的便車：[#22526 進了 v2.0.0（2025-10-01 發佈）](https://github.com/immich-app/immich/releases/tag/v2.0.0) 的 changelog，完整 diff 在 v1.144.1...v2.0.0 的 9 個 commit 裡可以逐條核對。之後的 [v2.0.1](https://github.com/immich-app/immich/releases/tag/v2.0.1)（2025-10-03）與 [base-images PR #277](https://github.com/immich-app/base-images/pull/277) 帶入的新 allocator，把這條線徹底補完。
+這個 revert 隨 immich 第一個 stable release 一起出去：[#22526 進了 v2.0.0（2025-10-01 發佈）](https://github.com/immich-app/immich/releases/tag/v2.0.0) 的 changelog，完整 diff 在 v1.144.1...v2.0.0 的 9 個 commit 裡可以逐條核對。之後的 [v2.0.1](https://github.com/immich-app/immich/releases/tag/v2.0.1)（2025-10-03）與 [base-images PR #277](https://github.com/immich-app/base-images/pull/277) 帶入的新 allocator，把這條線徹底補完。
 
 **我自己的時間軸（合理重構）**：從 docker stats 發現曲線不對，到暫停 job 確認相關性，到搜到 #22515 對上症狀與版本，再到看到 #22526 被 merge——快則幾個小時內。我當時的臨時緩解是先把 Docker 記憶體上限砍到 6GB（8GB VM），避免 immich 拖垮同機的其他服務；容器在縮圖期間還是會被 OOM kill 重啟，但至少不會連累別人。
 
@@ -71,7 +71,7 @@ immich 的 job 頁面可以單獨暫停每種背景工作，這是天賜的除�
 2. **容器化讓「誰在漏」一目了然，但也容易誤導。**`docker stats` 能告訴你漲的是哪個容器，但 container 記憶體是整個 node 程序的——如果漏的是 allocator，你從應用程式碼裡永遠找不到兇手。當多種不相干操作（背景 job、前台瀏覽）都漏的時候，往「基底映像檔／依賴層」想。
 3. **上游反應速度值回票價。**#22515 開在 09-30，回報後不到 24 小時 revert 就 merge、關 issue，修復隨著隔天的 v2.0.0 一起出去。對自架用戶來說，**最快的修法往往不是自己 patch，而是確認上游已經在修，然後升級**。
 
-有一說一，immich 官方的 job 頁面可以逐項暫停背景工作，這對排查的幫助超乎預期——能用「開關一個 job」驗證因果的系統，除錯起來比只能看 log 的系統舒服太多。
+immich 官方的 job 頁面可以逐項暫停背景工作，能用「開關一個 job」驗證因果，排查起來比只能看 log 的系統舒服很多。
 
 ## 站內相關
 
