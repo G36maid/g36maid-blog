@@ -1,18 +1,18 @@
 ---
 title: "Auto-Research 全自動研究系統：知識來源到報告的 pipeline 設計"
-slug: auto-research-pipeline
-description: "把「知識來源 → 選題 → 搜尋 → 調查 → 實驗 → 報告」整條研究流程變成可自動跑的 pipeline：各階段的具體工具選型（anydoc、sqlite-vec、cron、GitHub API、opencode、mmdr）與 why，以及誠實的三個翻車風險。"
+description: "把「知識來源 → 選題 → 搜尋 → 調查 → 實驗 → 報告」整條研究流程變成可自動跑的 pipeline：各階段的具體工具選型（anydoc、sqlite-vec、cron、GitHub API、pi）與 why，以及三個最可能翻車的地方。"
 pubDate: 2026-08-13T13:47:50+08:00
-tags: ["agent", "llm", "opencode", "rag", "github", "cron", "自動化"]
+tags: ["agent", "llm", "rag", "github", "cron", "自動化"]
 category: ai
 source: "hackmd"
 sourceType: "note"
 sourceTimestamp: 1786600070
 draft: false
 ---
-> 本文由 2026-08-13 HackMD 設計筆記於 2026-11-01 擴寫；文中版本資訊以 2026 年 8 月當時的生態為準。
 
-做研究的過程向來是散裝的：RSS 訂閱開在閱讀器、筆記躺在 HackMD、查到的資料是十幾個瀏覽器分頁、實驗在 terminal 裡跑、報告最後手刻 Markdown。每個環節都存在，但環節之間靠人肉搬運。這篇是我在 8 月中寫下的設計筆記擴寫版，目標只有一個——把「知識來源 → 選題 → 搜尋 → 調查 → 實驗 → 報告」整條研究流程變成可以自動跑的 pipeline，而且每個階段都能 loop、能回溯、能換方向。
+> 本文由 2026-08-13 的 HackMD 設計筆記擴寫重寫而成（2026-11）；版本資訊以 2026 年 8 月當時的生態為準。原稿是一份 North Star 式的討論稿，這篇把它整理成可執行的 pipeline 設計。
+
+做研究的過程向來是散裝的：RSS 訂閱開在閱讀器、筆記躺在 HackMD、查到的資料是十幾個瀏覽器分頁、實驗在 terminal 裡跑、報告最後手刻 Markdown。每個環節都存在，但環節之間靠人肉搬運。這篇的目標只有一個——把「知識來源 → 選題 → 搜尋 → 調查 → 實驗 → 報告」整條研究流程變成可以自動跑的 pipeline，而且每個階段都能 loop、能回溯、能換方向。
 
 ```mermaid
 flowchart LR
@@ -41,19 +41,21 @@ flowchart LR
 
 ## 階段五：實驗與實作
 
-跑實驗需要一個能動手的 agent。選 [opencode](https://opencode.ai/docs)——2026 年 8 月當時 1.x 線（8 月底已到 1.18.x），終端機 agent、開源、`read`/`write`/`edit`/`bash` 四個核心工具就足以完成 PoC 迴圈，專案慣例全部寫進 `AGENTS.md` 讓每個 subagent 讀同一份共識檔。模型層當時的主力是 DeepSeek v4 flash 0731 量化版（選型筆記在 [gist](https://gist.github.com/G36maid/8c1187039a8388c5bc4eb4fd3fc781df)），本地部署的實際體感可以參考之前那篇 GLM-5.3-Flash-EXL3 的心得——prefill 慢的痛點在批次調查場景會被放大，這是全自動 pipeline 選量化模型時必須算進去的成本。
+跑實驗需要一個能動手的 agent。選 [pi](https://pi.dev/)（[earendil-works/pi](https://github.com/earendil-works/pi)）——極簡的 coding agent harness，`read`/`write`/`edit`/`bash` 四個核心工具就足以完成 PoC 迴圈；LLM/provider 的抽象層它已經做好，多 provider 路由、訂閱或 API key 都支援，專案慣例全部寫進 `AGENTS.md` 讓每個 subagent 讀同一份共識檔。模型層當時的主力是 DeepSeek v4 flash 0731 量化版（選型筆記在 [gist](https://gist.github.com/G36maid/8c1187039a8388c5bc4eb4fd3fc781df)），本地部署的實際體感可以參考之前那篇 GLM-5.3-Flash-EXL3 的心得——prefill 慢的痛點在批次調查場景會被放大，這是全自動 pipeline 選量化模型時必須算進去的成本。
 
-## 階段六：報告與出版
+pi 在這裡還有一層加分：它同時有 print/JSON mode 和 RPC mode，排程器可以無人值守地開 session 跑完實驗、收結構化事件存檔——研究 pipeline 需要的是「可以被呼叫的 agent」，而不只是「可以聊天的 agent」。真正的 batch 編排（多實驗平行、失敗重試、worktree 隔離）靠 tmux 開多個 pi instance 就夠，不需要替 pipeline 再引進一個重型框架。
 
-報告不只是輸出文字：Mermaid 圖表用 mmdr 直接在 Astro build 時渲染成 SVG，不需要 Chromium（見〈用 mmdr 取代 Chromium〉）；整份報告接上部落格的 Markdown 管線就能直接變成一篇文章。研究到出版的距離，應該短到只剩一個 commit。
+## 階段六：報告
+
+報告的最後一哩是圖表與排版：Mermaid 圖表直接在 build 時渲染成 SVG，不需要 Chromium（見〈用 mmdr 取代 Chromium〉）；結論段落、信心評分（每個主張標注證據強度）與參考連結從調查階段的結構化輸出直接帶過來，不要在最後一步重新手寫。研究到出版的距離，應該短到只剩一個 commit——至於出版端走什麼發佈管線，是另一篇的主題，這篇只負責把報告做好。
 
 ## 誠實的評價
 
 這套系統到目前為止是一份設計，不是一個成品。三個最可能翻車的地方：token 成本——每個階段都 loop 等於指數爆炸，必須給每階段設迭代上限；cron 空轉——排程任務沒人看著跑，失敗會安靜地累積；以及調查品質的長尾——交叉驗證能壓低幻覺率，但壓不到零。先把「知識來源 → 選題」和「報告」兩端自動化、中間留給人，大概才是第一個能真正上線的版本。
 
-延伸閱讀：本地模型部署的體感請看〈在 2× DGX Spark 上部署 GLM-5.3-Flash-EXL3〉與其進度追蹤〈一個月後再打開 MiaAI 那個 repo〉；本篇管線最終的落腳處，就是〈Astro 7 部落格管線〉描述的那套發佈流程。
+延伸閱讀：本地模型部署的體感請看〈在 2× DGX Spark 上部署 GLM-5.3-Flash-EXL3〉與其進度追蹤〈一個月後再打開 MiaAI 那個 repo〉。
 
-- [opencode](https://opencode.ai/docs)（1.18.x, 2026-08）
+- [pi](https://pi.dev/)（[earendil-works/pi](https://github.com/earendil-works/pi)，print/JSON/RPC/SDK 四種模式）
 - [firecrawl/anydoc](https://github.com/firecrawl/anydoc)（MIT, 2026-08-03 釋出）
 - [sqlite-vec](https://github.com/asg017/sqlite-vec)（pre-v1）
 - [n8n 文件](https://docs.n8n.io/)、[GitHub REST API](https://docs.github.com/en/rest)
