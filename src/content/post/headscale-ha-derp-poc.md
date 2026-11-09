@@ -18,7 +18,7 @@ draft: false
 
 ## 架構總覽
 
-整個 PoC 用 Docker Compose 起：兩台各自獨立的 headscale（HS1、HS2，各管一個互不相通的 tailnet）、四個 client（TS1/TS2 註冊到 HS1、TS3/TS4 註冊到 HS2）、一台 derper，以及一個我預計自己寫的輕量 HTTP 服務 verify-api。verify-api 唯讀掛載 HS1 的 SQLite 檔，查連線者的 node key 是否存在——所以 HS2 的 client 註定被拒。
+整個 PoC 用 Docker Compose 起：兩台各自獨立的 headscale（HS1、HS2，各管一個互不相通的 tailnet）、四個 client（TS1/TS2 註冊到 HS1、TS3/TS4 註冊到 HS2）、一台 derper，以及一個輕量 HTTP 服務 verify-api。verify-api 的設計完全以開源元件為基準——它只依賴 derper 的 `--verify-client-url` 契約（上游 `tailcfg` 定義）與 headscale 的公開 API/schema，任何依賴內部或未公開細節的部分都標出來。PoC 階段的實作是唯讀掛載 HS1 的 SQLite 檔、查連線者的 node key 是否存在，所以 HS2 的 client 註定被拒。
 
 ```mermaid
 graph TD
@@ -133,7 +133,7 @@ sequenceDiagram
 
 ## 5. 為什麼 PoC 先直接查 SQLite
 
-正式的 HA 實作裡，verify-api 應該去查一個共享的高可用資料庫（PostgreSQL、DynamoDB 之類），多台 headscale 同時活躍時才有單一真相源。但 PoC 的目的是驗證「derper 委外驗證」這個概念通不通，所以先用最直接的作法：直接讀 HS1 的 SQLite 檔。零額外依賴、最快能跑起來；代價是跟 headscale 的內部 schema 綁死，這個債之後的 HA 版本再還。
+正式的 HA 實作裡，verify-api 應該走 headscale 官方公開的介面（[REST API](https://headscale.net/stable/ref/api/) 的 `/api/v1/node` 列出 `nodeKey` 與 `expiry`，或 headscale 0.24 起內建的 [`/verify` endpoint](https://github.com/juanfont/headscale/pull/2046)），而不是綁內部 schema。PoC 的目的是驗證「derper 委外驗證」這個概念通不通，所以先用最直接的作法：直接讀 HS1 的 SQLite 檔。零額外依賴、最快能跑起來；代價是跟 headscale 的內部 schema 綁死，正式版應改走上述公開介面，這個債之後的 HA 版本再還。
 
 ## 限制（誠實列）
 
