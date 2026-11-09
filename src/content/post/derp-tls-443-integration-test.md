@@ -1,6 +1,6 @@
 ---
-title: "DERP Manager 整合測試與 TLS 443 踩雷戰記"
-description: "用 Docker Compose 組出兩台 Tailscale client 經自架 DERP relay 互通的整合測試環境，並記錄 443 端口強制 TLS、InsecureForTests 只影響 client 端的踩雷過程。"
+title: "自架 DERP relay 的整合測試與 TLS 443 踩雷戰記"
+description: "用 Docker Compose 組出兩台 Tailscale client 經自架 derper relay 互通的整合測試環境，並記錄 443 端口強制 TLS、InsecureForTests 只影響 client 端的踩雷過程。"
 pubDate: 2025-11-20 09:09:10 +0800
 draft: false
 category: self-hosting
@@ -10,7 +10,7 @@ sourceType: "note"
 sourceTimestamp: 1763600950
 ---
 
-> 本文擴寫於 2026-11-02，原稿為 Moxa 實習期間（2025-11-20）的 DERP Manager 整合測試週報，已去識別化內部細節、改寫為第一人稱踩雷實錄。
+> 本文擴寫於 2026-11-02，原稿是 2025-11-20 的一份自架 DERP 整合測試筆記，改寫為第一人稱踩雷實錄；測試環境以開源的 derper、headscale 與 Traefik 組合為基準。
 
 自架 Tailscale DERP 中繼，最麻煩的從來不是把 server 架起來，而是「測試它」。DERP 協議有個很硬的規矩：只要綁在 443 port 上，就一定要講 TLS。而整合測試環境偏偏最缺的就是憑證——沒有公開網域、沒有 Let's Encrypt 能打到的 80 port，autocert 直接躺平。這篇記錄我怎麼用 Docker Compose 拼出一套能跑的 DERP 整合測試環境，以及繞不開的那道 443 TLS 牆。
 
@@ -21,8 +21,8 @@ sourceTimestamp: 1763600950
 ```mermaid
 flowchart LR
     subgraph traefik-public-test
-        Traefik[Traefik] --> DERP[DERP Manager :443]
-        Traefik --> HS[Headscale :8080]
+        Traefik[Traefik] --> DERP[derper :443]
+        Traefik --> HS[headscale :8080]
     end
     subgraph app-net-test
         TS1[Tailscale-1] & TS2[Tailscale-2]
@@ -32,11 +32,11 @@ flowchart LR
     DERP & HS --> PG[(PostgreSQL)]
 ```
 
-DERP Manager 同時開兩個 port：443 跑 DERP relay（HTTPS）、8080 跑管理 API（HTTP，含 `/derpmap`）。Headscale 會來抓 DERP map 發給 client；兩台 Tailscale client 用 preauth key 註冊後，靠 `TS_DEBUG_ALWAYS_USE_DERP=true` 強制所有流量走 relay，這樣才能確定測到的是 DERP 而不是碰巧打洞成功的直連。
+derper 同時開兩個 port：443 跑 DERP relay（HTTPS）、8080 跑管理 API（HTTP，含 `/derpmap`）。headscale 會來抓 DERP map 發給 client；兩台 Tailscale client 用 preauth key 註冊後，靠 `TS_DEBUG_ALWAYS_USE_DERP=true` 強制所有流量走 relay，這樣才能確定測到的是 DERP 而不是碰巧打洞成功的直連。
 
 ## 1. Compose 環境：啟動順序就是依賴順序
 
-`docker-compose.integration-test.yml` 的重點不是服務本身，而是 `depends_on` 加 healthcheck 串出來的啟動鏈：postgres `pg_isready` 健康 → DERP Manager 起來並通過 `curl /derpmap` 健康檢查 → Headscale 起來並向 DERP Manager 抓 map → 兩台 client 才起來註冊。順序錯了，client 會拿到空的 DERP map，之後怎麼 ping 都不通，而且錯誤完全不會指向真正的原因。
+compose 檔的重點不是服務本身，而是 `depends_on` 加 healthcheck 串出來的啟動鏈：postgres `pg_isready` 健康 → derper 起來並通過 `curl /derpmap` 健康檢查 → headscale 起來並向 derper 抓 map → 兩台 client 才起來註冊。順序錯了，client 會拿到空的 DERP map，之後怎麼 ping 都不通，而且錯誤完全不會指向真正的原因。
 
 ## 2. 產生憑證並發布 CA
 
@@ -46,15 +46,15 @@ DERP Manager 同時開兩個 port：443 跑 DERP relay（HTTPS）、8080 跑管�
 cd integration-tests/certs/
 mkcert -install  # 產生本地 root CA
 mkcert \
-  -cert-file derp-manager.pem \
-  -key-file derp-manager-key.pem \
-  "derp-manager.10.123.34.117.traefik.me" \
-  "*.10.123.34.117.traefik.me" \
+  -cert-file derper.pem \
+  -key-file derper-key.pem \
+  "derp.example.traefik.me" \
+  "*.example.traefik.me" \
   "localhost" "127.0.0.1"
 cp "$(mkcert -CAROOT)/rootCA.pem" ./rootCA.pem
 ```
 
-關鍵在「發布」：DERP Manager 掛載整個 certs 目錄，兩台 client 各掛一份 `rootCA.pem` 進 `/usr/local/share/ca-certificates/`，啟動時先跑 `update-ca-certificates`。憑證簽得再漂亮，client 不信任 CA 一樣是白工——這是我第一次測試失敗的原因。
+關鍵在「發布」：derper 掛載整個 certs 目錄，兩台 client 各掛一份 `rootCA.pem` 進 `/usr/local/share/ca-certificates/`，啟動時先跑 `update-ca-certificates`。憑證簽得再漂亮，client 不信任 CA 一樣是白工——這是我第一次測試失敗的原因。
 
 ## 3. Client 加入
 
@@ -80,7 +80,7 @@ $ docker exec tailscale-1-test tailscale status
 
 $ docker exec tailscale-1-test tailscale netcheck
   * DERP latency:
-    - moxa: 2.1ms  (derp-manager.10.123.34.117.traefik.me)
+    - mynet: 2.1ms  (derp.example.traefik.me)
 
 $ docker exec tailscale-1-test ping -c 4 100.64.0.2
 64 bytes from 100.64.0.2: icmp_seq=1 ttl=64 time=4.2 ms
@@ -110,7 +110,7 @@ serveTLS := tsweb.IsProd443(*addr) || *certMode == "manual"
 `derp --help` 的 `-a` 說明其實把規則講完了：*Serves HTTPS if the port is 443 and/or -certmode is manual, otherwise HTTP*。所以換個 port 就能跑純 HTTP、完全免憑證（`-dev` 模式本質上也是這招，它把 listen address 覆寫成 `:3340`）：
 
 ```yaml
-derp-manager:
+derper:
   environment:
     - DERP_PORT=8443  # 非 443 → HTTP mode，免憑證
   expose:
