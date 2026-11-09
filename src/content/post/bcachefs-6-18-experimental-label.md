@@ -12,9 +12,9 @@ sourceTimestamp: 1753756786
 
 你猜一個檔案系統要怎麼樣才算「不再實驗」？是改掉幾萬行程式碼，還是——改掉 Kconfig 裡的一行字串？
 
-2025 年 7 月底我在 FB 上只寫了句短評：「Bcachefs 計畫在 Linux 6.18 移除實驗性標籤 👀 不是移出 Linux？這是誰給的勇氣」。這篇把它展開：先把「實驗性標籤」這個術語立起來，再按年代把事件排開，最後補一段 2026 年回看的「後來怎麼了」。先照慣例聲明證據等級：本文擴寫於 2026-11，原稿寫於 2025-07-29；我沒逐行讀過 bcachefs 原始碼，內容以 LWN、Phoronix、LKML 等二手資料為主，寫錯請留言糾正。
+2025 年 7 月底我在 FB 上只寫了句短評：「Bcachefs 計畫在 Linux 6.18 移除實驗性標籤 👀 不是移出 Linux？這是誰給的勇氣」。這篇把它展開：先解釋 EXPERIMENTAL 標籤在 kernel 裡到底擋了什麼，再按年代把事件排開，最後補一段 2026 年回看的「後來怎麼了」。本文擴寫於 2026-11，原稿寫於 2025-07-29；我沒逐行讀過 bcachefs 原始碼，內容以 LWN、Phoronix、LKML 等二手資料為主，寫錯請留言糾正。
 
-## 先立術語：EXPERIMENTAL 到底擋了什麼
+## EXPERIMENTAL 到底擋了什麼
 
 老 Linux 人記憶中的 `CONFIG_EXPERIMENTAL`，是 init/Kconfig 裡那個「Prompt for development and/or incomplete code/drivers」開關：沒開它，`depends on EXPERIMENTAL` 的選項根本不會出現在選單裡。但它早在 2013 年的 v3.9 就被整批移除了——2012 年 kernel summit 決議、Kees Cook 跑了一整套約兩百個 patch 把樹裡所有 `depends on EXPERIMENTAL` 清掉（[patch 系列](https://lists.openwall.net/linux-kernel/2012/10/02/734)）。從那之後，Kconfig prompt 裡的 `(EXPERIMENTAL)` 就只是純裝飾字串：**不擋編譯、不擋掛載、不擋任何人**。
 
@@ -37,6 +37,6 @@ bcachefs 的標籤就長在這種地方。v6.16 的 [fs/bcachefs/Kconfig](https:
 
 ## 評論：標籤是社會訊號，不是技術開關
 
-最諷刺的是結局剛好對上原稿的問句：標籤確實「在 6.18 前後」沒了——只是連 code 一起出樹了。EXPERIMENTAL 這種標記從 2013 年起就沒有任何機制上的意義，它的全部功能是訊號：告訴發行版維護者「出事別來煩我」，告訴使用者「資料自己負責」。openSUSE 在 2025 年 9 月一度宣布要跟著 6.18 移除 bcachefs、後來又放軟（[The Register](https://www.theregister.com/software/2025/09/25/bcachefs-goes-dkms-after-torvalds-kernel-banishment/729876)），正是這種訊號在發行版層級的傳導。
+結局剛好對上原稿的問句：標籤確實「在 6.18 前後」沒了——只是連 code 一起出樹了。EXPERIMENTAL 這種標記從 2013 年起就沒有任何機制上的意義，它的全部功能是訊號：告訴發行版維護者「出事別來煩我」，告訴使用者「資料自己負責」。openSUSE 在 2025 年 9 月一度宣布要跟著 6.18 移除 bcachefs、後來又放軟（[The Register](https://www.theregister.com/software/2025/09/25/bcachefs-goes-dkms-after-torvalds-kernel-banishment/729876)），正是這種訊號在發行版層級的傳導。
 
  Kent 的勇氣來源其實很正當：bug tracker 上的數字。但 merge window 的紀律是 Linus 維護的另一種「bug tracker」——一個不收 rc 期間新功能的社會規範。兩個計數器對不上，結果就是現在這樣。我自己是 btrfs 派、homelab 的資料照舊放 TrueNAS，bcachefs 留在觀察名單上；不過樹外化後反而少了一層「mainline 會幫它收斂」的期待，要試的人得自認是實驗站——這點 Linus 早就說對了。
