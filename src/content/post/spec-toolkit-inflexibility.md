@@ -10,7 +10,7 @@ sourceType: "分享的貼文"
 sourceTimestamp: 1763218374
 ---
 
-> 本文擴寫自 2025-11-15 的 Facebook 貼文。
+> 本文擴寫自 2025-11-15 的 Facebook 貼文。文末的 2026 回顧是原文沒有的：一年之後，立場變了很多，與其修修補補不如把轉變整個寫出來。
 
 「大部分同意，用 spec-toolkit 反而讓我難以介入。我仍然是想要 pair programming 的體驗，但是 spec 一旦訂好就極度缺乏彈性。我還是喜歡自己寫 AGENTS.md 跟 SPEC.md。而且因為我用便宜的 Gemini 進行所有 spec 的編寫以節省 Claude 用量，但完全遵守 Gemini 的 spec 本來就會出現問題。」
 
@@ -42,13 +42,19 @@ Spec Kit 的流程很完整：先用 `/speckit.constitution` 定下專案原則�
 
 這正是我喜歡它的地方：**它是持續在變的備忘，而不是一次訂死的合約。** 我可以在實作中途任何時刻修改它，agent 下一次讀到就是新的規則。SPEC.md 同理——它是我腦內需求的粗略外化，隨實作演化，不承諾完整性。這種做法當然有缺點：沒有 constitution 的莊嚴性、沒有 tasks.md 的可追蹤性、專案一大就會失序。但對我這種一個人、多個 side project、需求天天變的開發節奏，它的修改成本幾乎是零。
 
-## 那 spec-toolkit 還有價值嗎？
+## 當時的結論
 
-有，而且我沒有把它完全丟掉。我認為它值得用的場景很明確：需求真的穩定、你真的在動手前就知道全貌的工作——例如接案時客戶已經給了完整規格、團隊要在多個 agent 之間分工、或是那種「改一個字要燒很多錢」的正式專案。在那些場合，spec 的文件化是資產而不是負債。
+寫完上面這些之後，我當時的立場是「有條件的保留」：spec-driven 的理念我大部分同意，Spec Kit 也沒有完全丟掉——需求穩定、動手前就知道全貌的工作（接案有完整規格、多 agent 分工、改一個字很貴的正式專案）仍然值得用。但在需求還在演化的個人專案裡，我還是想自己握著方向盤。
 
-但在需求仍在演化的個人專案裡，我的結論不變：我大部分同意 spec-driven 的理念，只是 spec-toolkit 讓我難以介入，而我還是想自己握著方向盤。
+## 2026 回頭看：上面的保留都太客氣了
 
-## References
+一年過去，再翻出這篇舊文，我想把話說得更直白：**spec toolkit 對我來說根本就是垃圾——不是「有條件的保留」，是確認放棄。**當年那段「需求穩定時還是值得用」的善意推測，一年裡一次都沒有兌現過。
+
+原因是那個前提從來不成立。回頭盤點我 2026 年寫的所有東西——side project、開源工具、研究 pipeline、課程專題——沒有任何一個是「動手前就知道全貌」的。更麻煩的是，2026 年的 agent 變強之後，spec-first 的成本結構整個崩壞了：以前「先想清楚再動手」是因為 agent 每一輪迭代又慢又貴，文書作業省下來的重工很划算；現在模型便宜到可以直接在 code 上試錯五輪，spec 流程省下的那點重工反而抵不上它自己產生的文書成本。當年說「接案有完整規格時值得用」，後來真的接到這種案子，我發現客戶給的「完整規格」到實作第三天就有三處要改——spec 越是號稱完整，過期得越快。
+
+最後連我自己寫的 AGENTS.md/SPEC.md 路線也演化了：SPEC.md 現在很少維護，需求直接寫進對話；AGENTS.md 只留 build/test 指令和幾條硬規則，其他一切以實際 code 為準。整個 2025 年底那場「怎麼把 spec 做對」的糾結，方向本身就不對——該糾結的是怎麼讓實作循環夠便宜，讓「先改 code 再說」永遠比「先改 spec」快。2026 年的答案就是這樣，而且它讓 spec-toolkit 的整套儀式顯得多餘。
+
+References:
 
 - [github/spec-kit — Spec-Driven Development toolkit](https://github.com/github/spec-kit/)
 - [Spec-driven development with AI: Get started with a new open source toolkit — GitHub Blog](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)
