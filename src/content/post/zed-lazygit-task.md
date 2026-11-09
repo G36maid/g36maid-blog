@@ -10,7 +10,7 @@ sourceType: "相片"
 sourceTimestamp: 1761895829
 ---
 
-> 本文擴寫自 2025-10-31 的 Facebook 貼文。
+> 本文擴寫自 2025-10-31 的 Facebook 貼文。2026-11 重寫時對照了 Zed 官方文件現況（zed.dev/docs/tasks）與 Git 面板的發展，逐項確認這套配置仍然有效，詳見〈2026 現況〉一節。
 
 長期以來 Zed 的 Git 整合一直偏陽春：編輯器內建了 gutter blame、git diff 面板，但沒有一個原生的 git tree view 可以讓我瀏覽分支、看 commit graph；而我自己慣用的 lazygit，官方也沒有提供任何編輯器整合，想在 Zed 裡用它就只能另開一個終端機視窗，切來切去相當破壞專注力。
 
@@ -99,6 +99,21 @@ pkg install lazygit
 - **Windows 的 shell 欄位**：`"shell": {"program": "sh"}` 在 Windows 上沒有 `sh` 可用，改成省略 shell 或指定 PowerShell。
 - **不想覆蓋預設快捷鍵**：`cmd-shift-g`／`ctrl-shift-g` 原本有內建行為，若不想覆蓋，換成 `alt-g` 這類組合即可，task 名稱對得上就行。
 
-## 個人評價
+## 2026 現況：這招還能用嗎
 
-這招我給高分。它漂亮的地方不在「跑個終端程式」本身，而在 Zed 的 task + keymap + 變數系統組合起來的彈性：不用等官方做 git tree view，也不用寫 extension，二十行設定就補上了一塊缺。缺點是 lazygit 跟 Zed 原生的 git 面板仍是兩套世界，commit 訊息、分支狀態不會互相同步；另外若之後 Zed 原生出更好的 Git UI，這個 workaround 自然就功成身退——但在此之前，它是我目前最舒服的組合。之前手動做 FreeBSD port 的經驗寫在[這篇](/blog/zed-freebsd-port/)，Zed 生態這種「自己動手補」的風格倒是挺一貫的。
+重寫這篇時我把 [zed.dev/docs/tasks](https://zed.dev/docs/tasks) 的現行文件逐項對了一遍，結論先講：**配置本身完全不用改，原樣照跑。**逐項確認如下——
+
+- 欄位全部健在：`command`、`shell`、`hide`、`show_summary`、`show_command`、`allow_concurrent_runs`、`use_new_terminal`、`cwd`、`reveal`，以及文件裡的完整 task template 範例，跟 2025 年 10 月寫這篇時一致。
+- **官方文件現在直接拿 lazygit 當範例**：文件在「Custom keybindings for tasks」一節給的示範就是 `{"label": "start lazygit", "command": "lazygit -p $ZED_WORKTREE_ROOT"}` 配 `task::Spawn` 加 `reveal_target: "center"`——當年的社群招式已經被收編成官方文檔的 canonical example。`$ZED_WORKTREE_ROOT` 也仍是正式支援的變數。
+- 一個值得知道的小差異：在現行文件裡，控制「task 開在哪」的主戰場是 **keymap 裡 `task::Spawn` 的參數**（`reveal_target: "center"`）；`tasks.json` 欄位表內建的是 `reveal`/`hide`（控制顯示與收合行為）。實務上兩邊都寫也不會壞——上面第 2、3 步的配置就是這樣，keymap 的 `reveal_target` 會把 lazygit 帶到中央面板。
+
+更大的背景變化是 Zed 原生 Git 本身在 2026 年追上來了：Git Graph（commit graph 視圖，含搜尋、branch/tag 標記、點開看 diff、commit 資訊面板）在 2026 年初陸續登陸 preview 和 stable，之後 Git Panel 又加了 commit history、staged/unstaged changes 專屬 multibuffer 等功能。也就是說，當年「沒有原生 git tree view」這個缺口，官方已經補上了一大塊。
+
+那這招還有存在價值嗎？我現在的用法是兩者並存：Git Graph 看歷史、找 commit、看檔案層級的 diff，快又原生；但 stage、hunk 級操作、rebase、互動式改歷史這類活，lazygit 還是順手得多——而 task 機制正是讓 lazygit 隨叫隨到、又不離開編輯器的那座橋。配置不用動，繼續用。
+
+## 延伸閱讀
+
+- [Zed docs: Tasks](https://zed.dev/docs/tasks)——現行欄位與變數的權威來源，內建 lazygit 範例
+- [Zed blog: Hidden Gems part 1](https://zed.dev/blog/hidden-gems-team-edition-part-1)——這招的出處（/u/parawaa）
+- [Zed blog: Native Git support](https://zed.dev/blog/git)——原生 Git 整合的設計說明
+- 之前手動做 FreeBSD port 的經驗寫在[這篇](/blog/zed-freebsd-port/)，Zed 生態這種「自己動手補」的風格倒是挺一貫的
