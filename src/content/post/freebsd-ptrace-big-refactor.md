@@ -29,6 +29,7 @@ sourceTimestamp: 1779961169
 - **2026 年 5 月**——也就是我發那篇抱怨文的前後——這個修法本身又被抓出問題：[D56928](https://reviews.freebsd.org/D56928)（`cb31a266167c`）「ptrace: clear TDP_USERWR after transparent attach only on attach」，由 Alex S 回報，修的是 `99976934274d` 的行為，cperciva 再把它 cherry-pick 進 15.1。「fix 的 fix」隔了一年還在補。
 - 同時這個介面還在持續動刀：2026 年 1 月 pdrfork(2)/pdwait(2)（D54592）與 process descriptor 的 ptrace 模式、7 月的 PT_GET_CHILDREN（D58315）、PT_SET_SC_RET、以及把 `sys_ptrace()`/`freebsd32_ptrace()` 拆開（D58586）。
 - 安全面也補了兩刀：2026-05-20 的 FreeBSD-SA-26:21（CVE-2026-45253，PT_SC_REMOTE 缺驗證可本地提權，由清大團隊用 GLM-5.1 找到）、2026-06-30 的 SA-26:45（CVE-2026-49426，audit 記錯 PT_SC_REMOTE 的結果）。同一個月內介面既在翻語義又在出資安公告，下游想追只能全部重測。
+- 這波重構的下游漣漪也到了我自己的 wrapper 上：rust-minidump 生態裡的 minidump-writer 原本不支援 FreeBSD，[minidump-writer PR #183「Enable support for FreeBSD」](https://github.com/rust-minidump/minidump-writer/pull/183)正是為了讓 FreeBSD 的 crash dump 路徑跟上這些 ptrace 變動而開的——我當時自己開的 PR，還在 review 中。
 
 ## 大爆炸還是漸進？
 
