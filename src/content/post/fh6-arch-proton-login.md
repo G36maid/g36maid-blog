@@ -10,7 +10,7 @@ sourceType: "相片"
 sourceTimestamp: 1782402203
 ---
 
-> 本文由 2026-06-25 的 Facebook 短文（相片）於 2026-10-27 擴寫而成。時間軸、版本名稱與結論皆出自當日原稿；擴寫補充的 Wine/Proton 背景說明屬一般性知識，非當日另行實測的數據。環境：Arch Linux、Steam + Proton。
+> 本文由 2026-06-25 的 Facebook 短文（相片）於 2026-11 擴寫重寫而成。時間軸、版本名稱與結論皆出自當日原稿；文末補上一段 2026 下半年社群側的後續查證。環境：Arch Linux（CachyOS）、Steam + Proton。
 
 ## 症狀：遊戲裝好了，帳號登不進去
 
@@ -30,7 +30,7 @@ Proton 版本輪詢是 Linux 玩家的標準反射動作，這次一口氣換了
 
 每一種都重啟、重登、看轉圈，然後繼續轉圈。五種全滅。
 
-這裡必須誠實記一筆：**換 Proton 本身是合理的排查步驟**——不同版本的 Wine stub 覆蓋度、steamapi 介接、網路相關 DLL 都有差異，登入類問題換版本確實偶爾會好。但當五種版本行為完全一致時，正確的推論不是「再找第六種」，而是「問題不在 Proton」。當下的我沒有接受這個推論。
+這裡必須記一筆：**換 Proton 本身是合理的排查步驟**——不同版本的 Wine stub 覆蓋度、steamapi 介接、網路相關 DLL 都有差異，登入類問題換版本確實偶爾會好。FH6 發售時（2026-05）社群也確實在瘋狂輪詢：Radeon 6000 系的破圖是靠 Valve 緊急推的 Proton Experimental 修的，後來 Valve 又把遊戲的預設 Proton 換成 Hotfix，Steam Deck 指南甚至在 8 月改口說「用 Experimental，別再用 GE 9-10」。但當五種版本行為完全一致時，正確的推論不是「再找第六種」，而是「問題不在 Proton」。當下的我沒有接受這個推論。
 
 ## 第二輪：刪 prefix 重建、重裝 vcredist
 
@@ -50,7 +50,7 @@ log 裡確實有東西反覆出現：`netprofm`。看起來非常有嫌疑。
 
 > 「Wine 的 netprofm 是半殘的，所以遊戲以為自己離線，所以登入服務不啟動。」
 
-這個故事結構完整、技術上講得通、還有 log 當證據——**然而是錯的**。netprofm 的確是 semi-stub，這點沒錯；但它不是這次登入失敗的原因。它只是整個系統裡最容易被怪罪的那個環節，一條標準的紅鯡魚。跟它大眼瞪小眼了一個下午，毫無進展。
+這個故事結構完整、技術上講得通、還有 log 當證據——然而是錯的。netprofm 的確是 semi-stub，這點沒錯；但它不是這次登入失敗的原因。它只是整個系統裡最容易被怪罪的那個環節，一條標準的紅鯡魚。跟它大眼瞪小眼了一個下午，毫無進展。
 
 ## 真正的解法：帳號被標記「可疑」，不是遊戲壞掉
 
@@ -88,3 +88,13 @@ log 裡確實有東西反覆出現：`netprofm`。看起來非常有嫌疑。
 本機環境最容易折騰、最有「做了很多事」的感覺，但在這種「五種 Proton 行為完全一致」的案例裡，它恰恰是最不可能的答案。3.2GB 的 log 教會我的事：log 裡最顯眼的錯誤（netprofm semi-stub）未必是原因，它可能只是系統裡最誠實的自白者——「我的網路狀態回報能力很差」——但擋你登入的是帳號風控，不是它。
 
 下次再有「Linux 上遊戲登入失敗」，第一個動作是開瀏覽器登 account.live.com，不是開終端機。
+
+## 2026 下半年社群側的後續
+
+事後回頭看社群討論，FH6 這半年在 Linux 上的主要戰場一直不是登入，而是圖形與效能——這也再次說明我那天把力氣花錯地方：
+
+- 發售首週（5 月中）Radeon 6000 系大面積破圖與 stutter，Valve 沒發公告就緊急更新了 Proton Experimental，社群靠 descriptor heap 管線（`VKD3D_CONFIG=descriptor_heap,enable_experimental_features PROTON_VKD3D_HEAP=1 RADV_EXPERIMENTAL=heap`）自救；[ValveSoftware/Proton issue #9789](https://github.com/ValveSoftware/Proton/issues/9789) 收錄了黑畫面、ray tracing 崩潰等問題與各種 workaround。
+- 5 月底 Valve 把 FH6 的預設 Proton 從 Experimental 換成 Hotfix；8 月的 Steam Deck 指南則建議回到 Experimental（FH6 專屬 patch 已合入），要裝其他版本就走 ProtonUp-Qt。
+- 登入類問題在討論串裡反而少見——偶爾出現的「大家換了 code 也登不進」多半是微軟側發碼/帳號問題，沒有人再把帳號風控當成 Linux 環境問題來查。這篇的教訓（先查帳號側）在那個時間點幾乎沒有人提到，值得記下來。
+
+如果之後 FH6 又有新的 Proton 版本問題，第一站是 [ProtonDB](https://www.protondb.com/app/2483190) 與 [Proton issue tracker](https://github.com/ValveSoftware/Proton/issues?q=forza+horizon+6)；但登入轉圈，先開 account.live.com。
