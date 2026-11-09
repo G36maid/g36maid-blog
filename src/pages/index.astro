@@ -89,8 +89,10 @@ const events = await getCollection('event');
 	.col {
 		position: absolute;
 		left: var(--inset);
-		/* floats in the slack under the strip; matches the 16:9 design at 1080p */
-		top: max(120px, calc(100vh - 720px));
+		/* floats in the slack under the strip; matches the 16:9 design at 1080p.
+		 * capped at 220px: the raw 100vh - 720px formula keeps growing on taller
+		 * (1440p/4K) windows and sank the whole column to mid-screen. */
+		top: clamp(120px, calc(100vh - 720px), 220px);
 		width: min(547px, calc(100vw - var(--inset) - 32px));
 		display: flex;
 		flex-direction: column;
